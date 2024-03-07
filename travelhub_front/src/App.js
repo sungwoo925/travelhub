@@ -5,6 +5,8 @@ import About from './pages/About/About';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
 import './App.css'; // 전역 스타일 파일
+import Login from './pages/Login/Login';
+import Register from './pages/Register/Register';
 
 function App() {
   console.log("hi");
@@ -16,6 +18,8 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
         </Routes>
 
         <Footer />
