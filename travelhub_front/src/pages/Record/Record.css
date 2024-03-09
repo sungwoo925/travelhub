@@ -7,24 +7,76 @@
 .left-pane {
     width: 70%;
     overflow-y: auto;
+    font-size: small;
 }
 
 .text-input-box {
     width: 50%;
     background-color: #ffffff; 
+    display: inline-block;
     padding: 10px;
-    margin: 10px;
-    border: 1px solid #ccc; 
+    margin-top: 3%;
+    margin-left: 5%;
+    margin-right: 10%;
+    border: 2px solid #ccc; 
     border-radius: 5px; 
 }
 
 .text-input-box input {
     width: 100%;
-    padding: 8px;
+    padding: 1px;
     border: none;
     outline: none;
 }
 
+.toggle-switch {
+    position: absolute;
+    display: inline-block;
+    margin-top: 2.7%;
+    margin-left: 2px;
+    width: 60px;
+    height: 24px;
+    cursor: pointer;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: 0.4s;
+    border-radius: 34px;
+}
+
+.slider:before {
+    position: absolute;
+    content: '';
+    height: 16px;
+    width: 16px;
+    left: 6px;
+    bottom: 4px;
+    background-color: white;
+    transition: 0.4s;
+    border-radius: 50%;
+}
+
+.toggle-switch.checked .slider {
+    background-color: #2196F3;
+}
+
+.toggle-switch.checked .slider:before {
+    transform: translateX(30px);
+}
+  
 .right-pane {
     width: 30%;
     position: fixed;

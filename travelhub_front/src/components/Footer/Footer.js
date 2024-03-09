@@ -3,7 +3,7 @@ import React from 'react';
 const Footer = () => {
   return (
     <footer>
-      <p>&copy; 2024 My React App. All rights reserved.</p>
+      <p>qkrtjddn5807@gmail.com</p>
     </footer>
   );
 };
