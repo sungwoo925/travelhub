@@ -10,7 +10,7 @@ function Record() {
     setChecked(!isChecked);
   };
 
-  const addJournals = () => {
+  const addJournals = () => {// 사진추가
     setJournals(prevJournals => [...prevJournals, {}]);
   };
 

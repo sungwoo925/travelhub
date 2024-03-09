@@ -55,11 +55,17 @@ const Studio = () => {
 
     animate();
 
-    // Cleanup
-    return () => {
+    const currentContainerRef = containerRef.current;
+
+    const cleanup = () => {
       window.removeEventListener('resize', handleResize);
-      containerRef.current.removeChild(renderer.domElement);
+  
+      if (currentContainerRef && renderer.domElement) {
+        currentContainerRef.removeChild(renderer.domElement);
+      }
     };
+
+    return () => cleanup();
   }, []);
 
   return <div ref={containerRef} style={{ width: '100%', height: '100vh' }} />;
