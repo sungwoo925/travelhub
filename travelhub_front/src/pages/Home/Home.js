@@ -15,15 +15,6 @@ function Home() {
       <Cube />
       <Cube />
       <Cube />
-      <Cube />
-      <Cube />
-      <Cube />
-      <Cube />
-      <Cube />
-      <Cube />
-      <Cube />
-      <Cube />
-      <Cube />
     </div>
   );
 }

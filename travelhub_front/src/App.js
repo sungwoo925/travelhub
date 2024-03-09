@@ -7,6 +7,7 @@ import Footer from './components/Footer/Footer';
 import './App.css'; // 전역 스타일 파일
 import Login from './pages/Login/Login';
 import Register from './pages/Register/Register';
+import Record from './pages/Record/Record';
 
 function App() {
   console.log("hi");
@@ -18,6 +19,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
+          <Route path="/record" element={<Record/>} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
         </Routes>
