@@ -1,12 +1,19 @@
 import React, { useState } from 'react';
 import './Record.css';
+import Journal from '../../components/Journal/Journal';
 
 function Record() {
   const [isChecked, setChecked] = useState(false);
+  const [journals, setJournals] = useState([]);
 
   const toggleSwitch = () => {
     setChecked(!isChecked);
   };
+
+  const addJournals = () => {
+    setJournals(prevJournals => [...prevJournals, {}]);
+  };
+
   return (
     <div className="split-screen">
       <div className="left-pane"> 
@@ -23,6 +30,11 @@ function Record() {
           <input type="checkbox" checked={isChecked} readOnly />
           <span className="slider"></span>
         </div>
+        <div/>
+        {journals.map((journal, index) => (
+          <Journal key={index} />
+        ))}
+        <button onClick={addJournals}>+</button>
       </div>
       <div className="right-pane"> {/* 오른쪽 30% */}
         <div className="emty"/>

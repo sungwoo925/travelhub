@@ -8,23 +8,21 @@ import './App.css'; // 전역 스타일 파일
 import Login from './pages/Login/Login';
 import Register from './pages/Register/Register';
 import Record from './pages/Record/Record';
+import Studio from './studio/Studio';
 
 function App() {
   console.log("hi");
   return (
     <Router>
       <div className="app">
-        <Header />
-
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/record" element={<Record/>} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+          <Route path="/" element={<div><Header /><Home /><Footer /></div>} />
+          <Route path="/about" element={<div><Header /><About /><Footer /></div>} />
+          <Route path="/record" element={<div><Header /><Record /><Footer /></div>} />
+          <Route path="/login" element={<div><Header /><Login /><Footer /></div>} />
+          <Route path="/register" element={<div><Header /><Register /><Footer /></div>} />
+          <Route path="/studio" element={<Studio/>}/>
         </Routes>
-
-        <Footer />
       </div>
     </Router>
   );

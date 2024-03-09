@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { Box } from '@react-three/drei';
 import * as THREE from 'three';
+import { Link } from 'react-router-dom';
 
 function Cube() {
   let animationId;
@@ -42,17 +43,19 @@ function Cube() {
   const materials = textures.map((texture) => new THREE.MeshBasicMaterial({ map: texture }));
 
   return (
-    <Canvas> 
-      <ambientLight />
-      <pointLight position={[0, 0, 10]} />
-      <Box
-        args={[3, 3, 3]}
-        material={materials}
-        ref={boxRef}
-        onPointerOver={handleMouseOver}
-        onPointerOut={handleMouseOut}
-      />
-    </Canvas>
+    <Link to='/studio'>
+      <Canvas> 
+        <ambientLight />
+        <pointLight position={[0, 0, 10]} />
+        <Box
+          args={[3, 3, 3]}
+          material={materials}
+          ref={boxRef}
+          onPointerOver={handleMouseOver}
+          onPointerOut={handleMouseOut}
+        />
+      </Canvas>
+    </Link>
   );
 }
 
