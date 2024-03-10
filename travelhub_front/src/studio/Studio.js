@@ -3,6 +3,7 @@ import * as THREE from 'three';
 
 const Studio = () => {
   const containerRef = useRef();
+  const cameraRef = useRef();
 
   useEffect(() => {
     // Scene
@@ -10,11 +11,12 @@ const Studio = () => {
 
     // Camera
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.z = 5; // 초기 카메라 위치
+    camera.position.z = 5;
+    cameraRef.current = camera;
 
     // Renderer
     const renderer = new THREE.WebGLRenderer();
-    renderer.setSize(window.innerWidth, window.innerHeight); // 전체 화면 크기로 설정
+    renderer.setSize(window.innerWidth, window.innerHeight);
     containerRef.current.appendChild(renderer.domElement);
 
     // Cube
@@ -39,36 +41,49 @@ const Studio = () => {
     // Listen for window resize events
     window.addEventListener('resize', handleResize);
 
+    // Handle wheel event for zooming
+    const handleWheel = (event) => {
+      const delta = event.deltaY * 0.005; // Adjust the sensitivity of zoom
+
+      // Adjust the camera position based on the scroll direction
+      camera.position.z += delta;
+
+      // Limit the minimum and maximum zoom levels if needed
+      // Example: if (camera.position.z < 2) camera.position.z = 2;
+      // Example: if (camera.position.z > 10) camera.position.z = 10;
+
+      renderer.render(scene, camera);
+    };
+
+    // Listen for wheel events for zooming
+    containerRef.current.addEventListener('wheel', handleWheel);
+
     // Animation
     const animate = () => {
       requestAnimationFrame(animate);
-
-      // Move camera away from the cube
-      camera.position.z += 0.01;
 
       // Rotate cube
       cube.rotation.x += 0.01;
       cube.rotation.y += 0.01;
 
-      renderer.render(scene, camera);
+      renderer.render(scene, cameraRef.current);
     };
 
     animate();
 
-    const currentContainerRef = containerRef.current;
-
     const cleanup = () => {
       window.removeEventListener('resize', handleResize);
-  
-      if (currentContainerRef && renderer.domElement) {
-        currentContainerRef.removeChild(renderer.domElement);
+      containerRef.current.removeEventListener('wheel', handleWheel);
+
+      if (containerRef.current && renderer.domElement) {
+        containerRef.current.removeChild(renderer.domElement);
       }
     };
 
     return () => cleanup();
   }, []);
 
-  return <div ref={containerRef} style={{ width: '100%', height: '100vh' }} />;
+  return <div ref={containerRef} style={{ width: '100%', height: '100vh', overflow: 'hidden' }} />;
 };
 
 export default Studio;
