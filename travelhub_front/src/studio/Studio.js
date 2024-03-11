@@ -89,6 +89,7 @@ const Studio = () => {
       if (containerRef.current && renderer.domElement) {
         containerRef.current.removeEventListener('wheel', handleWheel);
         containerRef.current.removeChild(renderer.domElement);
+        containerRef.current.removeEventListener('wheel', handleWheel);
       }
     };
 
