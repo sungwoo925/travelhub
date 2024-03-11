@@ -25,8 +25,8 @@ function Record() {
             // onChange={handleChange}
           />
         </div>
-        공유
         <div className={`toggle-switch ${isChecked ? 'checked' : ''}`} onClick={toggleSwitch}>
+          <p className="share">공유</p>
           <input type="checkbox" checked={isChecked} readOnly />
           <span className="slider"></span>
         </div>
@@ -34,7 +34,7 @@ function Record() {
         {journals.map((journal, index) => (
           <Journal key={index} />
         ))}
-        <button onClick={addJournals}>+</button>
+        <button className="add-journal" onClick={addJournals}>+</button>
       </div>
       <div className="right-pane"> {/* 오른쪽 30% */}
         <div className="emty"/>

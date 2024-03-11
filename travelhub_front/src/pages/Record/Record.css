@@ -29,6 +29,13 @@
     outline: none;
 }
 
+.share {
+    padding: 3.2px;
+    margin: 0;
+    margin-left: 60px;
+    width: 30px;
+}
+
 .toggle-switch {
     position: absolute;
     display: inline-block;
@@ -77,6 +84,12 @@
     transform: translateX(30px);
 }
   
+.add-journal {
+    width: 89%;
+    height: 7%;
+    margin: 5%;
+}
+
 .right-pane {
     width: 30%;
     position: fixed;

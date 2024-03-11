@@ -73,10 +73,10 @@ const Studio = () => {
 
     const cleanup = () => {
       window.removeEventListener('resize', handleResize);
-      containerRef.current.removeEventListener('wheel', handleWheel);
-
+      
       if (containerRef.current && renderer.domElement) {
         containerRef.current.removeChild(renderer.domElement);
+        containerRef.current.removeEventListener('wheel', handleWheel);
       }
     };
 
