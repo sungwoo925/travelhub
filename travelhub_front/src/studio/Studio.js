@@ -19,11 +19,19 @@ const Studio = () => {
     renderer.setSize(window.innerWidth, window.innerHeight);
     containerRef.current.appendChild(renderer.domElement);
 
-    // Cube
-    const geometry = new THREE.BoxGeometry();
-    const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-    const cube = new THREE.Mesh(geometry, material);
-    scene.add(cube);
+    // Create two cubes at random positions
+    for (let i = 0; i < 2; i++) {
+      const geometry = new THREE.BoxGeometry();
+      const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+      const cube = new THREE.Mesh(geometry, material);
+
+      // Set random positions
+      cube.position.x = (Math.random() - 0.5) * 10;
+      cube.position.y = (Math.random() - 0.5) * 10;
+      cube.position.z = (Math.random() - 0.5) * 10;
+
+      scene.add(cube);
+    }
 
     // Handle window resize
     const handleResize = () => {
@@ -62,9 +70,13 @@ const Studio = () => {
     const animate = () => {
       requestAnimationFrame(animate);
 
-      // Rotate cube
-      cube.rotation.x += 0.01;
-      cube.rotation.y += 0.01;
+      // Rotate all cubes
+      scene.children.forEach((child) => {
+        if (child instanceof THREE.Mesh) {
+          child.rotation.x += 0.01;
+          child.rotation.y += 0.01;
+        }
+      });
 
       renderer.render(scene, cameraRef.current);
     };
@@ -73,9 +85,9 @@ const Studio = () => {
 
     const cleanup = () => {
       window.removeEventListener('resize', handleResize);
-      containerRef.current.removeEventListener('wheel', handleWheel);
 
       if (containerRef.current && renderer.domElement) {
+        containerRef.current.removeEventListener('wheel', handleWheel);
         containerRef.current.removeChild(renderer.domElement);
       }
     };
