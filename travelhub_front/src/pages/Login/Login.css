@@ -1,0 +1,97 @@
+.login-container {
+    width: 400px;
+    height: 450px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #a5a5a5;
+    background-color: #a5a5a5;
+    border-radius: 10px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+label {
+  font-weight: bold;
+}
+
+input[type="text"],
+input[type="password"] {
+  width: 95%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+
+.Login-btn,
+.google-btn,
+.kakao-btn {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.Login-btn {
+    background-color: #ff2e2e;
+    color: #333;
+    border-radius: 5px;
+  }
+
+.Login-btn:hover {
+    background-color: #fd6262;
+  }
+
+.google-btn {
+  background-color: #ffffff;
+  color: #333;
+  border-radius: 5px;
+}
+
+.google-btn:hover {
+  background-color: #c2c2c2f2;
+}
+
+.kakao-btn {
+  background-color: #FEE500;
+  color: #333;
+  border-radius: 5px;
+}
+
+.kakao-btn:hover {
+  background-color: #f9f1c0;
+}
+
+
+.icon-google {
+  width: 20px;
+  height: 20px;
+  background: url('C:/icon/google.icon.png') no-repeat center center;
+  background-size: cover;
+  display: inline-block;
+  margin-right: 8px; /* 아이콘과 버튼 텍스트 사이의 간격 조절 */
+}
+
+.icon-kakao {
+  width: 20px;
+  height: 20px;
+  background: url('C:/icon/kakao.icon.png') no-repeat center center;
+  background-size: cover;
+  display: inline-block;
+  margin-right: 8px; /* 아이콘과 버튼 텍스트 사이의 간격 조절 */
+}
