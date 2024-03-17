@@ -81,7 +81,6 @@ input[type="password"] {
 .icon-google {
   width: 20px;
   height: 20px;
-  background: url('C:/icon/google.icon.png') no-repeat center center;
   background-size: cover;
   display: inline-block;
   margin-right: 8px; /* 아이콘과 버튼 텍스트 사이의 간격 조절 */
@@ -90,7 +89,6 @@ input[type="password"] {
 .icon-kakao {
   width: 20px;
   height: 20px;
-  background: url('C:/icon/kakao.icon.png') no-repeat center center;
   background-size: cover;
   display: inline-block;
   margin-right: 8px; /* 아이콘과 버튼 텍스트 사이의 간격 조절 */
