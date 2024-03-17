@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import * as THREE from 'three';
+import './Studio.css';
 
 const Studio = () => {
   const containerRef = useRef();
