@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './Record.css';
 import Journal from '../../components/Journal/Journal';
+import Footer from '../../components/Footer/Footer';
 
 function Record() {
   const [isChecked, setChecked] = useState(false);
@@ -14,9 +15,14 @@ function Record() {
     setJournals(prevJournals => [...prevJournals, {}]);
   };
 
+  const savetravel = () => {
+    console.log("save");
+  };
+
   return (
     <div className="split-screen">
-      <div className="left-pane"> 
+      <div className="left-pane">
+        <div className='empty'/>
         <div className="text-input-box">
           <input
             type="text"
@@ -35,14 +41,16 @@ function Record() {
           <Journal key={index} />
         ))}
         <button className="add-journal" onClick={addJournals}>+</button>
+        <Footer />
       </div>
       <div className="right-pane"> {/* 오른쪽 30% */}
-        <div className="emty"/>
+        <div className="empty"/>
         <p>1</p>
         <p>2</p>
         <p>3</p>
         <p>4</p>
         <p>5</p>
+        <button className="save" onClick={savetravel}>save</button>
       </div>
     </div>
   );
