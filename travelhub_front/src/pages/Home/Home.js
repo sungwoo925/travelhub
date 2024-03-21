@@ -10,12 +10,15 @@ function Home() {
 
   const fetchData = async () => {//api 호출 예시
     try {
-      const response = await axios.get('http://172.17.153.88:9826/json');
+      const response = await axios.get('http://localhost:9826/json');
       setData(response.data);
     } catch (error) {
       setError(error);
+      console.log(error);
     } finally {
-      console.log(data);
+      if(!loading){
+        console.log(data);
+      }
       setLoading(false);
     }
   };
