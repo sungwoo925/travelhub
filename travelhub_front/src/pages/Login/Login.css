@@ -1,6 +1,6 @@
 .login-container {
     width: 400px;
-    height: 450px;
+    height: 480px;
     margin: 0 auto;
     padding: 20px;
     border: 1px solid #a5a5a5;
@@ -36,11 +36,28 @@ input[type="password"] {
 }
 
 
-.Login-btn,
-.google-btn,
-.kakao-btn {
+.Login-btn{
   width: 100%;
   padding: 10px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.google-btn{
+  height: 55px;
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.kakao-btn {
+  height: 55px;
+  width: 100%;
   margin-top: 10px;
   border: none;
   border-radius: 5px;
@@ -58,23 +75,25 @@ input[type="password"] {
   }
 
 .google-btn {
+  border: 1px solid #ffffff;
   background-color: #ffffff;
   color: #333;
   border-radius: 5px;
 }
 
 .google-btn:hover {
-  background-color: #c2c2c2f2;
+  border: 1px solid #000000;
 }
 
 .kakao-btn {
+  border: 1px solid #FEE500;
   background-color: #FEE500;
   color: #333;
   border-radius: 5px;
 }
 
 .kakao-btn:hover {
-  background-color: #f9f1c0;
+  border: 1px solid #000000;
 }
 
 
@@ -85,6 +104,13 @@ input[type="password"] {
   display: inline-block;
   margin-right: 8px; /* 아이콘과 버튼 텍스트 사이의 간격 조절 */
 }
+
+.google-icon {
+  width: 360px;
+  height: 40px;
+}
+
+
 
 .icon-kakao {
   width: 20px;
