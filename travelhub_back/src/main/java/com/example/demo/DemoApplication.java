@@ -18,7 +18,7 @@ public class DemoApplication {
     }
 
     @CrossOrigin(origins = "http://localhost:8888")
-    @GetMapping("/")
+    @GetMapping("/travels/{option}")
     public String hello() {
         return "hello";
     }
@@ -26,18 +26,14 @@ public class DemoApplication {
     @CrossOrigin(origins = "http://localhost:8888")
     @GetMapping("/json")
     public String getJson() {
-        getJsonA("./secinfo.json","databaseIp");
+        // getJsonA("./secinfo.json","databaseIp");
         return "{\"message\": \"hello\"}";
     }
 
     public static String getJsonA(String filePath, String name){
-        // filePath = "./secinfo.json";
-        // name = "databasIp";
 
         try {
-
             FileReader reader = new FileReader(filePath);
-
             StringBuilder content = new StringBuilder();
             int character;
             while ((character = reader.read()) != -1) {
