@@ -20,13 +20,11 @@ const Studio = () => {
     renderer.setSize(window.innerWidth, window.innerHeight);
     containerRef.current.appendChild(renderer.domElement);
 
-    // Create two cubes at random positions
     for (let i = 0; i < 2; i++) {
       const geometry = new THREE.BoxGeometry();
       const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
       const cube = new THREE.Mesh(geometry, material);
 
-      // Set random positions
       cube.position.x = (Math.random() - 0.5) * 10;
       cube.position.y = (Math.random() - 0.5) * 10;
       cube.position.z = (Math.random() - 0.5) * 10;
@@ -39,27 +37,26 @@ const Studio = () => {
       const newWidth = window.innerWidth;
       const newHeight = window.innerHeight;
 
-      // Update camera aspect ratio
       camera.aspect = newWidth / newHeight;
       camera.updateProjectionMatrix();
 
-      // Update renderer size
       renderer.setSize(newWidth, newHeight);
     };
 
     // Listen for window resize events
     window.addEventListener('resize', handleResize);
 
-    // Handle wheel event for zooming
-    const handleWheel = (event) => {
-      const delta = event.deltaY * 0.005; // Adjust the sensitivity of zoom
+    const handleWheel = (event) => {//마우스 휠 event control
+      const delta = event.deltaY * 0.005; 
 
-      // Adjust the camera position based on the scroll direction
+      //카메라 위치
       camera.position.z += delta;
 
-      // Limit the minimum and maximum zoom levels if needed
-      // Example: if (camera.position.z < 2) camera.position.z = 2;
-      // Example: if (camera.position.z > 10) camera.position.z = 10;
+      //카메라 각도
+      const rotationSpeed = 0.1;
+      const rotationDelta = delta * rotationSpeed;
+
+      camera.rotation.y += rotationDelta;
 
       renderer.render(scene, camera);
     };
