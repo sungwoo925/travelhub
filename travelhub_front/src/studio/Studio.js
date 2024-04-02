@@ -45,17 +45,17 @@ const Studio = () => {
     renderer.setSize(window.innerWidth, window.innerHeight);
     containerRef.current.appendChild(renderer.domElement);
 
-    for (let i = 0; i < 2; i++) {
-      const geometry = new THREE.BoxGeometry();
-      const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-      const cube = new THREE.Mesh(geometry, material);
+    // for (let i = 0; i < 2; i++) {
+    //   const geometry = new THREE.BoxGeometry();
+    //   const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+    //   const cube = new THREE.Mesh(geometry, material);
 
-      cube.position.x = (Math.random() - 0.5) * 10;
-      cube.position.y = (Math.random() - 0.5) * 10;
-      cube.position.z = (Math.random() - 0.5) * 10;
+    //   cube.position.x = (Math.random() - 0.5) * 10;
+    //   cube.position.y = (Math.random() - 0.5) * 10;
+    //   cube.position.z = (Math.random() - 0.5) * 10;
 
-      scene.add(cube);
-    }
+    //   scene.add(cube);
+    // }
   
     addImagePlane(scene, '/images/image2.jpg', new THREE.Vector3(0, 2, -3), 3, 'asd'); // 이미지의 너비를 10으로 지정
     addImagePlane(scene, '/images/image2.jpg', new THREE.Vector3(3, 2, 0), 3, 'asd', new THREE.Vector3(0, -Math.PI / 2, 0)); // 이미지의 너비를 10으로 지정
@@ -84,11 +84,11 @@ const Studio = () => {
     // Listen for window resize events
     window.addEventListener('resize', handleResize);
 
-    const handleWheel = (event) => {//마우스 휠 event control
+    const handleWheel = (event) => {//마우스 휠 event control 마우스휠
       const delta = event.deltaY * 0.005; 
 
       //카메라 위치
-      camera.position.z += delta;
+      // camera.position.z += delta;
 
       //카메라 각도
       const rotationSpeed = 0.1;
@@ -132,7 +132,9 @@ const Studio = () => {
     return () => cleanup();
   }, []);
 
-  return <div ref={containerRef} style={{ width: '100%', height: '100vh', overflow: 'hidden' }} />;
+  return <div ref={containerRef} style={{ width: '100%', height: '100vh', overflow: 'hidden' }} >
+    <div className='sidebar-studio'></div>
+  </div>;
 };
 
 export default Studio;
