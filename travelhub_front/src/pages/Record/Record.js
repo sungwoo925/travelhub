@@ -2,10 +2,15 @@ import React, { useState } from 'react';
 import './Record.css';
 import Journal from '../../components/Journal/Journal';
 import Footer from '../../components/Footer/Footer';
+import axios from 'axios';
 
 function Record() {
   const [isChecked, setChecked] = useState(false);
   const [journals, setJournals] = useState([]);
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [image, setImage] = useState(null);
 
   const toggleSwitch = () => {
     setChecked(!isChecked);
@@ -17,6 +22,38 @@ function Record() {
 
   const savetravel = () => {
     console.log("save");
+  };
+
+  const mapInfoSearch = async () => {//api 호출 예시
+    try {
+      const response = await axios.get('http://localhost:9826/maps/어디')
+        .then(response => {
+          console.log(response.data);
+          setData(response.data);
+        });
+    } catch (error) {
+      setError(error);
+      console.log(error);
+    } finally {
+      if(!loading){
+        console.log(data);
+      }
+      setLoading(false);
+    }
+  }
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+
+    reader.onloadend = () => {
+      // 이미지를 미리보기할 수 있음
+      setImage(reader.result);
+    };
+
+    if (file) {
+      reader.readAsDataURL(file);
+    }
   };
 
   return (
@@ -40,6 +77,8 @@ function Record() {
         {journals.map((journal, index) => (
           <Journal key={index} />
         ))}
+        <input type="file" onChange={handleImageChange}/>
+        {image && <img src={image} alt="Selected" />}
         <button className="add-journal" onClick={addJournals}>+</button>
         <Footer />
       </div>

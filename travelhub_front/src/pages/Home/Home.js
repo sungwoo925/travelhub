@@ -10,8 +10,11 @@ function Home() {
 
   const fetchData = async () => {//api 호출 예시
     try {
-      const response = await axios.get('http://localhost:9826/json');
-      setData(response.data);
+      const response = await axios.get('http://localhost:9826/maps/타임슬라이스')
+        .then(response => {
+          console.log(response.data);
+          setData(response.data);
+        });
     } catch (error) {
       setError(error);
       console.log(error);
