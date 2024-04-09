@@ -1,6 +1,8 @@
+
+
 .login-container {
     width: 400px;
-    height: 480px;
+    height: auto;
     margin: 0 auto;
     padding: 20px;
     border: 1px solid #a5a5a5;
@@ -21,6 +23,15 @@
 
 .form-group {
   margin-bottom: 15px;
+}
+
+.find-links {
+  flex-grow: 1;
+}
+
+.find-links a {
+  color: #333;
+  text-decoration: none; /* 링크 밑줄 제거 */
 }
 
 label {

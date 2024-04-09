@@ -40,18 +40,34 @@ function Login() {
     });
   };
   
+  
+
+
 
   return (
     <div className="login-container">
-      <h2>Login</h2>
+      <h2>로그인</h2>
       <form className="login-form">
         <div className="form-group">
-          <label htmlFor="username">ID:</label>
-          <input type="text" id="username" name="username" />
+          <div className="input-box">
+            <input type="text" id="username" name="username" placeholder="ID" />
+          </div>
         </div>
         <div className="form-group">
-          <label htmlFor="password">Password:</label>
-          <input type="password" id="password" name="password" />
+          <div className="input-box">
+            <input type="password" id="password" name="password" placeholder="password"/>
+          </div>
+        </div>
+        <div className="form-group">
+          <div className="login-info">
+            <div className="login-info-remember">
+              <input type="checkbox" id="remember" name="remember" />
+              <label htmlFor="remember">로그인 정보 저장</label>
+            </div>
+            <div className="find-links">
+              <p><Link to="/find-id">아이디 찾기</Link> | <Link to="/find-password">비밀번호 찾기</Link></p>
+            </div>
+          </div>
         </div>
         <button className="Login-btn">Login</button>
       </form>
@@ -66,7 +82,7 @@ function Login() {
           </button>
         </div>
         <div className="signup-link">
-          <p>회원이 아니신가요? <Link to="/register">회원가입</Link></p>
+          <p>회원이 아니신가요? <Link to="/register">지금 가입하세요!</Link></p>
         </div>
       </div>
     </div>
