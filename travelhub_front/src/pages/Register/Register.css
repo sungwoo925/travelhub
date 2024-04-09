@@ -1,0 +1,83 @@
+.register-container {
+    width: 400px;
+    height: auto;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #a5a5a5;
+    background-color: #a5a5a5;
+    border-radius: 10px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  .register-form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .form-group {
+    margin-bottom: 10px; /* 각 항목의 박스 간격을 줄입니다. */
+  }
+  
+  label {
+    font-weight: bold;
+  }
+  
+  input[type="text"],
+  input[type="password"],
+  input[type="date"],
+  input[type="tel"] {
+    width: calc(100% - 24px); /* 입력 필드 너비를 조정하여 박스 안에 꽉 차도록 합니다. */
+    padding: 8px;
+    margin-top: 4px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .Register-btn {
+    background-color: #ff2e2e;
+    color: #333;
+    border-radius: 5px;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.Register-btn:hover {
+    background-color: #fd6262;
+}
+
+  
+  .google-btn,
+  .kakao-btn {
+    height: 55px;
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .gender-options {
+    display: flex;
+  }
+  
+  .gender-options label {
+    margin-right: 10px;
+  }
+  
+  .login-options {
+    margin-top: 20px;
+  }
+  
+  .signup-link {
+    margin-top: 10px;
+  }
+  
+  .signup-link a {
+    color: blue;
+  }
+  
