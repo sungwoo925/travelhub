@@ -41,7 +41,7 @@ const Studio = () => {
     // Scene
     const scene = new THREE.Scene();
     const textureLoader = new THREE.TextureLoader();
-    const texture = textureLoader.load('./images/20230824_134034.jpg');
+    const texture = textureLoader.load('./images/background1.jpg');
     scene.background = texture;
     // Camera
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -53,6 +53,8 @@ const Studio = () => {
     renderer.setSize(window.innerWidth, window.innerHeight);
     containerRef.current.appendChild(renderer.domElement);
 
+    
+    
     if(mapJson){
       for(const mapDataNum in mapJson.defualt){
         const frame = mapJson.defualt[mapDataNum];
@@ -65,15 +67,20 @@ const Studio = () => {
           );       
       }
     }
-
-    const geometry = new THREE.PlaneGeometry(40, 60); //(x,z) x-좌+우 z-앞+뒤
-    const material = new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.DoubleSide });
+    const geometry = new THREE.PlaneGeometry(40, 60,80,120); //(x,z) x-좌+우 z-앞+뒤
+    const material = new THREE.MeshPhongMaterial({ color: 0xaaaaaa, side: THREE.DoubleSide });
     const plane = new THREE.Mesh(geometry, material);
+    plane.receiveShadow = true; // 그림자 받기 설정
     plane.rotation.x = -Math.PI / 2; 
     plane.position.y = 0;
     plane.position.x = 0;
     plane.position.z = 0;
     scene.add(plane);
+
+    const light = new THREE.PointLight(0xffffff, 1000, 100);
+    light.position.set(0, 10,0);
+    light.castShadow = true;
+    scene.add(light);
 
     // Handle window resize
     const handleResize = () => {
@@ -92,7 +99,7 @@ const Studio = () => {
     let movingCircle = 0;
     let movingFlow = 0;
     const handleWheel = (event) => {//마우스 휠 event control 마우스휠
-      const delta = event.deltaY * 0.005;
+      const delta = event.deltaY * 0.0005;
       
       movingCircle += delta;
       movingFlow +=delta;
