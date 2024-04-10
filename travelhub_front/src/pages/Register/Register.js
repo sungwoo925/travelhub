@@ -5,6 +5,17 @@ import { Link } from 'react-router-dom';
 function Register() {
   return (
     <div className="register-container">
+      <div style={{
+          backgroundImage: `url('../../../public/images/background1.jpg')`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          height: '100%', // 배경 이미지가 차지할 높이를 조정합니다.
+          width: '100%',
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          zIndex: -1,
+        }}></div>
       <h2>회원가입</h2>
       <form className="register-form">
         <div className="form-group">

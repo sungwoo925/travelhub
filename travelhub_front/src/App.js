@@ -11,7 +11,6 @@ import Studio from './studio/Studio';
 import './App.css';
 
 function App() {
-  console.log("hi");
   return (
     <Router>
       <div className="app">
