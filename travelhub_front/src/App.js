@@ -16,16 +16,31 @@ function App() {
     <Router>
       <div className="app">
         <Routes>
-          <Route path="/" element={<div><Header /><div className='empty'/><Home /><Footer /></div>} />
-          <Route path="/about" element={<div><Header /><div className='empty'/><About /><Footer /></div>} />
-          <Route path="/record" element={<div><Header /><Record /></div>} />
-          <Route path="/login" element={<div><Header />
+          <Route path="/" element={<div>
+                                      <Header />
+                                      <div className='empty'/>
+                                      <Home />
+                                      <Footer />
+                                  </div>} />
+          <Route path="/about" element={<div>
+                                          <Header />
+                                          <div className='empty'/>
+                                          <About />
+                                          <Footer />
+                                        </div>} />
+          <Route path="/record" element={<div>
+                                          <Header />
+                                          <Record />
+                                        </div>} />
+          <Route path="/login" element={<div>
+                                          <Header />
                                           <div className='empty'/>
                                           <Login />
                                           <Footer />
                                           <Background/>
                                         </div>} />
-          <Route path="/register" element={<div><Header />
+          <Route path="/register" element={<div>
+                                              <Header />
                                               <div className='empty'/>
                                               <Register />
                                               <Footer />
