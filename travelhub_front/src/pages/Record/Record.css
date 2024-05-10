@@ -9,7 +9,11 @@
     overflow-y: auto;
     font-size: small;
 }
-
+.right-pane {
+    width: 30%;
+    overflow-y: auto;
+    font-size: small;
+}
 .text-input-box {
     width: 50%;
     background-color: #ffffff; 

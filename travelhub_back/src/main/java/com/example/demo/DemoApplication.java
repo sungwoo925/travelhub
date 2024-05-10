@@ -43,8 +43,8 @@ public class DemoApplication {
 
     @CrossOrigin(origins = "http://localhost:8888")
     @GetMapping("/travels/{option}")
-    public String hello() {
-        return "hello";
+    public String hello(@PathVariable String option) {
+        return option;
     }
     
     @CrossOrigin(origins = "http://localhost:8888")
@@ -83,7 +83,7 @@ public class DemoApplication {
         // Initialize client that will be used to send requests. This client only needs
         // to be created once, and can be reused for multiple requests.
         try (VertexAI vertexAI = new VertexAI(projectId, location)) {
-        String imageUri = "C:\\image5.png";
+        String imageUri = "C:\\Users\\qkrtj\\OneDrive\\바탕 화면\\test\\travelhub\\travelhub_front\\public\\images\\test.png";
 
         GenerativeModel model = new GenerativeModel(modelName, vertexAI);
 
