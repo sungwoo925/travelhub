@@ -46,6 +46,13 @@ public class DemoApplication {
     public String hello(@PathVariable String option) {
         return option;
     }
+
+    @CrossOrigin(origins = "http://localhost:8888")
+    @GetMapping("api/users/{word}")
+    public String search(@PathVariable String word) {
+        String username = word.replaceAll("\\s+", "_").toLowerCase(); // 공백을 _로 대체하고 소문자로 변환
+        return "{\"id\": 1, \"username\": \"" + username + "\", \"email\": \"" + username + "@example.com\"}";
+    }
     
     @CrossOrigin(origins = "http://localhost:8888")
     @GetMapping("/maps/{locationName}")
@@ -83,7 +90,7 @@ public class DemoApplication {
         // Initialize client that will be used to send requests. This client only needs
         // to be created once, and can be reused for multiple requests.
         try (VertexAI vertexAI = new VertexAI(projectId, location)) {
-        String imageUri = "C:\\Users\\qkrtj\\OneDrive\\바탕 화면\\test\\travelhub\\travelhub_front\\public\\images\\test.png";
+        String imageUri = "C:\\image5.png";
 
         GenerativeModel model = new GenerativeModel(modelName, vertexAI);
 
