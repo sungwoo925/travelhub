@@ -1,7 +1,5 @@
 package com.travelhub.controller;
 
-import java.time.LocalDate;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,8 +19,6 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<User> createUser(@Validated @RequestBody User user) {
-        user.showme();
-        user.setRegistrationDate(LocalDate.now());
         User savedUser = userService.saveUser(user);
         return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
     }
