@@ -13,21 +13,21 @@ import java.time.LocalDate;
 @Entity
 public class Comment {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int comment_id;
+    // @Id
+    // @GeneratedValue(strategy = GenerationType.IDENTITY)
+    // private int comment_id;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user_id;
+    // @ManyToOne
+    // @JoinColumn(name = "user_id", nullable = false)
+    // private User user_id;
 
-    @Column(nullable = false)
-    private int travel_id;
+    // @Column(nullable = false)
+    // private int travel_id;
 
-    @Column(nullable = false, length = 150)
-    private String comment_text;
+    // @Column(nullable = false, length = 150)
+    // private String comment_text;
 
    
-    @Column(nullable = false)
-    private LocalDate comment_date;
+    // @Column(nullable = false)
+    // private LocalDate comment_date;
 }

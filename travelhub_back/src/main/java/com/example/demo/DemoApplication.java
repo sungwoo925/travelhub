@@ -70,7 +70,7 @@ public class DemoApplication {
     @GetMapping("/jemini")
     public String jemini() {
         try {
-            String projectId = "gen-lang-client-0924727192";
+            String projectId = "my-project-loc8c";
             String location = "us-central1";
             String modelName = "gemini-1.0-pro-vision";
 
@@ -90,7 +90,7 @@ public class DemoApplication {
         // Initialize client that will be used to send requests. This client only needs
         // to be created once, and can be reused for multiple requests.
         try (VertexAI vertexAI = new VertexAI(projectId, location)) {
-        String imageUri = "C:\\image5.png";
+        String imageUri = "./image5.png";
 
         GenerativeModel model = new GenerativeModel(modelName, vertexAI);
 
