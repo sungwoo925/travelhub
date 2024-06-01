@@ -14,32 +14,31 @@ import Background from './components/Background/Background';
 function App() {
   return (
     <Router>
-      <div className="app">
+      <div>
         <Routes>
-          <Route path="/" element={<div>
+          <Route path="/" element={<div className="app">
                                       <Header />
-                                      <div className='empty'/>
                                       <Home />
                                       <Footer />
                                   </div>} />
-          <Route path="/about" element={<div>
+          <Route path="/about" element={<div className="app">
                                           <Header />
                                           <div className='empty'/>
                                           <About />
                                           <Footer />
                                         </div>} />
-          <Route path="/record" element={<div>
+          <Route path="/record" element={<div className="app">
                                           <Header />
                                           <Record />
                                         </div>} />
-          <Route path="/login" element={<div>
+          <Route path="/login" element={<div className="app">
                                           <Header />
                                           <div className='empty'/>
                                           <Login />
                                           <Footer />
                                           <Background/>
                                         </div>} />
-          <Route path="/register" element={<div>
+          <Route path="/register" element={<div className="app">
                                               <Header />
                                               <div className='empty'/>
                                               <Register />

@@ -32,11 +32,6 @@ public class User {
     @Column(nullable = false)
     private LocalDate registrationDate;
 
-    public void showme(){
-        System.out.println(user_id);
-        System.out.println(user_name);
-    }
-
     // 요청 데이터를 바로 설정하는 생성자
     public User(String user_name, String user_password, String user_phoneNum, LocalDate birthday, String sex) {
         this.user_name = user_name;

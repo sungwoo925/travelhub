@@ -99,7 +99,7 @@ const Studio = () => {
     let movingCircle = 0;
     let movingFlow = 0;
     const handleWheel = (event) => {//마우스 휠 event control 마우스휠
-      const delta = event.deltaY * 0.0005;
+      const delta = event.deltaY * 0.005;
       
       movingCircle += delta;
       movingFlow +=delta;
