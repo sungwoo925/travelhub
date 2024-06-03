@@ -1,5 +1,4 @@
 package com.travelhub.entity;
-import java.util.Date;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -7,7 +6,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.TemporalType;
 import java.time.LocalDate;
 
 
@@ -55,5 +53,24 @@ public class Travel {
 
     @Column(length = 100)
     private String summary;
+
+    public Travel(User user_id, String traveltitle, String hashtag, LocalDate travel_startdate, 
+                  LocalDate travel_enddate, boolean travel_shareoption, String travel_location_name, 
+                  Double travel_location_latitude, Double travel_location_longitude, String travel_text, 
+                  int like_count, int view_count, String summary) {
+        this.user_id = user_id;
+        this.traveltitle = traveltitle;
+        this.hashtag = hashtag;
+        this.travel_startdate = travel_startdate;
+        this.travel_enddate = travel_enddate;
+        this.travel_shareoption = travel_shareoption;
+        this.travel_location_name = travel_location_name;
+        this.travel_location_latitude = travel_location_latitude;
+        this.travel_location_longitude = travel_location_longitude;
+        this.travel_text = travel_text;
+        this.like_count = like_count;
+        this.view_count = view_count;
+        this.summary = summary;
+    }
 
 }

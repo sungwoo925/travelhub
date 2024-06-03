@@ -8,37 +8,30 @@ function Home() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const fetchData = async () => {//api 호출 예시
+  const fetchData = async () => {
     try {
-      const response = await axios.get('http://localhost:9826/maps/타임슬라이스')
-        .then(response => {
-          console.log(response.data);
-          setData(response.data);
-        });
+      const response = await axios.get('http://localhost:9826/maps/타임슬라이스');
+      console.log(response.data);
+      setData(response.data);
     } catch (error) {
       setError(error);
       console.log(error);
     } finally {
-      if(!loading){
-        console.log(data);
-      }
       setLoading(false);
+      console.log(data);
     }
   };
 
   return (
-    <div>
-      <div className='Cube'>
-        <Cube/>
+    <div className="home-container">
+      {[...Array(6)].map((_, index) => (
+        <div key={index} className="cube-container">
+          <Cube />
+        </div>
+      ))}
+      <div className="button-container">
+        <button onClick={fetchData}>test</button>
       </div>
-      <div>
-        <Cube />
-      </div>
-      <Cube />
-      <Cube />
-      <Cube />
-      <Cube />
-      <button onClick={fetchData}>test</button>
     </div>
   );
 }
