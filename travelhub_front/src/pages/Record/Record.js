@@ -10,13 +10,13 @@ function Record() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [image, setImage] = useState(null);
+  const [images, setImages] = useState([]);
 
   const toggleSwitch = () => {
     setChecked(!isChecked);
   };
 
-  const addJournals = () => {// 사진추가
+  const addJournals = () => {
     setJournals(prevJournals => [...prevJournals, {}]);
   };
 
@@ -24,36 +24,30 @@ function Record() {
     console.log("save");
   };
 
-  const mapInfoSearch = async () => {//api 호출 예시
-    try {
-      const response = await axios.get('http://localhost:9826/maps/어디')
-        .then(response => {
-          console.log(response.data);
-          setData(response.data);
-        });
-    } catch (error) {
-      setError(error);
-      console.log(error);
-    } finally {
-      if(!loading){
-        console.log(data);
-      }
-      setLoading(false);
-    }
-  }
-
   const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    const reader = new FileReader();
+    const files = Array.from(e.target.files);
+    const readers = [];
 
-    reader.onloadend = () => {
-      // 이미지를 미리보기할 수 있음
-      setImage(reader.result);
-    };
-
-    if (file) {
+    files.forEach(file => {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImages(oldImages => [...oldImages, {
+          src: reader.result,
+          place: '',
+          date: '',
+          weather: '',
+          notes: ''
+        }]);
+      };
+      readers.push(reader);
       reader.readAsDataURL(file);
-    }
+    });
+  };
+
+  const handleDetailChange = (index, field, value) => {
+    const newImages = [...images];
+    newImages[index][field] = value;
+    setImages(newImages);
   };
 
   return (
@@ -61,28 +55,51 @@ function Record() {
       <div className="left-pane">
         <div className='empty'/>
         <div className="text-input-box">
-          <input
-            type="text"
-            placeholder="여행에 알맞는 제목을 입력해주세요..."
-            // value={inputValue}
-            // onChange={handleChange}
-          />
+          <input type="text" placeholder="여행에 알맞는 제목을 입력해주세요..." />
         </div>
         <div className={`toggle-switch ${isChecked ? 'checked' : ''}`} onClick={toggleSwitch}>
           <p className="share">공유</p>
           <input type="checkbox" checked={isChecked} readOnly />
           <span className="slider"></span>
         </div>
-        <div/>
+        <input type="file" onChange={handleImageChange} className="file-input" multiple />
+        <div className="image-upload-section">
+          {images.map((image, index) => (
+            <div key={index} className="image-detail-box">
+              <img src={image.src} alt={`Uploaded ${index}`} />
+              <input 
+                type="text" 
+                value={image.place} 
+                onChange={(e) => handleDetailChange(index, 'place', e.target.value)} 
+                placeholder="Place"
+              />
+              <input 
+                type="text" 
+                value={image.date} 
+                onChange={(e) => handleDetailChange(index, 'date', e.target.value)} 
+                placeholder="Date"
+              />
+              <input 
+                type="text" 
+                value={image.weather} 
+                onChange={(e) => handleDetailChange(index, 'weather', e.target.value)} 
+                placeholder="Weather"
+              />
+              <textarea 
+                value={image.notes} 
+                onChange={(e) => handleDetailChange(index, 'notes', e.target.value)} 
+                placeholder="Notes"
+              />
+            </div>
+          ))}
+        </div>
         {journals.map((journal, index) => (
           <Journal key={index} />
         ))}
-        <input type="file" onChange={handleImageChange}/>
-        {image && <img src={image} alt="Selected" />}
         <button className="add-journal" onClick={addJournals}>+</button>
         <Footer />
       </div>
-      <div className="right-pane"> {/* 오른쪽 30% */}
+      <div className="right-pane">
         <div className="empty"/>
         <p>1</p>
         <p>2</p>
