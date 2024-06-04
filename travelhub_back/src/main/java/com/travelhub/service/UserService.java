@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 import com.travelhub.entity.User;
-import com.travelhub.repository.UserRepository;;
+import com.travelhub.repository.UserRepository;
 
 @Service
 public class UserService {
