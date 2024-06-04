@@ -9,10 +9,12 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.TemporalType;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 public class Comment {
 
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int comment_id;
