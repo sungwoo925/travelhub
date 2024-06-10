@@ -1,4 +1,4 @@
-package com.example.demo.entity;
+package com.travelhub.entity;
 import java.util.Date;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

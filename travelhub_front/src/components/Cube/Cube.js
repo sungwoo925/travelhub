@@ -44,9 +44,9 @@ function Cube() {
 
   return (
     <Link to='/studio'>
-      <Canvas> 
-        <ambientLight />
-        <pointLight position={[0, 0, 10]} />
+      <Canvas style={{ width: '100%' }}> 
+        {/* <ambientLight />
+        <pointLight position={[0, 0, 0]} /> */}
         <Box
           args={[3, 3, 3]}
           material={materials}

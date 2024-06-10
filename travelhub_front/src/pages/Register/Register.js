@@ -46,10 +46,10 @@ function Register() {
         <div className="form-group">
           <div className="gender-options">
             <label htmlFor="male">
-              <input type="checkbox" id="male" name="gender" value="male" /> 남자
+              <input type="radio" id="male" name="gender" value="male" /> 남자
             </label>
             <label htmlFor="female">
-              <input type="checkbox" id="female" name="gender" value="female" /> 여자
+              <input type="radio" id="female" name="gender" value="female" /> 여자
             </label>
           </div>
         </div>
