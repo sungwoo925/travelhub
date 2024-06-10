@@ -23,5 +23,13 @@ public class Likes {
     @JoinColumn(name = "travel_id", nullable = false)
     private Travel travel_id;
 
+    public Likes() {
+    }
+
+    public Likes(User user_id, Travel travel_id) {
+        this.user_id = user_id;
+        this.travel_id = travel_id;
+    }
+
 }
 
