@@ -8,6 +8,7 @@ import Login from './pages/Login/Login';
 import Register from './pages/Register/Register';
 import Record from './pages/Record/Record';
 import Studio from './studio/Studio';
+import Mypage from './pages/Mypage/Mypage';
 import './App.css';
 import Background from './components/Background/Background';
 
@@ -46,6 +47,11 @@ function App() {
                                               <Background/>
                                           </div>} />
           <Route path="/studio" element={<Studio/>}/>
+          <Route path="/mypage" element={<div className="app">
+                                          <Header />
+                                          <Mypage />
+                                          <Footer />
+                                        </div>} />
         </Routes>
       </div>
     </Router>
@@ -53,3 +59,4 @@ function App() {
 }
 
 export default App;
+
