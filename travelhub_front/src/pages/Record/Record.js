@@ -2,14 +2,10 @@ import React, { useState } from 'react';
 import './Record.css';
 import Journal from '../../components/Journal/Journal';
 import Footer from '../../components/Footer/Footer';
-import axios from 'axios';
 
 function Record() {
   const [isChecked, setChecked] = useState(false);
   const [journals, setJournals] = useState([]);
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [images, setImages] = useState([]);
 
   const toggleSwitch = () => {
@@ -50,53 +46,89 @@ function Record() {
     setImages(newImages);
   };
 
+  const handleWeatherChange = (index, weather) => {
+    const newImages = [...images];
+    newImages[index].weather = weather;
+    setImages(newImages);
+  };
+
   return (
     <div className="split-screen">
       <div className="left-pane">
         <div className='empty'/>
-        <div className="text-input-box">
-          <input type="text" placeholder="여행에 알맞는 제목을 입력해주세요..." />
+        <div className="text-input-container">
+          <div className="text-input-box">
+            <input type="text" placeholder="여행에 알맞는 제목을 입력해주세요..." />
+          </div>
+          <label htmlFor="file-upload" className="custom-file-input">+</label>
+          <div className={`toggle-switch ${isChecked ? 'checked' : ''}`} onClick={toggleSwitch}>
+            <p className="share">공유</p>
+            <input type="checkbox" checked={isChecked} readOnly />
+            <span className="slider"></span>
+          </div>
         </div>
-        <div className={`toggle-switch ${isChecked ? 'checked' : ''}`} onClick={toggleSwitch}>
-          <p className="share">공유</p>
-          <input type="checkbox" checked={isChecked} readOnly />
-          <span className="slider"></span>
-        </div>
-        <input type="file" onChange={handleImageChange} className="file-input" multiple />
+        <input 
+          type="file" 
+          onChange={handleImageChange} 
+          className="file-input" 
+          multiple 
+          id="file-upload"
+        />        
         <div className="image-upload-section">
-          {images.map((image, index) => (
-            <div key={index} className="image-detail-box">
-              <img src={image.src} alt={`Uploaded ${index}`} />
-              <input 
-                type="text" 
-                value={image.place} 
-                onChange={(e) => handleDetailChange(index, 'place', e.target.value)} 
-                placeholder="Place"
-              />
-              <input 
-                type="text" 
-                value={image.date} 
-                onChange={(e) => handleDetailChange(index, 'date', e.target.value)} 
-                placeholder="Date"
-              />
-              <input 
-                type="text" 
-                value={image.weather} 
-                onChange={(e) => handleDetailChange(index, 'weather', e.target.value)} 
-                placeholder="Weather"
-              />
-              <textarea 
-                value={image.notes} 
-                onChange={(e) => handleDetailChange(index, 'notes', e.target.value)} 
-                placeholder="Notes"
-              />
+        {images.map((image, index) => (
+          <div key={index} className="image-detail-box">
+            <div className="image-number">{index + 1}</div> {/* 이미지 번호 추가 */}
+            <img src={image.src} alt={`Uploaded ${index}`} />
+            <div className="weather-selection">
+              <div 
+                className={`weather-box ${image.weather === '맑음' ? 'selected' : ''}`}
+                onClick={() => handleWeatherChange(index, '맑음')}
+              >
+                <img src="./images/sunny.png" alt="맑음" />
+              </div>
+              <div 
+                className={`weather-box ${image.weather === '흐림' ? 'selected' : ''}`}
+                onClick={() => handleWeatherChange(index, '흐림')}
+              >
+                <img src="./images/cloudy.png" alt="흐림" />
+              </div>
+              <div 
+                className={`weather-box ${image.weather === '비' ? 'selected' : ''}`}
+                onClick={() => handleWeatherChange(index, '비')}
+              >
+                <img src="./images/rainy.png" alt="비" />
+              </div>
+              <div 
+                className={`weather-box ${image.weather === '눈' ? 'selected' : ''}`}
+                onClick={() => handleWeatherChange(index, '눈')}
+              >
+                <img src="./images/snowy.png" alt="눈" />
+              </div>
             </div>
-          ))}
-        </div>
+            <input 
+              type="text" 
+              value={image.place} 
+              onChange={(e) => handleDetailChange(index, 'place', e.target.value)} 
+              placeholder="장소를 입력하세요!"
+            />
+            <input 
+              type="text" 
+              value={image.date} 
+              onChange={(e) => handleDetailChange(index, 'date', e.target.value)} 
+              placeholder="날짜를 입력하세요!"
+            />
+            <textarea 
+              value={image.notes} 
+              onChange={(e) => handleDetailChange(index, 'notes', e.target.value)} 
+              placeholder="메모"
+            />
+          </div>
+        ))}
+      </div>
         {journals.map((journal, index) => (
           <Journal key={index} />
         ))}
-        <button className="add-journal" onClick={addJournals}>+</button>
+        {/* <button className="add-journal" onClick={addJournals}>+</button> */}
         <Footer />
       </div>
       <div className="right-pane">
