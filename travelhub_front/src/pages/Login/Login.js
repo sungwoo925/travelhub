@@ -1,9 +1,15 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import './Login.css';
-import { Link } from 'react-router-dom';
-//cabed8da4b2445c6972f2872a1f7d3ea 카카오 js key
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { AuthContext } from '../../context/AuthContext';
 
 function Login() {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const { login } = useContext(AuthContext);
+  const navigate = useNavigate();
+
   useEffect(() => {
     const script = document.createElement('script');
     script.src = 'https://developers.kakao.com/sdk/js/kakao.js';
@@ -28,6 +34,8 @@ function Login() {
           success: function(response) {
             console.log(response);
             // 가져온 사용자 정보를 이용한 추가 작업 수행
+            login(); // 로그인 상태 업데이트  
+            navigate('/'); // 로그인 성공 시 home으로 이동
           },
           fail: function(error) {
             console.error(error);
@@ -40,18 +48,34 @@ function Login() {
     });
   };
 
+  const handleLogin = async () => {
+    try {
+      const response = await axios.post('http://localhost:9826/auth/login', {
+        userName: username,
+        user_password: password
+      });
+
+      console.log('Login successful:', response.data);
+      login(); // 로그인 상태 업데이트
+      navigate('/'); // 로그인 성공 시 home으로 이동
+
+    } catch (error) {
+      console.error('Login failed:', error.response.data);
+    }
+  };
+
   return (
     <div className="login-container">
       <h2>로그인</h2>
-      <form className="login-form">
+      <form className="login-form" onSubmit={(e) => { e.preventDefault(); handleLogin(); }}>
         <div className="form-group">
           <div className="input-box">
-            <input type="text" id="username" name="username" placeholder="ID" />
+            <input type="text" id="username" name="username" placeholder="ID" value={username} onChange={(e) => setUsername(e.target.value)} />
           </div>
         </div>
         <div className="form-group">
           <div className="input-box">
-            <input type="password" id="password" name="password" placeholder="password"/>
+            <input type="password" id="password" name="password" placeholder="password" value={password} onChange={(e) => setPassword(e.target.value)} />
           </div>
         </div>
         <div className="form-group">
@@ -65,7 +89,7 @@ function Login() {
             </div>
           </div>
         </div>
-        <button className="Login-btn">Login</button>
+        <button type="submit" className="Login-btn">Login</button>
       </form>
       <div className="login-options">
         <p>다른 계정으로 로그인 하시겠습니까?</p>

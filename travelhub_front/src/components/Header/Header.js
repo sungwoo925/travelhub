@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect, useContext } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { AuthContext } from '../../context/AuthContext';
 import './Header.css';
 
 const Header = () => {
@@ -8,6 +9,8 @@ const Header = () => {
   const [searchResults, setSearchResults] = useState([]);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const handleSearch = async () => {
     try {
@@ -29,6 +32,11 @@ const Header = () => {
     if (window.innerWidth > 680) {
       setSidebarOpen(false);
     }
+  };
+
+  const handleLogout = () => {
+    setIsAuthenticated(false);
+    navigate('/');
   };
 
   useEffect(() => {
@@ -56,8 +64,17 @@ const Header = () => {
               />
               <button onClick={handleSearch}>Search</button>
             </div>
-            <Link to="/login" className="login">로그인</Link>
-            <Link to="/register" className="register">회원가입</Link>
+            {isAuthenticated ? (
+              <>
+                <Link to="/mypage" className="mypage">마이페이지</Link>
+                <button onClick={handleLogout} className="logout">로그아웃</button>
+              </>
+            ) : (
+              <>
+                <Link to="/login" className="login">로그인</Link>
+                <Link to="/register" className="register">회원가입</Link>
+              </>
+            )}
           </>
         )}
       </div>
@@ -67,8 +84,17 @@ const Header = () => {
         <Link to="/" onClick={toggleSidebar}>이웃스토리</Link>
         <Link to="/about" onClick={toggleSidebar}>이용방법</Link>
         <Link to="/record" onClick={toggleSidebar}>기록하기</Link>
-        <Link to="/login" onClick={toggleSidebar}>로그인</Link>
-        <Link to="/register" onClick={toggleSidebar}>회원가입</Link>
+        {isAuthenticated ? (
+          <>
+            <Link to="/mypage" onClick={toggleSidebar}>마이페이지</Link>
+            <button onClick={handleLogout} className="logout">로그아웃</button>
+          </>
+        ) : (
+          <>
+            <Link to="/login" onClick={toggleSidebar}>로그인</Link>
+            <Link to="/register" onClick={toggleSidebar}>회원가입</Link>
+          </>
+        )}
       </div>
     </div>
   );
