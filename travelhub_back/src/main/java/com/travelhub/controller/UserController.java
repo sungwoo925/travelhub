@@ -17,9 +17,17 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @PostMapping
-    public ResponseEntity<User> createUser(@Validated @RequestBody User user) {
-        User savedUser = userService.saveUser(user);
-        return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
+    @GetMapping("/{userId}")
+    public ResponseEntity<User> getUser(@PathVariable Long userId) {
+        return userService.getUserById(userId)
+                .map(user -> new ResponseEntity<>(user, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @PutMapping("/{userId}")
+    public ResponseEntity<User> updateUser(@PathVariable Long userId, @RequestBody User userDetails) {
+        return userService.updateUser(userId, userDetails)
+                .map(user -> new ResponseEntity<>(user, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 }

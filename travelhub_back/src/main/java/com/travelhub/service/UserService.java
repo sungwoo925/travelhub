@@ -1,7 +1,6 @@
 package com.travelhub.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.List;
 import java.util.Optional;
 import com.travelhub.entity.User;
 import com.travelhub.repository.UserRepository;
@@ -12,20 +11,16 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public List<User> getAllUsers() {
-        return userRepository.findAll();    
+    public Optional<User> getUserById(Long userId) {
+        return userRepository.findById(userId);
     }
 
-    public User getUserById(Long id) {
-        Optional<User> optionalUser = userRepository.findById(id);
-        return optionalUser.orElse(null);
-    }
-
-    public User saveUser(User user) {
-        return userRepository.save(user);
-    }
-
-    public void deleteUser(Long id) {
-        userRepository.deleteById(id);
+    public Optional<User> updateUser(Long userId, User userDetails) {
+        return userRepository.findById(userId).map(user -> {
+            user.setUsername(userDetails.getUserName());
+            user.setPassword(userDetails.getPassword()); // 비밀번호는 암호화 필요
+            return userRepository.save(user);
+        });
     }
 }
+

@@ -8,7 +8,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import java.time.LocalDate;
 
-
 @Entity
 public class Travel {
 
@@ -73,4 +72,116 @@ public class Travel {
         this.summary = summary;
     }
 
+    // Getters and Setters
+    public int getTravelId() {
+        return travel_id;
+    }
+
+    public void setTravelId(int travel_id) {
+        this.travel_id = travel_id;
+    }
+
+    public User getUserId() {
+        return user_id;
+    }
+
+    public void setUserId(User user_id) {
+        this.user_id = user_id;
+    }
+
+    public String getTraveltitle() {
+        return traveltitle;
+    }
+
+    public void setTraveltitle(String traveltitle) {
+        this.traveltitle = traveltitle;
+    }
+
+    public String getHashtag() {
+        return hashtag;
+    }
+
+    public void setHashtag(String hashtag) {
+        this.hashtag = hashtag;
+    }
+
+    public LocalDate getTravelStartDate() {
+        return travel_startdate;
+    }
+
+    public void setTravelStartDate(LocalDate travel_startdate) {
+        this.travel_startdate = travel_startdate;
+    }
+
+    public LocalDate getTravelEndDate() {
+        return travel_enddate;
+    }
+
+    public void setTravelEndDate(LocalDate travel_enddate) {
+        this.travel_enddate = travel_enddate;
+    }
+
+    public boolean getTravelShareOption() {
+        return travel_shareoption;
+    }
+
+    public void setTravelShareOption(boolean travel_shareoption) {
+        this.travel_shareoption = travel_shareoption;
+    }
+
+    public String getTravelLocationName() {
+        return travel_location_name;
+    }
+
+    public void setTravelLocationName(String travel_location_name) {
+        this.travel_location_name = travel_location_name;
+    }
+
+    public Double getTravelLocationLatitude() {
+        return travel_location_latitude;
+    }
+
+    public void setTravelLocationLatitude(Double travel_location_latitude) {
+        this.travel_location_latitude = travel_location_latitude;
+    }
+
+    public Double getTravelLocationLongitude() {
+        return travel_location_longitude;
+    }
+
+    public void setTravelLocationLongitude(Double travel_location_longitude) {
+        this.travel_location_longitude = travel_location_longitude;
+    }
+
+    public String getTravelText() {
+        return travel_text;
+    }
+
+    public void setTravelText(String travel_text) {
+        this.travel_text = travel_text;
+    }
+
+    public int getLikeCount() {
+        return like_count;
+    }
+
+    public void setLikeCount(int like_count) {
+        this.like_count = like_count;
+    }
+
+    public int getViewCount() {
+        return view_count;
+    }
+
+    public void setViewCount(int view_count) {
+        this.view_count = view_count;
+    }
+
+    public String getSummary() {
+        return summary;
+    }
+
+    public void setSummary(String summary) {
+        this.summary = summary;
+    }
 }
