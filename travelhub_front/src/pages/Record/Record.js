@@ -58,12 +58,11 @@ function Record() {
         <div className='empty'/>
         <div className="text-input-container">
           <div className="text-input-box">
-            <input type="text" placeholder="여행에 알맞는 제목을 입력해주세요..." />
+            <input type="text" placeholder="여행에 알맞는 제목을 입력해주세요!" />
           </div>
           <label htmlFor="file-upload" className="custom-file-input">+</label>
           <div className={`toggle-switch ${isChecked ? 'checked' : ''}`} onClick={toggleSwitch}>
             <p className="share">공유</p>
-            <input type="checkbox" checked={isChecked} readOnly />
             <span className="slider"></span>
           </div>
         </div>
