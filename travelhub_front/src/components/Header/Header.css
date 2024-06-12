@@ -7,7 +7,7 @@
     background-color: #333;
     color: white;
     position: static;
-    z-index: 1001;
+    z-index: 2000   ;
   }
   @media (max-width: 680px) {
     .navbar{
