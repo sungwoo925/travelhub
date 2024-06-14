@@ -18,7 +18,7 @@ public class SecurityConfig {
             // "/auth/**" 경로는 인증 없이 접근 허용
             .requestMatchers("/auth/**").permitAll()
             // "/auth/**"를 제외한 모든 경로는 인증된 사용자만 접근 허용
-            .anyRequest().authenticated()
+            .anyRequest().permitAll()//.authenticated()
             .and()
             .oauth2ResourceServer()
             .jwt();

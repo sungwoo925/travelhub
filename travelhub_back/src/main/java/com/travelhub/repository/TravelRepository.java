@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface TravelRepository extends JpaRepository<Travel, Long> {
     List<Travel> findByHashtagContaining(String hashtag);
-    List<Travel> findByTraveltitleContaining(String traveltitle);
+    List<Travel> findByTravelTitleContaining(String travelTitle);
 }

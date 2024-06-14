@@ -23,7 +23,7 @@ public class TravelService {
     }
 
     public List<Travel> searchByTitle(String title) {
-        return travelRepository.findByTraveltitleContaining(title);
+        return travelRepository.findByTravelTitleContaining(title);
     }
 
     public Optional<Travel> getTravel(Long travelId) {
@@ -36,7 +36,7 @@ public class TravelService {
 
     public Optional<Travel> updateTravel(Long travelId, Travel travelDetails) {
         return travelRepository.findById(travelId).map(travel -> {
-            travel.setTraveltitle(travelDetails.getTraveltitle());
+            travel.setTravelTitle(travelDetails.getTravelTitle());
             travel.setHashtag(travelDetails.getHashtag());
             travel.setTravelStartDate(travelDetails.getTravelStartDate());
             travel.setTravelEndDate(travelDetails.getTravelEndDate());
