@@ -26,8 +26,8 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody User user) {
-        System.out.println(user.getPassword());
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        System.out.println(user.getUserPassword());
+        user.setUserPassword(passwordEncoder.encode(user.getUserPassword()));
         userRepository.save(user);
         return ResponseEntity.ok("User registered successfully");
     }
@@ -35,7 +35,7 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
         Optional<User> optionalUser = userRepository.findByUserName(loginRequest.getUserName());
-        if (optionalUser.isPresent() && passwordEncoder.matches(loginRequest.getUser_password(), optionalUser.get().getPassword())) {
+        if (optionalUser.isPresent() && passwordEncoder.matches(loginRequest.getUserPassword(), optionalUser.get().getUserPassword())) {
             String token = jwtUtil.generateToken(loginRequest.getUserName());
             return ResponseEntity.ok(token);
         } else {

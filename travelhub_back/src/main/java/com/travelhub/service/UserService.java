@@ -17,8 +17,8 @@ public class UserService {
 
     public Optional<User> updateUser(Long userId, User userDetails) {
         return userRepository.findById(userId).map(user -> {
-            user.setUsername(userDetails.getUserName());
-            user.setPassword(userDetails.getPassword()); // 비밀번호는 암호화 필요
+            user.setUserName(userDetails.getUserName());
+            user.setUserPassword(userDetails.getUserPassword()); // 비밀번호는 암호화 필요
             return userRepository.save(user);
         });
     }

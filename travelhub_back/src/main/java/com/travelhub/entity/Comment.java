@@ -8,8 +8,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.TemporalType;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 public class Comment {
@@ -17,19 +18,76 @@ public class Comment {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int comment_id;
+    private int commentId;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private User user_id;
+    private User userId;
 
     @Column(nullable = false)
-    private int travel_id;
+    private int travelId;
 
     @Column(nullable = false, length = 150)
-    private String comment_text;
+    private String commentText;
 
    
     @Column(nullable = false)
-    private LocalDate comment_date;
+    private LocalDateTime commentDate;
+
+    // 기본 생성자
+    public Comment() {
+    }
+
+    // 요청 데이터를 바로 설정하는 생성자
+    @JsonCreator
+    public Comment(
+        @JsonProperty("user_id") User userId,
+        @JsonProperty("travel_id") int travelId,
+        @JsonProperty("comment_text") String commentText,
+        @JsonProperty("comment_date") LocalDateTime commentDate) {
+        this.userId = userId;
+        this.travelId = travelId;
+        this.commentText = commentText;
+        this.commentDate = commentDate;
+    }
+
+    public int getCommentId() {
+        return commentId;
+    }
+
+    public void setCommentId(int commentId) {
+        this.commentId = commentId;
+    }
+
+    public User getUserId() {
+        return userId;
+    }
+
+    public void setUserId(User userId) {
+        this.userId = userId;
+    }
+
+    public int getTravelId() {
+        return travelId;
+    }
+
+    public void setTravelId(int travelId) {
+        this.travelId = travelId;
+    }
+
+    public String getCommentText() {
+        return commentText;
+    }
+
+    public void setCommentText(String commentText) {
+        this.commentText = commentText;
+    }
+
+    public LocalDateTime getCommentDate() {
+        return commentDate;
+    }
+
+    public void setCommentDate(LocalDateTime commentDate) {
+        this.commentDate = commentDate;
+    }
 }
