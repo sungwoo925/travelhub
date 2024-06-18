@@ -81,3 +81,17 @@
     color: blue;
   }
   
+  .input-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .input-box input {
+    flex-grow: 1;
+    margin-right: 10px; /* 버튼과의 간격 */
+  }
+
+  .input-box button {
+    white-space: nowrap; /* 버튼 텍스트가 줄바꿈 되지 않도록 */
+  }
