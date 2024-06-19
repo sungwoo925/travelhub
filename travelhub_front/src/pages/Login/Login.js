@@ -3,9 +3,10 @@ import './Login.css';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { AuthContext } from '../../context/AuthContext';
+import Cookies from 'js-cookie';
 
 function Login() {
-  const [username, setUsername] = useState('');
+  const [useremail, setUseremail] = useState('');
   const [password, setPassword] = useState('');
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -47,15 +48,17 @@ function Login() {
       },
     });
   };
-
+  
   const handleLogin = async () => {
     try {
       const response = await axios.post('http://localhost:9826/auth/login', {
-        user_name: username,
+        user_email: useremail,
         user_password: password
       });
 
       console.log('Login successful:', response.data);
+      const jwtToken = response.data;
+      Cookies.set('jwtToken', jwtToken, { expires: 7 });
       login(); // 로그인 상태 업데이트
       navigate('/'); // 로그인 성공 시 home으로 이동
 
@@ -70,7 +73,7 @@ function Login() {
       <form className="login-form" onSubmit={(e) => { e.preventDefault(); handleLogin(); }}>
         <div className="form-group">
           <div className="input-box">
-            <input type="text" id="username" name="username" placeholder="ID" value={username} onChange={(e) => setUsername(e.target.value)} />
+            <input type="text" id="useremail" name="useremail" placeholder="ID" value={useremail} onChange={(e) => setUseremail(e.target.value)} />
           </div>
         </div>
         <div className="form-group">

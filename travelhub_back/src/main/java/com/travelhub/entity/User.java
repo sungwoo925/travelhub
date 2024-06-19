@@ -17,6 +17,9 @@ public class User {
     private int userId;
 
     @Column(length = 50, nullable = false)
+    private String userEmail;
+
+    @Column(length = 50, nullable = false)
     private String userName;
 
     @Column(length = 255, nullable = false)
@@ -41,11 +44,13 @@ public class User {
     // 요청 데이터를 바로 설정하는 생성자
     @JsonCreator
     public User(
+        @JsonProperty("user_email") String userEmail,
         @JsonProperty("user_name") String userName,
         @JsonProperty("user_password") String userPassword,
         @JsonProperty("user_phone_num") String userPhoneNum,
         @JsonProperty("birthday") LocalDate birthday,
         @JsonProperty("sex") String sex) {
+        this.userEmail = userEmail;
         this.userName = userName;
         this.userPassword = userPassword;
         this.userPhoneNum = userPhoneNum;
@@ -55,12 +60,21 @@ public class User {
     }
 
     // 사용자 정보 업데이트를 위한 메소드
-    public void updateUserDetails(String userName, String userPassword, String userPhoneNum, LocalDate birthday, String sex) {
+    public void updateUserDetails(String userEmail, String userName, String userPassword, String userPhoneNum, LocalDate birthday, String sex) {
+        this.userEmail = userEmail;
         this.userName = userName;
         this.userPassword = userPassword;
         this.userPhoneNum = userPhoneNum;
         this.birthday = birthday;
         this.sex = sex;
+    }
+
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
     }
 
     // 사용자 이름을 반환하는 메소드
