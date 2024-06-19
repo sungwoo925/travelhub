@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class LoginRequest {
-    private String userName;
+    private String userEmail;
     private String userPassword;
 
     // 기본 생성자
@@ -14,20 +14,19 @@ public class LoginRequest {
     // 매개변수가 있는 생성자
     @JsonCreator    
     public LoginRequest(
-        @JsonProperty("user_name") String userName,
+        @JsonProperty("user_email") String userEmail,
         @JsonProperty("user_password") String userPassword){
-
-        this.userName = userName;
+        this.userEmail = userEmail;
         this.userPassword = userPassword;
     }
 
     // getter와 setter 메서드
-    public String getUserName() {
-        return userName;
+    public String getUserEmail() {
+        return userEmail;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
     }
 
     public String getUserPassword() {

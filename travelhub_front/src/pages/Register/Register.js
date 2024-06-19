@@ -7,11 +7,11 @@ function Register() {
   const navigate = useNavigate();
 
   const [userData, setUserData] = useState({
-    user_name: '',
+    user_email: '',
     user_password: '',
     confirmPassword: '',
     user_phone_num: '',
-    name: '',
+    user_name: '',
     birthday: '',
     sex: ''
   });
@@ -88,7 +88,7 @@ function Register() {
       <form className="register-form" onSubmit={handleSubmit}>
         <div className="form-group">
           <div className="input-box">
-            <input type="text" id="user_name" name="user_name" placeholder="아이디" value={userData.user_name} onChange={handleChange} />
+            <input type="text" id="user_email" name="user_email" placeholder="메일" value={userData.user_email} onChange={handleChange} />
             <button type="button" onClick={handleUsernameCheck}>중복 확인</button>
           </div>
         </div>
@@ -109,7 +109,7 @@ function Register() {
         </div>
         <div className="form-group">
           <div className="input-box">
-            <input type="text" id="name" name="name" placeholder="이름" value={userData.name} onChange={handleChange} />
+            <input type="text" id="user_name" name="user_name" placeholder="이름" value={userData.user_name} onChange={handleChange} />
           </div>
         </div>
         <div className="form-group">

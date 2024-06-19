@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { AuthContext } from '../../context/AuthContext';
 import './Header.css';
+import Cookies from 'js-cookie';
 
 const Header = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -35,6 +36,8 @@ const Header = () => {
   };
 
   const handleLogout = () => {
+    Cookies.remove('jwtToken', { path: '/' });
+    console.log("Logout button clicked");
     setIsAuthenticated(false);
     navigate('/');
   };

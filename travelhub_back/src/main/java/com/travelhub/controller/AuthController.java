@@ -27,6 +27,11 @@ public class AuthController {
 
     private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
+    @PostMapping("/checkToken")
+    public ResponseEntity<String> checkToken(@RequestBody String token) {
+        return ResponseEntity.ok(token);
+    }
+
     @PostMapping("/checkUsername/{username}")
     public ResponseEntity<String> checkUsername(@PathVariable String username) {
         boolean isAvailable = !userRepository.findByUserName(username).isPresent();
@@ -44,9 +49,9 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
-        Optional<User> optionalUser = userRepository.findByUserName(loginRequest.getUserName());
+        Optional<User> optionalUser = userRepository.findByUserName(loginRequest.getUserEmail());
         if (optionalUser.isPresent() && passwordEncoder.matches(loginRequest.getUserPassword(), optionalUser.get().getUserPassword())) {
-            String token = jwtUtil.generateToken(loginRequest.getUserName());
+            String token = jwtUtil.generateToken(loginRequest.getUserEmail());
             return ResponseEntity.ok(token);
         } else {
             return ResponseEntity.status(401).body("Invalid credentials");
