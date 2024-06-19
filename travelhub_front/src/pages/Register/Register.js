@@ -1,17 +1,19 @@
 import React, { useState } from 'react';
 import './Register.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios'; // axios를 사용하여 서버와 통신
 
 function Register() {
+  const navigate = useNavigate();
+
   const [userData, setUserData] = useState({
-    username: '',
-    password: '',
+    user_name: '',
+    user_password: '',
     confirmPassword: '',
-    phone: '',
+    user_phone_num: '',
     name: '',
-    birthdate: '',
-    gender: ''
+    birthday: '',
+    sex: ''
   });
   const [message, setMessage] = useState('');
   const [usernameValid, setUsernameValid] = useState(false);
@@ -26,7 +28,8 @@ function Register() {
 
   const handleUsernameCheck = async () => {
     try {
-      const response = await axios.get(`http://your-api-url.com/checkUsername/${userData.username}`);
+      const response = await axios.post(`http://localhost:9826/auth/checkUsername/${userData.username}`);
+      console.log(response);
       if (response.data.isAvailable) {
         setMessage('사용 가능한 아이디입니다.');
         setUsernameValid(true);
@@ -34,6 +37,7 @@ function Register() {
         setMessage('이미 사용 중인 아이디입니다.');
         setUsernameValid(false);
       }
+      console.log(usernameValid);
     } catch (error) {
       setMessage('아이디 확인 중 오류가 발생했습니다.');
     }
@@ -45,18 +49,20 @@ function Register() {
       setMessage('아이디 중복 확인이 필요합니다.');
       return;
     }
-    if (userData.password !== userData.confirmPassword) {
+    if (userData.user_password !== userData.confirmPassword) {
       setMessage('비밀번호가 일치하지 않습니다.');
       return;
     }
-    if (userData.password.length < 8 || userData.password.length > 20) {
+    if (userData.user_password.length < 8 || userData.user_password.length > 20) {
       setMessage('비밀번호는 8자리 이상 20자리 이하로 설정해주세요.');
       return;
     }
     try {
-      const response = await axios.post('http://your-api-url.com/register', userData);
+      const response = await axios.post('http://localhost:9826/auth/register', userData);
       if (response.status === 200) {
         setMessage('회원가입이 완료되었습니다.');
+        alert("회원가입이 완료되었습니다.");
+        navigate('/login');
       } else {
         setMessage('회원가입에 실패하였습니다.');
       }
@@ -82,13 +88,13 @@ function Register() {
       <form className="register-form" onSubmit={handleSubmit}>
         <div className="form-group">
           <div className="input-box">
-            <input type="text" id="username" name="username" placeholder="아이디" value={userData.username} onChange={handleChange} />
+            <input type="text" id="user_name" name="user_name" placeholder="아이디" value={userData.user_name} onChange={handleChange} />
             <button type="button" onClick={handleUsernameCheck}>중복 확인</button>
           </div>
         </div>
         <div className="form-group">
           <div className="input-box">
-            <input type="password" id="password" name="password" placeholder="비밀번호" value={userData.password} onChange={handleChange} />
+            <input type="password" id="user_password" name="user_password" placeholder="비밀번호" value={userData.user_password} onChange={handleChange} />
           </div>
         </div>
         <div className="form-group">
@@ -98,7 +104,7 @@ function Register() {
         </div>
         <div className="form-group">
           <div className="input-box">
-            <input type="tel" id="phone" name="phone" placeholder="휴대폰 번호" value={userData.phone} onChange={handleChange} />
+            <input type="tel" id="user_phone_num" name="user_phone_num" placeholder="휴대폰 번호" value={userData.user_phone_num} onChange={handleChange} />
           </div>
         </div>
         <div className="form-group">
@@ -108,16 +114,16 @@ function Register() {
         </div>
         <div className="form-group">
           <div className="input-box">
-            <input type="date" id="birthdate" name="birthdate" placeholder="생년월일" value={userData.birthdate} onChange={handleChange} />
+            <input type="date" id="birthday" name="birthday" value={userData.birthday} onChange={handleChange} />
           </div>
         </div>
         <div className="form-group">
           <div className="gender-options">
             <label htmlFor="male">
-              <input type="radio" id="male" name="gender" value="male" checked={userData.gender === 'male'} onChange={handleChange} /> 남자
+              <input type="radio" id="male" name="sex" value="M" checked={userData.sex === 'M'} onChange={handleChange} /> 남자
             </label>
             <label htmlFor="female">
-              <input type="radio" id="female" name="gender" value="female" checked={userData.gender === 'female'} onChange={handleChange} /> 여자
+              <input type="radio" id="female" name="sex" value="F" checked={userData.sex === 'F'} onChange={handleChange} /> 여자
             </label>
           </div>
         </div>
@@ -143,3 +149,4 @@ function Register() {
 }
 
 export default Register;
+

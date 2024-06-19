@@ -1,5 +1,4 @@
 package com.travelhub.entity;
-import java.util.Date;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -7,7 +6,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.TemporalType;
 import java.time.LocalDateTime;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -15,7 +13,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Entity
 public class Comment {
 
-    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int commentId;
@@ -30,7 +27,6 @@ public class Comment {
     @Column(nullable = false, length = 150)
     private String commentText;
 
-   
     @Column(nullable = false)
     private LocalDateTime commentDate;
 
