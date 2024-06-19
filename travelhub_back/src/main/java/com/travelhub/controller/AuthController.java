@@ -4,12 +4,15 @@ import com.travelhub.dto.LoginRequest;
 import com.travelhub.entity.User;
 import com.travelhub.repository.UserRepository;
 import com.travelhub.util.JwtUtil;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -23,6 +26,13 @@ public class AuthController {
     private JwtUtil jwtUtil;
 
     private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+    @PostMapping("/checkUsername/{username}")
+    public ResponseEntity<String> checkUsername(@PathVariable String username) {
+        boolean isAvailable = !userRepository.findByUserName(username).isPresent();
+        String response = "{\"isAvailable\": " + isAvailable + "}";
+        return ResponseEntity.ok(response);
+    }
 
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody User user) {
