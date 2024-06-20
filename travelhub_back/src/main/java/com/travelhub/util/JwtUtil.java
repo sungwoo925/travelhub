@@ -11,7 +11,7 @@ import java.util.Map;
 @Component
 public class JwtUtil {
 
-    private String SECRET_KEY = "secret";
+    private String SECRET_KEY = "OIJWFN3FIOEA45NCAdsfj7nsiof";
 
     public String generateToken(String username) {
         Map<String, Object> claims = new HashMap<>();
