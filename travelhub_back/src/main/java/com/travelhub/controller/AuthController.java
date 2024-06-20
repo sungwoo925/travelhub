@@ -49,7 +49,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
-        Optional<User> optionalUser = userRepository.findByUserName(loginRequest.getUserEmail());
+        Optional<User> optionalUser = userRepository.findByUserEmail(loginRequest.getUserEmail());
         if (optionalUser.isPresent() && passwordEncoder.matches(loginRequest.getUserPassword(), optionalUser.get().getUserPassword())) {
             String token = jwtUtil.generateToken(loginRequest.getUserEmail());
             return ResponseEntity.ok(token);
