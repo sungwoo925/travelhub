@@ -3,6 +3,7 @@ package com.travelhub.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -46,6 +47,17 @@ public class JournalController {
             return new ResponseEntity<>(journal, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @DeleteMapping("/{journalId}")
+    public ResponseEntity<Void> deleteJournal(@PathVariable Long journalId) {
+        boolean deleted = journalService.deleteJournal(journalId);
+        
+        if (deleted) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT); // 삭제 성공
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND); // 삭제할 여정이 없는 경우
         }
     }
 

@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import com.travelhub.entity.Journal;
 import com.travelhub.repository.JournalRepository;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class JournalService {
 
@@ -42,6 +44,16 @@ public class JournalService {
     public Journal findJournalById(Long journalId) {
         return journalRepository.findById(journalId)
                 .orElse(null); // 없으면 null 반환
+    }
+    @Transactional
+    public boolean deleteJournal(Long journalId) {
+        // 여정 ID로 데이터베이스에서 여정을 찾아 삭제
+        if (journalRepository.existsById(journalId)) {
+            journalRepository.deleteById(journalId);
+            return true; // 삭제 성공
+        } else {
+            return false; // 삭제할 여정이 없음
+        }
     }
 
 }
