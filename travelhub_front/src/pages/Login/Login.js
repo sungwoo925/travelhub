@@ -51,6 +51,8 @@ function Login() {
   
   const handleLogin = async () => {
     try {
+      console.log(useremail);
+      console.log(password); 
       const response = await axios.post('http://localhost:9826/auth/login', {
         user_email: useremail,
         user_password: password
@@ -73,7 +75,7 @@ function Login() {
       <form className="login-form" onSubmit={(e) => { e.preventDefault(); handleLogin(); }}>
         <div className="form-group">
           <div className="input-box">
-            <input type="text" id="useremail" name="useremail" placeholder="ID" value={useremail} onChange={(e) => setUseremail(e.target.value)} />
+            <input type="text" id="useremail" name="useremail" placeholder="Email" value={useremail} onChange={(e) => setUseremail(e.target.value)} />
           </div>
         </div>
         <div className="form-group">

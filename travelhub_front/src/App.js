@@ -21,7 +21,6 @@ function App() {
   useEffect(() => {
   const jwtToken = Cookies.get('jwtToken');
     if (jwtToken) {
-      console.log(1);
       axios.post('http://localhost:9826/auth/checkToken', {
         headers: {
           Authorization: `Bearer ${jwtToken}`
