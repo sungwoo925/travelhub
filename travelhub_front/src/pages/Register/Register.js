@@ -28,8 +28,7 @@ function Register() {
 
   const handleUsernameCheck = async () => {
     try {
-      const response = await axios.post(`http://localhost:9826/auth/checkUsername/${userData.username}`);
-      console.log(response);
+      const response = await axios.post(`http://localhost:9826/auth/checkUsername/${userData.user_email}`);
       if (response.data.isAvailable) {
         setMessage('사용 가능한 아이디입니다.');
         setUsernameValid(true);
@@ -37,7 +36,6 @@ function Register() {
         setMessage('이미 사용 중인 아이디입니다.');
         setUsernameValid(false);
       }
-      console.log(usernameValid);
     } catch (error) {
       setMessage('아이디 확인 중 오류가 발생했습니다.');
     }
