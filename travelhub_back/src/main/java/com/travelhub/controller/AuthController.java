@@ -32,9 +32,9 @@ public class AuthController {
         return ResponseEntity.ok(token);
     }
 
-    @PostMapping("/checkUsername/{username}")
-    public ResponseEntity<String> checkUsername(@PathVariable String username) {
-        boolean isAvailable = !userRepository.findByUserName(username).isPresent();
+    @PostMapping("/checkUsername/{useremail}")
+    public ResponseEntity<String> checkUsername(@PathVariable String useremail) {
+        boolean isAvailable = userRepository.findByUserEmail(useremail).isEmpty();        
         String response = "{\"isAvailable\": " + isAvailable + "}";
         return ResponseEntity.ok(response);
     }
