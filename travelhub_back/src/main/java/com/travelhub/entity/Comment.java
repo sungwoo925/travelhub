@@ -1,4 +1,5 @@
 package com.travelhub.entity;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -30,6 +31,11 @@ public class Comment {
     @Column(nullable = false)
     private LocalDateTime commentDate;
 
+    @Column(nullable = false)
+    private LocalDateTime updatedAt;
+
+    // @Column(nullable = false)
+    // private LocalDateTime createdAt;
     // 기본 생성자
     public Comment() {
     }
@@ -45,6 +51,7 @@ public class Comment {
         this.travelId = travelId;
         this.commentText = commentText;
         this.commentDate = commentDate;
+        this.updatedAt = commentDate; // 생성 시 updatedAt 초기화
     }
 
     public int getCommentId() {
@@ -82,8 +89,19 @@ public class Comment {
     public LocalDateTime getCommentDate() {
         return commentDate;
     }
+    // public LocalDateTime getCreatedAt() {
+    //     return createdAt;
+    // }
 
     public void setCommentDate(LocalDateTime commentDate) {
         this.commentDate = commentDate;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }
