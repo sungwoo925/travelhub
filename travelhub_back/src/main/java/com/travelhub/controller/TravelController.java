@@ -15,7 +15,7 @@ import java.util.Optional;
 @RequestMapping("/travels")
 public class TravelController {
 
-    @Autowired
+    @Autowired // 자동으로 연결해준다는 의미 안해주면 데이터 동기화가 안됨
     private TravelService travelService;
 
     // 여행 검색 - 해시태그로 검색
