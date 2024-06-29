@@ -39,6 +39,9 @@ public class Journal {
     @Column(length = 40)
     private String photoLink;
 
+    @Column(length = 40)
+    private String Weather;
+
     @Column
     private short sequenceInfo;
 
@@ -56,6 +59,7 @@ public class Journal {
         @JsonProperty("journal_location_latitude") String journalLocationLatitude,
         @JsonProperty("journal_location_longitude") String journalLocationLongitude,
         @JsonProperty("photo_link") String photoLink,
+        @JsonProperty("weather") String Weather,
         @JsonProperty("sequence_info") short sequenceInfo) {
         this.travelId = travelId;
         this.journalText = journalText;
@@ -68,6 +72,13 @@ public class Journal {
     }
 
     // Getter와 Setter 메소드들
+    public String getweather() {
+        return Weather;
+    }
+
+    public void setWeather(String Weather) {
+        this.Weather = Weather;
+    }
     public int getJournalId() {
         return journalId;
     }
