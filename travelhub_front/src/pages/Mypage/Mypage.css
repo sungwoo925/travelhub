@@ -1,0 +1,35 @@
+.mypage-container {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f0f0f0;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.mypage-title {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.mypage-description {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.mypage-info-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.mypage-info-item {
+    font-size: 16px;
+    color: #444;
+    margin-bottom: 10px;
+}
+
+.mypage-info-item:first-child {
+    font-weight: bold;
+}
