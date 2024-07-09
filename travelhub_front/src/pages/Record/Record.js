@@ -19,6 +19,11 @@ function Record() {
   const [hashtags, setHashtags] = useState(['#해시태그1', '#해시태그2', '#해시태그3']);
   const [newHashtag, setNewHashtag] = useState('');
   const [showInput, setShowInput] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const token = Cookies.get('jwtToken');
@@ -28,6 +33,35 @@ function Record() {
       window.location.href = '/login';
     }
   }, []);
+
+  const setSelected = ( locationInfo ) => {
+    setRecordData({ ...recordData, location: locationInfo });
+    setShowModal(false);
+  }
+
+  const openModal = () => {
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+  };
+
+  const handleSearch = async () => {
+    // Handle search functionality here
+    console.log('Searching for:', searchQuery);
+    try {
+      const response = await axios.get('http://localhost:9826/maps/' + searchQuery);
+      console.log(response.data);
+      setData(response.data);
+    } catch (error) {
+      setError(error);
+      console.log(error);
+    } finally {
+      setLoading(false);
+      console.log(data);
+    }
+  };
 
   const addHashtag = () => {
       if (newHashtag.trim() !== '') {
@@ -160,6 +194,31 @@ function Record() {
             {!showInput && (
                 <span className="record-add-hashtag-button" onClick={() => setShowInput(true)}>+</span>
             )}
+        </div>
+        <div className='record-inputs'>
+          <div className="record-text-input-box">
+            <input 
+              type="text" 
+              placeholder="내용을 입력해주세요!" 
+              value={recordData.text}
+              onChange={(e) => setRecordData({ ...recordData, text: e.target.value })}
+            />
+          </div>
+          <button onClick={openModal}>{recordData.location === '' ? "장소 찾기" : recordData.location.split(' latitude')[0] }</button>
+          {showModal && (
+              <div className="modal">
+                  <div className="modal-content">
+                      <input type="text" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="modal-input" placeholder="장소를 검색하세요" />
+                      <button onClick={handleSearch} className="modal-button">검색</button>
+                      <button onClick={closeModal} className="modal-button">닫기</button>
+                  </div>
+                  {data && data.map((data, index) => (
+                <div key={data.name} className="record-locations" onClick={() => setSelected(data.name + " latitude:" + data.latitude + " longitude:" +  data.longitude)}>
+                    {data.name}
+                </div>
+            ))}
+              </div>
+          )}
         </div>
         <div className="image-upload-section">
         {images.map((image, index) => (
