@@ -22,8 +22,9 @@ public class Comment {
     @JoinColumn(name = "user_id", nullable = false)
     private User userId;
 
-    @Column(nullable = false)
-    private int travelId;
+    @ManyToOne
+    @JoinColumn(name = "travel_id", nullable = false)
+    private Travel travelId;
 
     @Column(nullable = false, length = 150)
     private String commentText;
@@ -44,14 +45,13 @@ public class Comment {
     @JsonCreator
     public Comment(
         @JsonProperty("user_id") User userId,
-        @JsonProperty("travel_id") int travelId,
-        @JsonProperty("comment_text") String commentText,
-        @JsonProperty("comment_date") LocalDateTime commentDate) {
+        @JsonProperty("travel_id") Travel travelId,
+        @JsonProperty("comment_text") String commentText) {
         this.userId = userId;
         this.travelId = travelId;
         this.commentText = commentText;
-        this.commentDate = commentDate;
-        this.updatedAt = commentDate; // 생성 시 updatedAt 초기화
+        this.commentDate = LocalDateTime.now(); // 생성 시 updatedAt 초기화
+        this.updatedAt = LocalDateTime.now();
     }
 
     public int getCommentId() {
@@ -70,11 +70,11 @@ public class Comment {
         this.userId = userId;
     }
 
-    public int getTravelId() {
+    public Travel getTravelId() {
         return travelId;
     }
 
-    public void setTravelId(int travelId) {
+    public void setTravelId(Travel travelId) {
         this.travelId = travelId;
     }
 

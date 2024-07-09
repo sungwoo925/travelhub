@@ -25,16 +25,6 @@
     font-weight: bold;
   }
   
-  input[type="text"],
-  input[type="password"],
-  input[type="date"],
-  input[type="tel"] {
-    width: calc(100% - 24px); /* 입력 필드 너비를 조정하여 박스 안에 꽉 차도록 합니다. */
-    padding: 8px;
-    margin-top: 4px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
   
   .Register-btn {
     background-color: #ff2e2e;
