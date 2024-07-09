@@ -14,9 +14,9 @@ const Footer = () => {
   
   return (
     <footer className={className}>
+      <p>dnrals7929@naver.com</p>
       <p>qkrtjddn5807@gmail.com</p>
-      <p>cks71714@naver.com </p>
-
+      <p>cks71714@naver.com</p>
     </footer>
   );
 };
