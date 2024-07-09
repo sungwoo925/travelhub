@@ -24,7 +24,7 @@
 .text-input-container {
     display: flex; /* 가로로 */
     align-items: center;
-    width:70%;
+    width:90%;
     padding: 10px 0; /* 패딩 추가 */
 }
 
@@ -37,7 +37,7 @@
     margin-right: 4%;
     border: 2px solid #d1d1d1; /* 테두리 색상 변경 */
     border-radius: 8px; /* 둥근 모서리 변경 */
-    width: 40%; 
+    width: 100%; 
     box-shadow: 0px 2px 4px rgba(0,0,0,0.1); /* 그림자 추가 */
 }
 
@@ -47,6 +47,52 @@
     border: none;
     outline: none;
     font-size: 14px; /* 폰트 크기 변경 */
+}
+
+.record-hashtag-container {
+    display: flex;
+    overflow-x: auto;
+    white-space: nowrap;
+    padding: 10px;
+    background-color: #ffffff;
+}
+
+.record-hashtag {
+    display: inline-block;
+    padding: 5px 10px;
+    margin: 0 5px;
+    background-color: #007bff;
+    color: white;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.record-hashtag-input {
+    width: 150px;
+    display: inline-block; /* 입력 칸 보이기 */
+}
+
+.record-add-hashtag-button {
+    padding: 5px 10px;
+    margin: 0 5px;
+    background-color: #007bff;
+    color: white;
+    width: 10px;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.record-hashtag-container::-webkit-scrollbar {
+    width: 10px;
+}
+
+.record-hashtag-container::-webkit-scrollbar-track {
+    background: #f2f2f2;
+}
+
+.record-hashtag-container::-webkit-scrollbar-thumb {
+    background: #007bff;
+    border-radius: 10px;
 }
 
 .share {
