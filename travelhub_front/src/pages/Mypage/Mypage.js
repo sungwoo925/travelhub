@@ -16,7 +16,7 @@ const Mypage = () => {
                 return response.json();
             })
             .then(data => {
-                setUserData(data);
+                setUserData(data);  
                 setLoading(false);
             })
             .catch(error => {
