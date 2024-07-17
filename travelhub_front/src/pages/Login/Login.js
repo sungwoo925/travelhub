@@ -58,7 +58,7 @@ function Login() {
         user_password: password
       });
 
-      console.log('Login successful:', response.data);
+      console.log('Login successful:', response.data);//이부분 삭제예정
       const jwtToken = response.data;
       Cookies.set('jwtToken', jwtToken, { expires: 7 });
       login(); // 로그인 상태 업데이트
