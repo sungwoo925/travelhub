@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import './Mypage.css';
 
 const Mypage = () => {
@@ -8,15 +9,9 @@ const Mypage = () => {
 
     useEffect(() => {
         const userId = 13; // 실제 사용자 ID
-        fetch(`localhost:9826/api/users/${userId}`)
+        axios.get(`http://localhost:9826/api/users/${userId}`)
             .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                setUserData(data);
+                setUserData(response.data);
                 setLoading(false);
             })
             .catch(error => {
