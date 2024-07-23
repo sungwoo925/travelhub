@@ -61,6 +61,6 @@ public class JournalController {
         }
     }
 
-
+    
 
 }

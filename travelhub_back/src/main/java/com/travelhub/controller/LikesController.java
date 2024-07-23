@@ -42,4 +42,5 @@ public class LikesController {
         List<Integer> travelIds = likesService.getLikesByUser(user);
         return ResponseEntity.ok(travelIds);
     }
+
 }
