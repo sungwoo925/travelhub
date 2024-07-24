@@ -43,4 +43,6 @@ public class LikesService {
                               .map(like -> like.getTravelId().getTravelId())
                               .collect(Collectors.toList());
     }
+
+    
 }
