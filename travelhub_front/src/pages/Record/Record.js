@@ -279,12 +279,20 @@ function Record() {
         <Footer />
       </div>
       <div className="right-pane">
-        <div className="empty"/>
-        <p>1</p>
-        <p>2</p>
-        <p>3</p>
-        <p>4</p>
-        <p>5</p>
+        <div className="grid-container">
+          <div className="grid-item">1</div>
+          <div className="grid-item">2</div>
+          <div className="grid-item">3</div>
+          <div className="grid-item">4</div>
+          <div className="grid-item">5</div>
+          <div className="grid-item">6</div>
+          <div className="grid-item">7</div>
+          <div className="grid-item">8</div>
+          <div className="grid-item">9</div>
+          <div className="grid-item">10,11</div>
+          <div className="grid-item">12</div>
+          <div className="grid-item">13,14</div>
+        </div>
         <button className="save" onClick={savetravel}>저장하기</button>
       </div>
     </div>
