@@ -29,10 +29,7 @@ function Register() {
   const handleUsernameCheck = async () => {
     try {
       const response = await axios.post(`http://localhost:9826/auth/checkUsername/${userData.user_email}`);
-<<<<<<< HEAD
       console.log(response);
-=======
->>>>>>> 852a49f81abf261cae548579ccff4b7260c79c45
       if (response.data.isAvailable) {
         setMessage('사용 가능한 아이디입니다.');
         setUsernameValid(true);
