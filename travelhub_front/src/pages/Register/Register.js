@@ -29,6 +29,7 @@ function Register() {
   const handleUsernameCheck = async () => {
     try {
       const response = await axios.post(`http://localhost:9826/auth/checkUsername/${userData.user_email}`);
+      console.log(response);
       if (response.data.isAvailable) {
         setMessage('사용 가능한 아이디입니다.');
         setUsernameValid(true);
@@ -43,6 +44,7 @@ function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
     if (!usernameValid) {
       setMessage('아이디 중복 확인이 필요합니다.');
       return;

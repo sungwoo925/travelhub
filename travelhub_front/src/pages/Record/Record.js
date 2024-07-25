@@ -16,7 +16,7 @@ function Record() {
     weather: '',
     text: ''
   });
-  const [hashtags, setHashtags] = useState(['한민욱', '#해시태그2', '#해시태그3']);
+  const [hashtags, setHashtags] = useState(['#한민욱', '#해시태그2', '#해시태그3']);
   const [newHashtag, setNewHashtag] = useState('');
   const [showInput, setShowInput] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -64,11 +64,11 @@ function Record() {
   };
 
   const addHashtag = () => {
-      if (newHashtag.trim() !== '') {
-          setHashtags([...hashtags, newHashtag]);
-          setNewHashtag('');
-          setShowInput(false); // 해시태그 추가 후 입력 칸 숨김
-      }
+    if (newHashtag.trim() !== '' && !hashtags.includes(`#${newHashtag}`)) { // 중복 체크 추가
+        setHashtags([...hashtags, `#${newHashtag}`]); // 해시태그 앞에 # 추가
+        setNewHashtag('');
+        setShowInput(false); // 해시태그 추가 후 입력 칸 숨김
+    }
   };
 
   const removeHashtag = (index) => {
@@ -192,7 +192,7 @@ function Record() {
                 </>
             )}
             {!showInput && (
-                <span className="record-add-hashtag-button" onClick={() => setShowInput(true)}>+</span>
+                <span className="record-add-hashtag-button" onClick={() => setShowInput(true)}>#해시태그 추가</span>
             )}
         </div>
         <div className='record-inputs'>
@@ -207,18 +207,18 @@ function Record() {
           </div>
           <button onClick={openModal}>{recordData.location === '' ? "장소 찾기" : recordData.location.split(' latitude')[0] }</button>
           {showModal && (
-              <div className="modal">
                   <div className="modal-content">
                       <input type="text" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="modal-input" placeholder="장소를 검색하세요" />
                       <button onClick={handleSearch} className="modal-button">검색</button>
                       <button onClick={closeModal} className="modal-button">닫기</button>
+                      <div className="record-locations-container">
+                          {data && data.slice(0, 10).map((data, index) => (
+                              <div key={data.name} className="record-locations" onClick={() => setSelected(data.name + " latitude:" + data.latitude + " longitude:" +  data.longitude)}>
+                                  {data.name}
+                              </div>
+                          ))}
+                      </div>
                   </div>
-                  {data && data.map((data, index) => (
-                <div key={data.name} className="record-locations" onClick={() => setSelected(data.name + " latitude:" + data.latitude + " longitude:" +  data.longitude)}>
-                    {data.name}
-                </div>
-            ))}
-              </div>
           )}
         </div>
         <div className="image-upload-section">
