@@ -12,6 +12,13 @@ const Mypage = () => {
         axios.get(`http://localhost:9826/api/users/${userId}`)
             .then(response => {
                 setUserData(response.data);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                setUserData(data);  
                 setLoading(false);
             })
             .catch(error => {

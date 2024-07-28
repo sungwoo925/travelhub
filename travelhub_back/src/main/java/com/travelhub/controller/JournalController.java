@@ -1,5 +1,9 @@
 package com.travelhub.controller;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.File;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,7 +14,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.travelhub.dto.SequenceInfoRequest;
 import com.travelhub.entity.Journal;
@@ -23,6 +29,19 @@ public class JournalController {
     @Autowired
     private JournalService journalService;
 
+    @PostMapping("/uploadImage")
+    public String uploadImage(@RequestParam("file") MultipartFile file) {
+        try {
+            File localFile = new File("./image.jpg"); // 로컬에 저장할 파일 경로 및 이름 설정
+            FileOutputStream fileOutputStream = new FileOutputStream(localFile);
+            fileOutputStream.write(file.getBytes());
+            fileOutputStream.close();
+            return "이미지가 성공적으로 업로드되었습니다.";
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "이미지 업로드에 실패했습니다.";
+        }
+    }
     @PostMapping
     public ResponseEntity<Journal> createJournal(@RequestBody Journal journal) {
         Journal savedJournal = journalService.createJournal(journal);
