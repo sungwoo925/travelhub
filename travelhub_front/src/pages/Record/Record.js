@@ -86,39 +86,40 @@ function Record() {
   };
 
   const savetravel = () => {
-    const payload = {
-      images: images.map(image => ({
-        src: image.src,
-        journal_location_name: image.journal_location_name,
-        journal_date: image.journal_date,
-        weather: image.weather,
-        journal_text: image.journal_text
-      })),
-      journals: journals.map(journal => ({
-        title: journal.title,
-        content: journal.content,
-        date: journal.date
-      }))
-    };
+    
+    // const payload = {
+    //   images: images.map(image => ({
+    //     src: image.src,
+    //     journal_location_name: image.journal_location_name,
+    //     journal_date: image.journal_date,
+    //     weather: image.weather,
+    //     journal_text: image.journal_text
+    //   })),
+    //   journals: journals.map(journal => ({
+    //     title: journal.title,
+    //     content: journal.content,
+    //     date: journal.date
+    //   }))
+    // };
 
-    console.log("Images:", JSON.stringify(payload.images, null, 2)); // 이미지 데이터 확인
-    // console.log("Journals:", JSON.stringify(payload.journals, null, 2)); // 일지 데이터 확인
+    // console.log("Images:", JSON.stringify(payload.images, null, 2)); // 이미지 데이터 확인
+    // // console.log("Journals:", JSON.stringify(payload.journals, null, 2)); // 일지 데이터 확인
 
-    console.log(payload);
-    axios.post(`http://localhost:9826/travels`, payload, {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-    .then(response => { 
-      console.log('저장 성공:', response.data);
-    })  
-    .catch(error => {
-      console.error('저장 실패:', error);
-      if (error.response) {
-        console.error('에러 응답 데이터:', error.response.data); // 에러 응답 데이터 확인
-      }
-    });
+    // console.log(payload);
+    // axios.post(`http://localhost:9826/travels`, payload, {
+    //   headers: {
+    //     'Content-Type': 'application/json'
+    //   }
+    // })
+    // .then(response => { 
+    //   console.log('저장 성공:', response.data);
+    // })  
+    // .catch(error => {
+    //   console.error('저장 실패:', error);
+    //   if (error.response) {
+    //     console.error('에러 응답 데이터:', error.response.data); // 에러 응답 데이터 확인
+    //   }
+    // });
   };
 
   const handleImageChange = (e) => {
@@ -128,15 +129,35 @@ function Record() {
     files.forEach(file => {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImages(oldImages => [...oldImages, {
+        const imageData = {
           src: reader.result,
           journal_location_name: '',
           journal_date: '',
           weather: '',
           journal_text: ''
-        }]);
+        };
+        setImages(oldImages => [...oldImages, imageData]);//앞으로 땡겨옴
+        // FormData 객체 생성
+        const formData = new FormData();
+        formData.append('file', file);  // file 필드에 파일 추가
+        formData.append('data', JSON.stringify(imageData));  // 추가 데이터를 JSON 문자열로 변환하여 추가
+    
+        // 백엔드로 파일 전송
+        axios.post('http://localhost:9826/journals/uploadImage', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        })
+        .then(response => {
+          console.log('Server response:', response.data.split(" "));
+          setHashtags((prevHashtags) => [...prevHashtags, ...response.data.split(" ").slice(1)]);
+          // 이미지를 상태에 추가 (성공 시)
+          
+        })
+        .catch(error => {
+          console.error('Error uploading file:', error);
+        });
       };
-      readers.push(reader);
       reader.readAsDataURL(file);
     });
   };
