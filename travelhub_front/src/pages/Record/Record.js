@@ -16,7 +16,7 @@ function Record() {
     weather: '',
     text: ''
   });
-  const [hashtags, setHashtags] = useState(['#한민욱', '#해시태그2', '#해시태그3']);
+  const [hashtags, setHashtags] = useState(['#해시태그1', '#해시태그2', '#해시태그3']);
   const [newHashtag, setNewHashtag] = useState('');
   const [showInput, setShowInput] = useState(false);
   const [showModal, setShowModal] = useState(false);
