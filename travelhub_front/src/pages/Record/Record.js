@@ -1,4 +1,4 @@
-import React, { useEffect,useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import './Record.css';
 import Journal from '../../components/Journal/Journal';
 import Footer from '../../components/Footer/Footer';
@@ -16,7 +16,7 @@ function Record() {
     weather: '',
     text: ''
   });
-  const [hashtags, setHashtags] = useState(['#한민욱', '#해시태그2', '#해시태그3']);
+  const [hashtags, setHashtags] = useState(['#해시태그1', '#해시태그2', '#해시태그3']);
   const [newHashtag, setNewHashtag] = useState('');
   const [showInput, setShowInput] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -24,6 +24,10 @@ function Record() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const dragItem = useRef(); // 드래그할 아이템의 인덱스
+  const dragOverItem = useRef(); // 드랍할 위치의 아이템의 인덱스
+  const [draggingIndex, setDraggingIndex] = useState(null); // 드래그 중인 아이템의 인덱스
+
 
   useEffect(() => {
     const token = Cookies.get('jwtToken');
@@ -174,6 +178,26 @@ function Record() {
     setImages(newImages);
   };
 
+  const dragStart = (e, position) => {
+    dragItem.current = position;
+    setDraggingIndex(position); // 드래그 중인 아이템의 인덱스 설정
+  };
+
+  const dragEnter = (e, position) => {
+    dragOverItem.current = position;
+  };
+
+  const drop = (e) => {
+    const newImages = [...images];
+    const dragItemValue = newImages[dragItem.current];
+    newImages.splice(dragItem.current, 1);
+    newImages.splice(dragOverItem.current, 0, dragItemValue);
+    dragItem.current = null;
+    dragOverItem.current = null;
+    setImages(newImages);
+    setDraggingIndex(null); // 드래그 종료 시 인덱스 초기화
+  };
+
   return (
     <div className="split-screen">
       <div className="left-pane">
@@ -244,7 +268,15 @@ function Record() {
         </div>
         <div className="image-upload-section">
         {images.map((image, index) => (
-          <div key={index} className="image-detail-box">
+          <div 
+            key={index} 
+            className={`image-detail-box ${draggingIndex === index ? 'faded' : ''}`} // 드래그 중인 아이템만 희미해지도록 설정
+            draggable 
+            onDragStart={(e) => dragStart(e, index)} 
+            onDragEnter={(e) => dragEnter(e, index)} 
+            onDragEnd={drop} 
+            onDrop={drop}
+          >
             <div className="image-number">{index + 1}</div> {/* 이미지 번호 추가 */}
             <img src={image.src} alt={`Uploaded ${index}`} />
             <div className="weather-selection">
@@ -321,4 +353,3 @@ function Record() {
 }
 
 export default Record;
-

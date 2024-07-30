@@ -471,6 +471,10 @@
     cursor: grabbing; /* 드래그 중 커서 변경 */
 }
 
+.image-detail-box.faded {
+    opacity: 0.5; /* 흐릿해지는 효과 */
+}
+
 .image-upload-section {
     min-height: 100px; /* 최소 높이 설정 */
     padding: 10px; /* 패딩 추가 */
