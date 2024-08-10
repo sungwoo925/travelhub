@@ -147,7 +147,7 @@ function Record() {
         formData.append('data', JSON.stringify(imageData));  // 추가 데이터를 JSON 문자열로 변환하여 추가
     
         // 백엔드로 파일 전송
-        axios.post('http://localhost:9826/journals/uploadImage', formData, {
+        axios.post('http://localhost:9826/journals/uploadImage/3/10', formData, {
           headers: {
             'Content-Type': 'multipart/form-data'
           }

@@ -2,6 +2,7 @@ package com.travelhub.controller;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -28,7 +29,11 @@ import com.google.cloud.vertexai.generativeai.PartMaker;
 import com.google.cloud.vertexai.generativeai.ResponseHandler;
 import com.travelhub.dto.SequenceInfoRequest;
 import com.travelhub.entity.Journal;
+import com.travelhub.entity.Travel;
 import com.travelhub.service.JournalService;
+import com.travelhub.service.TravelService;
+
+import jakarta.persistence.EntityNotFoundException;
 
 @RestController
 @RequestMapping("/journals")
@@ -37,32 +42,68 @@ public class JournalController {
     @Autowired
     private JournalService journalService;
 
-    @PostMapping("/uploadImage")
-    public String uploadImage(@RequestParam("file") MultipartFile file) {
-        String path = "./image.jpg";
+    @Autowired
+    private TravelService travelService;
 
-        try {
-            File localFile = new File(path); // 로컬에 저장할 파일 경로 및 이름 설정
-            FileOutputStream fileOutputStream = new FileOutputStream(localFile);
+    @PostMapping("/uploadImage/{travelId}/{userId}")
+    public ResponseEntity<String> uploadImage(@PathVariable Long travelId, @PathVariable Long userId, @RequestParam("file") MultipartFile file) {
+        String directoryPath = String.format("./images/%d/%d", travelId, userId);
+        File directory = new File(directoryPath);
+        Journal savedJournal ;
+
+        // 디렉토리 생성
+        if (!directory.exists()) {
+            directory.mkdirs();
+        }
+
+        // 이미지 파일 이름 생성
+        String fileName = String.format("image%d.jpg", directory.listFiles() == null ? 1 : directory.listFiles().length + 1);
+        File localFile = new File(directory, fileName);
+
+        try (FileOutputStream fileOutputStream = new FileOutputStream(localFile)) {
             fileOutputStream.write(file.getBytes());
-            fileOutputStream.close();
         } catch (IOException e) {
             e.printStackTrace();
-            return "이미지 업로드에 실패했습니다.";
+            return new ResponseEntity<>("이미지 업로드에 실패했습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
+        //수정중
+       try {
+        // Travel 객체를 ID로 조회
+        Travel travel = travelService.findById(travelId); // travelService를 통해 Travel 객체 조회
+
+            // 이미지 파일을 저장한 후 저널 생성
+            Journal journal = new Journal(
+                travel, // Travel 객체
+                "저널 텍스트 예시", // journalText
+                LocalDate.now(), // journalDate
+                "위치 이름 예시", // journalLocationName
+                "위도 예시", // journalLocationLatitude
+                "경도 예시", // journalLocationLongitude
+                localFile.getPath(), // photoLink
+                "날씨 예시", // Weather
+                (short) 0 // sequenceInfo
+            );
+
+            savedJournal = journalService.createJournal(journal); // 저널 저장
+        } catch (EntityNotFoundException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>("여행을 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
+        }
+
         try {
             String projectId = "gen-lang-client-0924727192";
             String location = "us-central1";
             String modelName = "gemini-1.0-pro-vision";
 
-            String output = quickstart(projectId, location, modelName, path);
-            return output;
+            String output =  " t e s  t"; //quickstart(projectId, location, modelName, directoryPath);
+            return new ResponseEntity<>(savedJournal.getJournalId() + output, HttpStatus.OK);            
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-            return "error";
+            return new ResponseEntity<>("hashtag error", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
     @PostMapping
     public ResponseEntity<Journal> createJournal(@RequestBody Journal journal) {
         Journal savedJournal = journalService.createJournal(journal);

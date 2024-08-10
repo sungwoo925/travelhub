@@ -65,4 +65,9 @@ public class TravelService {
             return true;
         }).orElse(false);
     }
+
+    public Travel findById(Long travelId) {
+        return travelRepository.findById(travelId)
+                .orElse(new Travel()); 
+    }
 }
