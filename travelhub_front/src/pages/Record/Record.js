@@ -27,7 +27,9 @@ function Record() {
   const dragItem = useRef(); // 드래그할 아이템의 인덱스
   const dragOverItem = useRef(); // 드랍할 위치의 아이템의 인덱스
   const [draggingIndex, setDraggingIndex] = useState(null); // 드래그 중인 아이템의 인덱스
+  const [gridItems, setGridItems] = useState([]); // 그리드 아이템 상태 추가
 
+  let scrollInterval = null; // 스크롤 인터벌 변수 추가
 
   useEffect(() => {
     const token = Cookies.get('jwtToken');
@@ -128,7 +130,13 @@ function Record() {
 
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
-    const readers = [];
+    if (images.length + files.length > 14) { // 최대 14개 체크
+        const confirmAddMore = window.confirm('최대 14개의 이미지만 추가할 수 있습니다. 추가하시겠습니까?'); // 확인 대화상자 추가
+        if (!confirmAddMore) {
+            return; // 추가하지 않으면 종료
+        }
+    }
+    const newImages = []; // 새로운 이미지 배열 초기화
 
     files.forEach(file => {
       const reader = new FileReader();
@@ -140,6 +148,22 @@ function Record() {
           weather: '',
           journal_text: ''
         };
+        newImages.push(imageData); // 새로운 이미지 배열에 추가
+
+        // 모든 파일이 로드된 후 상태 업데이트
+        if (newImages.length === files.length) {
+          setImages(oldImages => {
+            const updatedImages = [...oldImages, ...newImages]; // 기존 이미지와 새 이미지를 합침
+            const updatedGridItems = Array.from({ length: updatedImages.length }, (_, index) => (
+              <div key={index} className={`grid-item ${index < updatedImages.length ? 'yellow' : ''}`}>
+                {index + 1} {/* 번호 매기기 */}
+              </div>
+            ));
+            setGridItems(updatedGridItems); // gridItems 상태 업데이트
+            return updatedImages; // 상태 업데이트
+          });
+        }
+=======
         setImages(oldImages => [...oldImages, imageData]);//앞으로 땡겨옴
         // FormData 객체 생성
         const formData = new FormData();
@@ -156,7 +180,7 @@ function Record() {
           console.log('Server response:', response.data.split(" "));
           setHashtags((prevHashtags) => [...prevHashtags, ...response.data.split(" ").slice(1)]);
           // 이미지를 상태에 추가 (성공 시)
-          
+         
         })
         .catch(error => {
           console.error('Error uploading file:', error);
@@ -185,6 +209,30 @@ function Record() {
 
   const dragEnter = (e, position) => {
     dragOverItem.current = position;
+
+    // 스크롤 기능 추가
+    const scrollContainer = document.querySelector('.right-pane'); // 스크롤할 컨테이너 선택
+    const scrollSpeed = 10; // 스크롤 속도
+    const scrollThreshold = 50; // 스크롤 시작 임계값
+
+    if (e.clientY > scrollContainer.getBoundingClientRect().bottom - scrollThreshold) {
+        if (!scrollInterval) {
+            scrollInterval = setInterval(() => {
+                scrollContainer.scrollBy(0, scrollSpeed); // 아래로 스크롤
+            }, 100); // 100ms마다 스크롤
+        }
+    } else if (e.clientY < scrollContainer.getBoundingClientRect().top + scrollThreshold) {
+        if (!scrollInterval) {
+            scrollInterval = setInterval(() => {
+                scrollContainer.scrollBy(0, -scrollSpeed); // 위로 스크롤
+            }, 100); // 100ms마다 스크롤
+        }
+    }
+  };
+
+  const dragLeave = () => {
+    clearInterval(scrollInterval); // 스크롤 멈춤
+    scrollInterval = null; // 인터벌 초기화
   };
 
   const drop = (e) => {
@@ -195,6 +243,11 @@ function Record() {
     dragItem.current = null;
     dragOverItem.current = null;
     setImages(newImages);
+    setGridItems(newImages.map((_, index) => ( // 그리드 아이템 업데이트
+      <div key={index} className={`grid-item ${index < newImages.length ? 'yellow' : ''}`}>
+        {index + 1} {/* 번호 매기기 */}
+      </div>
+    ))); // 그리드 아이템 업데이트
     setDraggingIndex(null); // 드래그 종료 시 인덱스 초기화
   };
 
@@ -273,10 +326,25 @@ function Record() {
             className={`image-detail-box ${draggingIndex === index ? 'faded' : ''}`} // 드래그 중인 아이템만 희미해지도록 설정
             draggable 
             onDragStart={(e) => dragStart(e, index)} 
-            onDragEnter={(e) => dragEnter(e, index)} 
+            onDragEnter={(e) => dragEnter(e, index)} // 여기에 dragEnter 추가
+            onDragLeave={dragLeave} // dragLeave 추가
             onDragEnd={drop} 
             onDrop={drop}
           >
+            <button 
+              className="remove-image-button" 
+              onClick={() => {
+                const updatedImages = images.filter((_, i) => i !== index); // 이미지 삭제
+                setImages(updatedImages);
+                setGridItems(updatedImages.map((_, idx) => ( // 그리드 아이템 업데이트
+                  <div key={idx} className={`grid-item ${idx < updatedImages.length ? 'yellow' : ''}`}>
+                    {idx + 1} {/* 번호 매기기 */}
+                  </div>
+                )));
+              }}
+            >
+              &times; {/* 삭제 아이콘 */}
+            </button>
             <div className="image-number">{index + 1}</div> {/* 이미지 번호 추가 */}
             <img src={image.src} alt={`Uploaded ${index}`} />
             <div className="weather-selection">
@@ -333,18 +401,7 @@ function Record() {
       </div>
       <div className="right-pane">
         <div className="grid-container">
-          <div className="grid-item">1</div>
-          <div className="grid-item">2</div>
-          <div className="grid-item">3</div>
-          <div className="grid-item">4</div>
-          <div className="grid-item">5</div>
-          <div className="grid-item">6</div>
-          <div className="grid-item">7</div>
-          <div className="grid-item">8</div>
-          <div className="grid-item">9</div>
-          <div className="grid-item">10,11</div>
-          <div className="grid-item">12</div>
-          <div className="grid-item">13,14</div>
+          {gridItems} {/* gridItems를 렌더링 */}
         </div>
         <button className="save" onClick={savetravel}>저장하기</button>
       </div>
