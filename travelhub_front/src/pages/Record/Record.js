@@ -163,6 +163,28 @@ function Record() {
             return updatedImages; // 상태 업데이트
           });
         }
+=======
+        setImages(oldImages => [...oldImages, imageData]);//앞으로 땡겨옴
+        // FormData 객체 생성
+        const formData = new FormData();
+        formData.append('file', file);  // file 필드에 파일 추가
+        formData.append('data', JSON.stringify(imageData));  // 추가 데이터를 JSON 문자열로 변환하여 추가
+    
+        // 백엔드로 파일 전송
+        axios.post('http://localhost:9826/journals/uploadImage/3/10', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        })
+        .then(response => {
+          console.log('Server response:', response.data.split(" "));
+          setHashtags((prevHashtags) => [...prevHashtags, ...response.data.split(" ").slice(1)]);
+          // 이미지를 상태에 추가 (성공 시)
+         
+        })
+        .catch(error => {
+          console.error('Error uploading file:', error);
+        });
       };
       reader.readAsDataURL(file);
     });
