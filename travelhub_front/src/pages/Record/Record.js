@@ -163,7 +163,7 @@ function Record() {
             return updatedImages; // 상태 업데이트
           });
         }
-=======
+        
         setImages(oldImages => [...oldImages, imageData]);//앞으로 땡겨옴
         // FormData 객체 생성
         const formData = new FormData();

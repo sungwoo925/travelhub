@@ -1,30 +1,39 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import './Studio.css';
+import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader'; // OBJLoader 추가
+import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader'; // MTLLoader 추가
+
 
 function addImagePlane(scene, imagePath, position, width, objectName, rotation) {
   const textureLoader = new THREE.TextureLoader();
   textureLoader.load(imagePath, function(texture) {
-      const aspectRatio = texture.image.width / texture.image.height;
-      const planeWidth = width || 5; // 이미지의 너비를 설정합니다. 기본값은 5입니다.
-      const planeHeight = planeWidth / aspectRatio;
+    const aspectRatio = texture.image.width / texture.image.height;
+    const planeWidth = width || 5; // 이미지의 너비를 설정합니다. 기본값은 5입니다.
+    const planeHeight = planeWidth / aspectRatio;
 
-      const geometry = new THREE.PlaneGeometry(planeWidth, planeHeight); // 이미지의 크기를 설정합니다.
-      const material = new THREE.MeshBasicMaterial({ map: texture }); // 이미지 텍스처를 재질로 사용합니다.
-      const imagePlane = new THREE.Mesh(geometry, material);
-      imagePlane.position.copy(position); // 전달된 위치로 이미지를 이동시킵니다.
-      
-      if (objectName) {
-        imagePlane.name = objectName; // 개체의 이름을 설정합니다.
-      }
+    const geometry = new THREE.PlaneGeometry(planeWidth, planeHeight); // 이미지의 크기를 설정합니다.
+    const material = new THREE.MeshBasicMaterial({ map: texture }); // 이미지 텍스처를 재질로 사용합니다.
+    const imagePlane = new THREE.Mesh(geometry, material);
+    imagePlane.position.copy(position); // 전달된 위치로 이미지를 이동시킵니다.
 
-      if (rotation) {
-        imagePlane.rotation.set(rotation.x, rotation.y, rotation.z); // 전달된 각도로 이미지를 회전시킵니다.
-      }
-      scene.add(imagePlane);
+    if (objectName) {
+      imagePlane.name = objectName; // 개체의 이름을 설정합니다.
+    }
 
-      // 프레임 추가
-      addFrame(scene, planeWidth, planeHeight, position, rotation);
+    if (rotation) {
+      imagePlane.rotation.set(rotation.x, rotation.y, rotation.z); // 전달된 각도로 이미지를 회전시킵니다.
+    }
+    scene.add(imagePlane);
+
+    // 각 이미지에 대한 조명 추가
+    const pointLight = new THREE.PointLight(0xffffff, 100, 5); // 빨간색 점광원 생성
+    pointLight.position.set(position.x, position.y + (planeHeight / 2), position.z); // 조명을 이미지 중앙 위로 설정
+    pointLight.castShadow = true; // 그림자 생성
+    scene.add(pointLight); // 조명을 scene에 추가
+
+    // 프레임 추가
+    addFrame(scene, planeWidth, planeHeight, position, rotation);
   });
 }
 
@@ -83,15 +92,53 @@ const Studio = () => {
       .then(mapJson => SetMapJson(mapJson))
       .catch(error => console.log('error'));
   }
+  const [isCameraMoved, setIsCameraMoved] = useState(false); // 카메라 이동 상태 관리
+
+  const handleCameraPositionToggle = () => {
+    setIsCameraMoved(prev => !prev); // 상태 토글
+  };
+
 
   useEffect(() => {
     // Scene
     const scene = new THREE.Scene();
 
+     // 조명 추가 시작
+     const directionalLight = new THREE.DirectionalLight(0x000000, 2); // 빨간색 방향성 조명 생성
+     directionalLight.position.set(0, 10, 10).normalize(); // 조명 위치 설정
+     directionalLight.castShadow = true; // 그림자 생성
+     scene.add(directionalLight); // 조명을 scene에 추가
+
+     const additionalDirectionalLight = new THREE.DirectionalLight(0xff0000, 1); // 빨간색 방향성 조명
+    additionalDirectionalLight.position.set(0, 0, -10).normalize(); // 조명 위치 설정
+    scene.add(additionalDirectionalLight); // 추가 조명을 scene에 추가
+    
+     const pointLight = new THREE.PointLight(0xff0000, 3, 100); // 초록색 점광원 생성
+     pointLight.position.set(0, 10, 0); // 점광원 위치 설정
+     pointLight.castShadow = true; // 그림자 생성
+     scene.add(pointLight); // 점광원을 scene에 추가
+
+     // 조명 효과를 위한 헬퍼 추가
+     const directionalLightHelper = new THREE.DirectionalLightHelper(directionalLight, 5);
+     scene.add(directionalLightHelper);
+
+     const pointLightHelper = new THREE.PointLightHelper(pointLight, 1);
+     scene.add(pointLightHelper);
+     // 조명 추가 끝
+    
+     addModel(scene, '/OBJ_file/Chair_and_Table.obj', '/OBJ_file/Chair_and_Table.mtl', new THREE.Vector3(0, 0, -10));
+
     // Camera
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     camera.position.y = 2;
     cameraRef.current = camera;
+    if (isCameraMoved) {
+      
+      camera.position.set(10, 5, 7); // 이동된 카메라 위치
+      camera.rotation.set(0, Math.PI / 3, 0); // 왼쪽으로 90도 회전
+    } else {
+
+    }
 
     // Renderer
     const renderer = new THREE.WebGLRenderer();
@@ -156,7 +203,7 @@ const Studio = () => {
     gridHelper.rotation.x = Math.PI / 2;
     scene.add(gridHelper);
 
-    const light = new THREE.PointLight(0xffffff, 1000, 100);
+    const light = new THREE.PointLight(0xffffff, 200, 100);
     light.position.set(0, 10, 0);
     light.castShadow = true;
     scene.add(light);
@@ -257,6 +304,26 @@ const Studio = () => {
       renderer.render(scene, camera);
     };
 
+    function addModel(scene, modelPath, mtlPath, position) {
+      const mtlLoader = new MTLLoader();
+      mtlLoader.load(mtlPath, (materials) => {
+        materials.preload(); // 재질 미리 로드
+        const objLoader = new OBJLoader();
+        objLoader.setMaterials(materials); // 재질 설정
+        objLoader.load(modelPath, (object) => {
+          object.position.copy(position); // 위치 설정
+          object.scale.set(50, 50, 50); // 모델 크기 조정
+          scene.add(object); // 장면에 추가
+          console.log('모델이 성공적으로 로드되었습니다:', object);
+        }, undefined, (error) => {
+          console.error('모델 로드 중 오류 발생:', error);
+        });
+      }, undefined, (error) => {
+        console.error('MTL 파일 로드 중 오류 발생:', error);
+      });
+    }
+
+    // addModel(scene, './OBJ_file/Chair_and_Table.obj', new THREE.Vector3(0, 0, 0)); // 모델 추가
     // Listen for wheel events for zooming
     containerRef.current.addEventListener('wheel', handleWheel);
 
@@ -286,10 +353,11 @@ const Studio = () => {
     };
 
     return () => cleanup();
-  }, [mapJson]);
+  }, [mapJson, isCameraMoved]); // isCameraMoved를 의존성 배열에 추가
 
   return (
     <div ref={containerRef} style={{ width: '100%', height: '100vh', overflow: 'hidden' }}>
+      <button onClick={handleCameraPositionToggle}>카메라 위치 토글</button> {/* 버튼 추가 */}
       <div className='sidebar-studio'></div>
     </div>
   );
