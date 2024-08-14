@@ -38,7 +38,11 @@
     box-shadow: 2px 0 5px rgba(0,0,0,0.1); /* 그림자 추가 */
   }
   
-  .right-pane {
+.right-pane {
+    position: flex; /* 절대 위치 설정 */
+    right: 0; /* 오른쪽에 붙이기 */
+    width: 20%; /* 너비 설정 (필요에 따라 조정) */
+    height: 100vh; /* 전체 높이 설정 */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -46,7 +50,7 @@
     background-color: #f0f8ff; /* 배경색 변경 */
     border-radius: 10px; /* 둥근 모서리 추가 */
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* 그림자 추가 */
-  }
+}
 
   .grid-container {
     display: grid;
@@ -155,7 +159,7 @@
     grid-column: 3 / 4;
     grid-row: 3 / 4;
     height: 30px; /* 세로 길이를 절반으로 설정 */
-
+    
   }
   
   .save {
@@ -769,4 +773,36 @@
 
 .place-search-button:active {
     transform: scale(0.95); /* 클릭 시 크기 감소 */
+}
+
+
+.swap-container {
+  display: flex;
+  align-items: center;
+  margin: 10px 0;
+}
+
+.swap-input {
+  width: 90px;
+  margin-right: 5px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.swap-input:focus {
+  border-color: #007bff;
+}
+
+.swap-container button {
+  padding: 5px 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.swap-container button:hover {
+  background-color: #0056b3;
 }
