@@ -28,8 +28,8 @@ function Record() {
   const dragOverItem = useRef(); // 드랍할 위치의 아이템의 인덱스
   const [draggingIndex, setDraggingIndex] = useState(null); // 드래그 중인 아이템의 인덱스
   const [gridItems, setGridItems] = useState([]); // 그리드 아이템 상태 추가
-
-  let scrollInterval = null; // 스크롤 인터벌 변수 추가
+  const [swapIndex1, setSwapIndex1] = useState(''); // 첫 번째 교환 인덱스 상태
+  const [swapIndex2, setSwapIndex2] = useState(''); // 두 번째 교환 인덱스 상태
 
   useEffect(() => {
     const token = Cookies.get('jwtToken');
@@ -163,28 +163,6 @@ function Record() {
             return updatedImages; // 상태 업데이트
           });
         }
-=======
-        setImages(oldImages => [...oldImages, imageData]);//앞으로 땡겨옴
-        // FormData 객체 생성
-        const formData = new FormData();
-        formData.append('file', file);  // file 필드에 파일 추가
-        formData.append('data', JSON.stringify(imageData));  // 추가 데이터를 JSON 문자열로 변환하여 추가
-    
-        // 백엔드로 파일 전송
-        axios.post('http://localhost:9826/journals/uploadImage/3/10', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        })
-        .then(response => {
-          console.log('Server response:', response.data.split(" "));
-          setHashtags((prevHashtags) => [...prevHashtags, ...response.data.split(" ").slice(1)]);
-          // 이미지를 상태에 추가 (성공 시)
-         
-        })
-        .catch(error => {
-          console.error('Error uploading file:', error);
-        });
       };
       reader.readAsDataURL(file);
     });
@@ -209,30 +187,6 @@ function Record() {
 
   const dragEnter = (e, position) => {
     dragOverItem.current = position;
-
-    // 스크롤 기능 추가
-    const scrollContainer = document.querySelector('.right-pane'); // 스크롤할 컨테이너 선택
-    const scrollSpeed = 10; // 스크롤 속도
-    const scrollThreshold = 50; // 스크롤 시작 임계값
-
-    if (e.clientY > scrollContainer.getBoundingClientRect().bottom - scrollThreshold) {
-        if (!scrollInterval) {
-            scrollInterval = setInterval(() => {
-                scrollContainer.scrollBy(0, scrollSpeed); // 아래로 스크롤
-            }, 100); // 100ms마다 스크롤
-        }
-    } else if (e.clientY < scrollContainer.getBoundingClientRect().top + scrollThreshold) {
-        if (!scrollInterval) {
-            scrollInterval = setInterval(() => {
-                scrollContainer.scrollBy(0, -scrollSpeed); // 위로 스크롤
-            }, 100); // 100ms마다 스크롤
-        }
-    }
-  };
-
-  const dragLeave = () => {
-    clearInterval(scrollInterval); // 스크롤 멈춤
-    scrollInterval = null; // 인터벌 초기화
   };
 
   const drop = (e) => {
@@ -251,8 +205,27 @@ function Record() {
     setDraggingIndex(null); // 드래그 종료 시 인덱스 초기화
   };
 
+  const swapImages = () => {
+    const index1 = parseInt(swapIndex1) - 1;
+    const index2 = parseInt(swapIndex2) - 1; 
+    if (index1 >= 0 && index2 >= 0 && index1 < images.length && index2 < images.length) {
+      const newImages = [...images];
+      [newImages[index1], newImages[index2]] = [newImages[index2], newImages[index1]]; // 이미지 교환
+      setImages(newImages);
+      setGridItems(newImages.map((_, index) => ( 
+        <div key={index} className={`grid-item ${index < newImages.length ? 'yellow' : ''}`}>
+          {index + 1} {/* 번호 매기기 */}
+        </div>
+      )));
+      setSwapIndex1(''); // 입력 필드 초기화
+      setSwapIndex2(''); // 입력 필드 초기화
+    } else {
+      alert('번호에 해당하는 사진이 없습니다!'); // 유효성 검사
+    }
+  };
+
   return (
-    <div className="split-screen">
+    <div style={{ display: 'flex', height: '100vh', overflow: 'hidden', backgroundColor: '#f4f4f8' }}>
       <div className="left-pane">
         <div className='empty'/>
         <div className="text-input-container">
@@ -326,8 +299,7 @@ function Record() {
             className={`image-detail-box ${draggingIndex === index ? 'faded' : ''}`} // 드래그 중인 아이템만 희미해지도록 설정
             draggable 
             onDragStart={(e) => dragStart(e, index)} 
-            onDragEnter={(e) => dragEnter(e, index)} // 여기에 dragEnter 추가
-            onDragLeave={dragLeave} // dragLeave 추가
+            onDragEnter={(e) => dragEnter(e, index)} 
             onDragEnd={drop} 
             onDrop={drop}
           >
@@ -402,6 +374,29 @@ function Record() {
       <div className="right-pane">
         <div className="grid-container">
           {gridItems} {/* gridItems를 렌더링 */}
+        </div>
+        <div className="swap-container">
+          <input 
+            type="number" 
+            value={swapIndex1} 
+            onChange={(e) => {
+              const value = Math.max(1, Math.min(14, e.target.value)); // 1~14 범위로 제한
+              setSwapIndex1(value);
+            }} 
+            placeholder="ex) 5" 
+            className="swap-input"
+          />
+          <input 
+            type="number" 
+            value={swapIndex2} 
+            onChange={(e) => {
+              const value = Math.max(1, Math.min(14, e.target.value)); // 1~14 범위로 제한
+              setSwapIndex2(value);
+            }} 
+            placeholder="ex) 12" 
+            className="swap-input"
+          />
+          <button onClick={swapImages}>바꾸기</button>
         </div>
         <button className="save" onClick={savetravel}>저장하기</button>
       </div>
