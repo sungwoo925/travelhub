@@ -141,28 +141,50 @@ function Record() {
     files.forEach(file => {
       const reader = new FileReader();
       reader.onloadend = () => {
-        const imageData = {
+        let imageData = {
           src: reader.result,
           journal_location_name: '',
           journal_date: '',
           weather: '',
-          journal_text: ''
+          journal_text: '',
+          image_id: 0
         };
         newImages.push(imageData); // 새로운 이미지 배열에 추가
 
         // 모든 파일이 로드된 후 상태 업데이트
-        if (newImages.length === files.length) {
-          setImages(oldImages => {
-            const updatedImages = [...oldImages, ...newImages]; // 기존 이미지와 새 이미지를 합침
-            const updatedGridItems = Array.from({ length: updatedImages.length }, (_, index) => (
-              <div key={index} className={`grid-item ${index < updatedImages.length ? 'yellow' : ''}`}>
-                {index + 1} {/* 번호 매기기 */}
-              </div>
-            ));
-            setGridItems(updatedGridItems); // gridItems 상태 업데이트
-            return updatedImages; // 상태 업데이트
-          });
-        }
+        
+        const formData = new FormData();
+        formData.append('file', file);  // file 필드에 파일 추가
+        formData.append('data', JSON.stringify(imageData));  // 추가 데이터를 JSON 문자열로 변환하여 추가
+
+        // 백엔드로 파일 전송
+        axios.post('http://localhost:9826/journals/uploadImage/3/10', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        })
+        .then(response => {
+          console.log('Server response:', response.data.split(" "));
+          setHashtags((prevHashtags) => [...prevHashtags, ...response.data.split(" ").slice(1)]);
+          // 이미지를 상태에 추가 (성공 시)
+          if (newImages.length === files.length) {
+            imageData.image_id=parseInt(response.data.split(" ")[0],10);
+            setImages(oldImages => {
+              const updatedImages = [...oldImages, ...newImages]; // 기존 이미지와 새 이미지를 합침
+              const updatedGridItems = Array.from({ length: updatedImages.length }, (_, index) => (
+                <div key={index} className={`grid-item ${index < updatedImages.length ? 'yellow' : ''}`}>
+                  {index + 1} {/* 번호 매기기 */}
+                </div>
+              ));
+              setGridItems(updatedGridItems); // gridItems 상태 업데이트
+              return updatedImages; // 상태 업데이트
+            });
+          }
+
+        })
+        .catch(error => {
+          console.error('Error uploading file:', error);
+        });
       };
       reader.readAsDataURL(file);
     });
@@ -206,6 +228,8 @@ function Record() {
   };
 
   const swapImages = () => {
+    console.log(gridItems);
+    console.log(images);
     const index1 = parseInt(swapIndex1) - 1;
     const index2 = parseInt(swapIndex2) - 1; 
     if (index1 >= 0 && index2 >= 0 && index1 < images.length && index2 < images.length) {
