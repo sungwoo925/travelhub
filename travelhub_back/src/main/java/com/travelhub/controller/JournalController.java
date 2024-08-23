@@ -46,7 +46,8 @@ public class JournalController {
     private TravelService travelService;
 
     @PostMapping("/uploadImage/{travelId}/{userId}")
-    public ResponseEntity<String> uploadImage(@PathVariable Long travelId, @PathVariable Long userId, @RequestParam("file") MultipartFile file) {
+    public ResponseEntity<String> uploadImage(@PathVariable Long travelId, @PathVariable Long userId, @RequestParam("file") MultipartFile file,@RequestBody String token) {
+        System.out.println(token);
         String directoryPath = String.format("./images/%d/%d", travelId, userId);
         File directory = new File(directoryPath);
         Journal savedJournal ;
