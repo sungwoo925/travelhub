@@ -1,4 +1,5 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useContext, useEffect, useState, useRef } from 'react';
+import { AuthContext } from '../../context/AuthContext';
 import './Record.css';
 import Journal from '../../components/Journal/Journal';
 import Footer from '../../components/Footer/Footer';
@@ -6,6 +7,8 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 
 function Record() {
+  const { isAuthenticated } = useContext(AuthContext);
+
   const [isChecked, setChecked] = useState(false);
   const [journals, setJournals] = useState([]);
   const [images, setImages] = useState([]);
@@ -31,10 +34,11 @@ function Record() {
   const [swapIndex1, setSwapIndex1] = useState(''); // 첫 번째 교환 인덱스 상태
   const [swapIndex2, setSwapIndex2] = useState(''); // 두 번째 교환 인덱스 상태
 
+  const jwtToken = Cookies.get('jwtToken');
+
   useEffect(() => {
-    const token = Cookies.get('jwtToken');
-    console.log(token);
-    if (!token) {
+    console.log(isAuthenticated);
+    if (!isAuthenticated) {
       alert('로그인 후 이용 가능합니다.'); // 알림 메시지 추가
       window.location.href = '/login';
     }
@@ -93,39 +97,6 @@ function Record() {
 
   const savetravel = () => {
     
-    // const payload = {
-    //   images: images.map(image => ({
-    //     src: image.src,
-    //     journal_location_name: image.journal_location_name,
-    //     journal_date: image.journal_date,
-    //     weather: image.weather,
-    //     journal_text: image.journal_text
-    //   })),
-    //   journals: journals.map(journal => ({
-    //     title: journal.title,
-    //     content: journal.content,
-    //     date: journal.date
-    //   }))
-    // };
-
-    // console.log("Images:", JSON.stringify(payload.images, null, 2)); // 이미지 데이터 확인
-    // // console.log("Journals:", JSON.stringify(payload.journals, null, 2)); // 일지 데이터 확인
-
-    // console.log(payload);
-    // axios.post(`http://localhost:9826/travels`, payload, {
-    //   headers: {
-    //     'Content-Type': 'application/json'
-    //   }
-    // })
-    // .then(response => { 
-    //   console.log('저장 성공:', response.data);
-    // })  
-    // .catch(error => {
-    //   console.error('저장 실패:', error);
-    //   if (error.response) {
-    //     console.error('에러 응답 데이터:', error.response.data); // 에러 응답 데이터 확인
-    //   }
-    // });
   };
 
   const handleImageChange = (e) => {
@@ -160,7 +131,8 @@ function Record() {
         // 백엔드로 파일 전송
         axios.post('http://localhost:9826/journals/uploadImage/3/10', formData, {
           headers: {
-            'Content-Type': 'multipart/form-data'
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${jwtToken}`
           }
         })
         .then(response => {

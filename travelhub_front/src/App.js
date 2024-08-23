@@ -24,7 +24,8 @@ function App() {
       axios.post('http://localhost:9826/auth/checkToken', {
         headers: {
           Authorization: `Bearer ${jwtToken}`
-        }
+        },
+        token : `token000111222${jwtToken}token000111222`
       })
       .then(response => {
         login(response.data);

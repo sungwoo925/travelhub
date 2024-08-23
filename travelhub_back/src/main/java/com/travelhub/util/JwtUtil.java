@@ -1,5 +1,6 @@
 package com.travelhub.util;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.stereotype.Component;
@@ -11,11 +12,13 @@ import java.util.Map;
 @Component
 public class JwtUtil {
 
-    private String SECRET_KEY = "OIJWFN3FIOEA45NCAdsfj7nsiof";
+    private String secretKey = "yousfecre1y"; // 비밀 키
+    private long expirationTime = 1000 * 60 * 60 * 24 * 7; // 7dday
 
-    public String generateToken(String username) {
+    public String generateToken(String userId) {
         Map<String, Object> claims = new HashMap<>();
-        return createToken(claims, username);
+        claims.put("id", userId); // 사용자 ID를 claims에 추가
+        return createToken(claims, userId);
     }
 
     private String createToken(Map<String, Object> claims, String subject) {
@@ -23,21 +26,16 @@ public class JwtUtil {
                 .setClaims(claims)
                 .setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
-                .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
+                .setExpiration(new Date(System.currentTimeMillis() + expirationTime))
+                .signWith(SignatureAlgorithm.HS256, secretKey)
                 .compact();
     }
 
-    public Boolean validateToken(String token, String username) {
-        final String extractedUsername = extractUsername(token);
-        return (extractedUsername.equals(username) && !isTokenExpired(token));
+    public String extractUserId(String token) {
+        return extractAllClaims(token).get("id", String.class); // ID 정보 추출
     }
 
-    public String extractUsername(String token) {
-        return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody().getSubject();
-    }
-
-    private Boolean isTokenExpired(String token) {
-        return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody().getExpiration().before(new Date());
+    private Claims extractAllClaims(String token) {
+        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
     }
 }

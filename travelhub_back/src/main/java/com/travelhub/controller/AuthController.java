@@ -29,7 +29,8 @@ public class AuthController {
 
     @PostMapping("/checkToken")
     public ResponseEntity<String> checkToken(@RequestBody String token) {
-        return ResponseEntity.ok(token);
+        String userId = jwtUtil.extractUserId(token.split("token000111222")[1]); // ID 정보 추출+ userId
+        return ResponseEntity.ok("Token is valid. User ID: " + userId);
     }
 
     @PostMapping("/checkUsername/{useremail}")
@@ -50,11 +51,13 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
         Optional<User> optionalUser = userRepository.findByUserEmail(loginRequest.getUserEmail());
-        if (optionalUser.isPresent() && passwordEncoder.matches(loginRequest.getUserPassword(), optionalUser.get().getUserPassword())) {
-            String token = jwtUtil.generateToken(loginRequest.getUserEmail());
-            return ResponseEntity.ok(token);
-        } else {
-            return ResponseEntity.status(401).body("Invalid credentials");
-        }
+    if (optionalUser.isPresent() && passwordEncoder.matches(loginRequest.getUserPassword(), optionalUser.get().getUserPassword())) {
+        int userId = optionalUser.get().getUserId(); // 사용자 ID 가져오기
+        String userId_String = String.valueOf(userId);
+        String token = jwtUtil.generateToken(userId_String); // ID를 포함하여 토큰 생성
+        return ResponseEntity.ok(token);
+    } else {
+        return ResponseEntity.status(401).body("Invalid credentials");
+    }
     }
 }
