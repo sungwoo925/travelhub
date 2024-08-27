@@ -528,9 +528,10 @@
 }
 
 .image-upload-section {
-    min-height: 100px; /* 최소 높이 설정 */
-    padding: 10px; /* 패딩 추가 */
-    border-radius: 5px; /* 모서리 둥글게 */
+  min-height: 100px; /* 최소 높이 설정 */
+  height: 100%; /* 최대 높이로 설정 */
+  padding: 10px; /* 패딩 추가 */
+  border-radius: 5px; /* 모서리 둥글게 */
 }
   
   .image-detail-box img {

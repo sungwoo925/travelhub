@@ -10,7 +10,7 @@ const Header = () => {
   const [searchResults, setSearchResults] = useState([]);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
+  const { isAuthenticated, setIsAuthenticated, setUserInfo } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleSearch = async () => {
@@ -39,6 +39,7 @@ const Header = () => {
     Cookies.remove('jwtToken', { path: '/' });
     console.log("Logout button clicked");
     setIsAuthenticated(false);
+    setUserInfo(null); // 사용자 정보 초기화
     navigate('/');
   };
 
