@@ -8,7 +8,7 @@ import Cookies from 'js-cookie';
 function Login() {
   const [useremail, setUseremail] = useState('');
   const [password, setPassword] = useState('');
-  const { login } = useContext(AuthContext);
+  const { login, setUserInfo } = useContext(AuthContext); // setUserInfo 가져오기
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -30,25 +30,41 @@ function Login() {
       scope: 'profile_nickname, profile_image, account_email',
       success: function(authObj) {
         console.log(authObj);
-        window.Kakao.API.request({
-          url: '/v2/user/me',
-          success: function(response) {
-            console.log(response);
-            // 가져온 사용자 정보를 이용한 추가 작업 수행
-            login(); // 로그인 상태 업데이트  
-            navigate('/'); // 로그인 성공 시 home으로 이동
-          },
-          fail: function(error) {
-            console.error(error);
-          }
-        });
+        getInfo(); // 사용자 정보 가져오기
       },
       fail: function(err) {
         console.error(err);
       },
     });
   };
-  
+
+  function getInfo() {
+    window.Kakao.API.request({
+      url: '/v2/user/me',
+      success: function (res) {
+        console.log(res);
+        var email = res.kakao_account.email;
+        var gender = res.kakao_account.gender;
+        var profile_nickname = res.kakao_account.profile.nickname;
+        var profile_image = res.kakao_account.profile.thumbnail_image_url;
+
+        console.log(email, gender, profile_nickname, profile_image);
+
+        if (email) {
+          // 사용자 정보를 AuthContext에 저장
+          setUserInfo({ email, gender, profile_nickname, profile_image });
+          login(); // 로그인 상태 업데이트
+          navigate('/'); // 마이페이지로 이동
+        } else {
+          alert('로그인에 실패했습니다. 이메일을 확인하세요.');
+        }
+      },
+      fail: function (error) {
+        alert('카카오 로그인에 실패했습니다. 관리자에게 문의하세요.' + JSON.stringify(error));
+      }
+    });
+  }
+
   const handleLogin = async () => {
     try {
       console.log(useremail);
@@ -102,8 +118,9 @@ function Login() {
           <button className="google-btn">
             <img src="./images/googleicon.png" className="google-icon" alt="google icon" />
           </button>
-          <button className="kakao-btn" onClick={handleKakaoLogin}>
-            <img src="./images/kakaoicon.png" className="kakao-icon" alt="Kakao icon" />
+          <button className="kakao-btn" onClick={handleKakaoLogin} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <img width="100%" src="./images/kakao-button.png" alt="kakao" />
+            <span style={{ marginLeft: '8px' }}>카카오로 쉬운 시작</span>
           </button>
         </div>
         <div className="signup-link">
