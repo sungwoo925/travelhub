@@ -23,8 +23,11 @@ public class SecurityConfig {
     }
 }
 
-
 // package com.travelhub.config;
+
+// import io.jsonwebtoken.Claims;
+// import io.jsonwebtoken.Jwts;
+// import io.jsonwebtoken.SignatureAlgorithm;
 
 // import org.springframework.context.annotation.Bean;
 // import org.springframework.context.annotation.Configuration;
@@ -46,18 +49,27 @@ public class SecurityConfig {
 //     @Bean
 //     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 //         http
-//             .csrf().disable()
-//             .authorizeRequests(authorizeRequests ->
+//             .authorizeHttpRequests(authorizeRequests -> 
 //                 authorizeRequests
-//                     // "/auth/**" 경로는 인증 없이 접근 허용
-//                     .requestMatchers("/auth/**").permitAll()
-//                     // "/auth/**"를 제외한 모든 경로는 인증된 사용자만 접근 허용
-//                     .anyRequest().authenticated()
-//             )
-//             .oauth2ResourceServer(oauth2ResourceServer ->
-//                 oauth2ResourceServer
-//                     .jwt()
-//             );
+//                     .anyRequest().permitAll()
+//                 )
+//             .headers(headers -> headers.frameOptions().sameOrigin()); // frameOptions() 대체
 //         return http.build();
+//     }
+
+//     public String generateToken(String id) {
+//         return Jwts.builder()
+//             .claim("id", id) // ID 정보 추가
+//             .signWith(SignatureAlgorithm.HS256, "your-signing-key".getBytes()) // 서명 키 설정
+//             .compact();
+//     }
+
+//     // ID를 반환하는 메서드 추가
+//     public String extractIdFromToken(String token) {
+//         Claims claims = Jwts.parser()
+//             .setSigningKey("your-signing-key") // 서명 키 설정
+//             .parseClaimsJws(token)
+//             .getBody();
+//         return claims.get("id", String.class); // ID 정보 반환
 //     }
 // }

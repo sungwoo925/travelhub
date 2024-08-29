@@ -1,5 +1,5 @@
 package com.travelhub.controller;
-
+import com.travelhub.service.JwtService; 
 import com.travelhub.dto.LoginRequest;
 import com.travelhub.entity.User;
 import com.travelhub.repository.UserRepository;
@@ -23,7 +23,9 @@ public class AuthController {
     private UserRepository userRepository;
 
     @Autowired
-    private JwtUtil jwtUtil;
+    private JwtService jwtService; // JwtService 주입
+    @Autowired
+    private JwtUtil jwtUtil; // JwtUtil 주입 추가
 
     private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
@@ -59,5 +61,11 @@ public class AuthController {
     } else {
         return ResponseEntity.status(401).body("Invalid credentials");
     }
+    }
+
+    @GetMapping("/user")
+    public ResponseEntity<String> getUserId(@RequestHeader("Authorization") String token) {
+        String userId = jwtService.validateTokenAndGetUserId(token.replace("Bearer ", "")); // JWT 검증 및 ID 반환
+        return ResponseEntity.ok(userId);
     }
 }
