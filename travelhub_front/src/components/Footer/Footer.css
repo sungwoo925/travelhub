@@ -1,5 +1,31 @@
-.footer-login {
-    position: absolute;
-    left: 10px;
-    bottom: 10px;
-}
+.footer-default {
+    background-color: #282c34;
+    color: white;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .footer-login {
+    background-color: #f8f9fa;
+    color: #343a40;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .footer-content h4 {
+    margin-bottom: 10px;
+  }
+  
+  .footer-links {
+    margin-top: 10px;
+  }
+  
+  .footer-links a {
+    color: #007bff;
+    text-decoration: none;
+    margin: 0 10px;
+  }
+  
+  .footer-links a:hover {
+    text-decoration: underline;
+  }
