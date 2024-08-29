@@ -123,7 +123,21 @@ function Record() {
         newImages.push(imageData); // 새로운 이미지 배열에 추가
 
         // 모든 파일이 로드된 후 상태 업데이트
+        if (newImages.length === files.length) {
+          setImages(oldImages => {
+            const updatedImages = [...oldImages, ...newImages]; // 기존 이미지와 새 이미지를 합침
+            const updatedGridItems = Array.from({ length: updatedImages.length }, (_, index) => (
+              <div key={index} className={`grid-item ${index < updatedImages.length ? 'yellow' : ''}`}>
+                {index + 1} {/* 번호 매기기 */}
+              </div>
+            ));
+            setGridItems(updatedGridItems); // gridItems 상태 업데이트
+            return updatedImages; // 상태 업데이트
+          });
+        }
         
+        setImages(oldImages => [...oldImages, imageData]);//앞으로 땡겨옴
+        // FormData 객체 생성
         const formData = new FormData();
         formData.append('file', file);  // file 필드에 파일 추가
         formData.append('data', JSON.stringify(imageData));  // 추가 데이터를 JSON 문자열로 변환하여 추가

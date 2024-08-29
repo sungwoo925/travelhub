@@ -14,9 +14,17 @@ const Footer = () => {
   
   return (
     <footer className={className}>
-      <p>dnrals7929@naver.com</p>
-      <p>qkrtjddn5807@gmail.com</p>
-      <p>cks71714@naver.com</p>
+      <div className="footer-content">
+        <h4>Contact Us</h4>
+        <p>dnrals7929@naver.com</p>
+        <p>qkrtjddn5807@gmail.com</p>
+        <p>cks71714@naver.com</p>
+      </div>
+      <div className="footer-links">
+        <a href="/about">About Us</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/terms">Terms of Service</a>
+      </div>
     </footer>
   );
 };
