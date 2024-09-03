@@ -1,100 +1,116 @@
 /* Header.css */
 .navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem;
-    background-color: #333;
-    color: white;
-    position: static;
-    z-index: 2000   ;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background-color: #333;
+  color: white;
+  position: static;
+  z-index: 2000;
+  transition: background-color 0.3s;
+}
+
+.navbar a {
+  color: white;
+  text-decoration: none;
+  margin: 0 1rem;
+  transition: color 0.3s;
+}
+
+.navbar a:hover {
+  color: #f1f1f1;
+}
+
+.search-container {
+  display: flex;
+}
+
+.search {
+  padding: 0.5rem;
+  margin-right: 0.5rem;
+  border: none;
+  border-radius: 4px;
+}
+
+.login, .register {
+  margin-left: 1rem;
+}
+
+/* Sidebar styles */
+.sidebar {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #333;
+  overflow-x: hidden;
+  transition: width 0.5s;
+  padding-top: 60px;
+}
+
+.sidebar a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 25px;
+  color: white;
+  display: block;
+  transition: background-color 0.3s;
+}
+
+.sidebar a:hover {
+  color: #f1f1f1;
+  background-color: #444;
+}
+
+.sidebar .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+  margin-left: 50px;
+  margin-top: 10px;
+  background-color: #333;
+}
+
+/* Menu button styles */
+.menu-btn {
+  font-size: 30px;
+  cursor: pointer;
+  display: none;
+  color: white;
+}
+
+/* Media queries for responsiveness */
+@media screen and (max-width: 680px) {
+  .navbar {
+      background-color: #444; /* Change background for mobile */
+      padding: 10px;
   }
-  @media (max-width: 680px) {
-    .navbar{
-        background-color: transparent;
-        padding: 10px;
-        width: 0;
-        position: fixed;
-    }
-  }
-  
+
   .navbar a {
-    color: white;
-    text-decoration: none;
-    margin: 0 1rem;
+      display: none; /* Hide links in mobile view */
   }
-  
+
   .search-container {
-    display: flex;
+      display: none; /* Hide search in mobile view */
   }
-  
-  .search {
-    padding: 0.5rem;
-    margin-right: 0.5rem;
-  }
-  
+
   .login, .register {
-    margin-left: 1rem;
+      display: none; /* Hide login/register in mobile view */
   }
-  
-  /* Sidebar styles */
-  .sidebar {
-    height: 100%;
-    width: 0;
-    position: fixed;
-    z-index: 1;
-    top: 0;
-    left: 0;
-    background-color: #333;
-    overflow-x: hidden;
-    transition: 0.5s;
-    padding-top: 60px;
-  }
-  
-  .sidebar a {
-    padding: 8px 8px 8px 32px;
-    text-decoration: none;
-    font-size: 25px;
-    color: white;
-    display: block;
-    transition: 0.3s;
-  }
-  
-  .sidebar a:hover {
-    color: #f1f1f1;
-    background-color: #000;
-  }
-  
-  .sidebar .closebtn {
-    position: absolute;
-    top: 0;
-    right: 25px;
-    font-size: 36px;
-    margin-left: 50px;
-    margin-top: 10px;
-    background-color: #333;
-  }
-  
-  /* Menu button styles */
+
   .menu-btn {
-    font-size: 30px;
-    cursor: pointer;
-    display: none;
-    color: #000;
+      display: block; /* Show menu button in mobile view */
   }
-  
-  @media screen and (max-width: 680px) {
-    .navbar a {
-      display: none;
-    }
-    .search-container {
-      display: none;
-    }
-    .login, .register {
-      display: none;
-    }
-    .menu-btn {
-      display: block;
-    }
+
+  .sidebar {
+      width: 250px; /* Set sidebar width */
   }
-  
+
+  .sidebar a {
+      font-size: 20px; /* Adjust font size for sidebar */
+  }
+}
