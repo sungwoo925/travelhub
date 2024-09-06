@@ -155,7 +155,17 @@ function Record() {
               "view_count": 0,
               "summary": ""
     });
-    console.log(recordData);
+    images.forEach((image,index) => {
+      axios.put('http://localhost:9826/journals/' + image.image_id,{
+        "journal_date": image.journal_date,
+        "journal_text": image.journal_text,
+        "journal_location_name": image.journal_location_name,
+        "journal_location_latitude": image.journal_location_latitude,
+        "journal_location_longitude": image.journal_location_longitude,
+        "weather": image.weather,
+        "sequence_info": index
+      });
+    });
   };
 
   const handleImageChange = (e) => {
