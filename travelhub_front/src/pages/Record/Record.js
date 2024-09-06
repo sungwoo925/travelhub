@@ -13,6 +13,8 @@ function Record() {
   const [journals, setJournals] = useState([]);
   const [images, setImages] = useState([]);
   const [recordData, setRecordData] = useState({
+    travelId: 0,
+    userId: 0,
     title: '',
     location: '',
     date: '',
@@ -37,12 +39,45 @@ function Record() {
   const jwtToken = Cookies.get('jwtToken');
 
   useEffect(() => {
+    startRecord();
     console.log(isAuthenticated);
     if (!isAuthenticated) {
       alert('로그인 후 이용 가능합니다.'); // 알림 메시지 추가
       window.location.href = '/login';
+    }else{//http://localhost:9826/auth/checkToken
+      
     }
+
+
   }, []);
+
+  const startRecord = async () =>{
+    const userIdres = await axios.post('http://localhost:9826/auth/checkToken', {
+      headers: {
+        Authorization: `Bearer ${jwtToken}`
+      },
+      token : `token000111222${jwtToken}token000111222`
+    });
+    const userId = userIdres.data.split('Token is valid. User ID: ')[1];
+    const travel = await axios.post('http://localhost:9826/travels', {
+          "user_id": {
+              "userId": userId
+          },
+          "travel_title": "it",
+          "hashtag": "is",
+          "travel_start_date": "2023-07-01T00:00:00",
+          "travel_end_date": "2023-07-10T00:00:00",
+          "travel_share_option": true,
+          "travel_location_name": "for",
+          "travel_location_latitude": 21.3069,
+          "travel_location_longitude": -157.8583,
+          "travel_text": "start",
+          "like_count": 0,
+          "view_count": 0,
+          "summary": "before"
+    });
+    setRecordData({ ...recordData, travelId: travel.data, userId: userId })
+  }
 
   const setSelected = ( locationInfo ) => {
     setRecordData({ ...recordData, location: locationInfo });
@@ -96,7 +131,31 @@ function Record() {
   };
 
   const savetravel = () => {
-    
+    if(recordData.location === ''){
+      alert('location정보 미입력');
+      return 'location err';
+    }
+    const location = recordData.location.split(' latitude:');
+    const locationName = location[0];
+    const locationInfo = location[1].split(' longitude:')
+    axios.put('http://localhost:9826/travels/'+recordData.travelId, {
+              "user_id": {
+                  "userId": recordData.userId
+              },
+              "travel_title": recordData.title,
+              "hashtag": hashtags.join(),
+              "travel_start_date": "2023-07-01T00:00:00",
+              "travel_end_date": "2023-07-10T00:00:00",
+              "travel_share_option": isChecked,
+              "travel_location_name": locationName,
+              "travel_location_latitude": locationInfo[0],
+              "travel_location_longitude": locationInfo[1],
+              "travel_text": recordData.text,
+              "like_count": 0,
+              "view_count": 0,
+              "summary": ""
+    });
+    console.log(recordData);
   };
 
   const handleImageChange = (e) => {
@@ -143,7 +202,7 @@ function Record() {
         formData.append('data', JSON.stringify(imageData));  // 추가 데이터를 JSON 문자열로 변환하여 추가
 
         // 백엔드로 파일 전송
-        axios.post('http://localhost:9826/journals/uploadImage/3/10', formData, {
+        axios.post('http://localhost:9826/journals/uploadImage/'+ recordData.travelId + '/' + recordData.userId, formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
             Authorization: `Bearer ${jwtToken}`

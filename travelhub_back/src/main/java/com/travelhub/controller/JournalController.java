@@ -46,8 +46,7 @@ public class JournalController {
     private TravelService travelService;
 
     @PostMapping("/uploadImage/{travelId}/{userId}")
-    public ResponseEntity<String> uploadImage(@PathVariable Long travelId, @PathVariable Long userId, @RequestParam("file") MultipartFile file,@RequestBody String token) {
-        System.out.println(token);
+    public ResponseEntity<String> uploadImage(@PathVariable Long travelId, @PathVariable Long userId, @RequestParam("file") MultipartFile file) {
         String directoryPath = String.format("./images/%d/%d", travelId, userId);
         File directory = new File(directoryPath);
         Journal savedJournal ;
@@ -96,7 +95,7 @@ public class JournalController {
             String location = "us-central1";
             String modelName = "gemini-1.0-pro-vision";
 
-            String output =  " t e s  t"; //quickstart(projectId, location, modelName, directoryPath);
+            String output =  " t e s t"; //quickstart(projectId, location, modelName, directoryPath);
             return new ResponseEntity<>(savedJournal.getJournalId() + output, HttpStatus.OK);            
         } catch (Exception e) {
             // TODO Auto-generated catch block
