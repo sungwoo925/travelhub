@@ -27,6 +27,7 @@ import com.google.cloud.vertexai.generativeai.ContentMaker;
 import com.google.cloud.vertexai.generativeai.GenerativeModel;
 import com.google.cloud.vertexai.generativeai.PartMaker;
 import com.google.cloud.vertexai.generativeai.ResponseHandler;
+import com.travelhub.dto.JournalUpdateDTO;
 import com.travelhub.dto.SequenceInfoRequest;
 import com.travelhub.entity.Journal;
 import com.travelhub.entity.Travel;
@@ -46,8 +47,7 @@ public class JournalController {
     private TravelService travelService;
 
     @PostMapping("/uploadImage/{travelId}/{userId}")
-    public ResponseEntity<String> uploadImage(@PathVariable Long travelId, @PathVariable Long userId, @RequestParam("file") MultipartFile file,@RequestBody String token) {
-        System.out.println(token);
+    public ResponseEntity<String> uploadImage(@PathVariable Long travelId, @PathVariable Long userId, @RequestParam("file") MultipartFile file) {
         String directoryPath = String.format("./images/%d/%d", travelId, userId);
         File directory = new File(directoryPath);
         Journal savedJournal ;
@@ -96,7 +96,7 @@ public class JournalController {
             String location = "us-central1";
             String modelName = "gemini-1.0-pro-vision";
 
-            String output =  " t e s  t"; //quickstart(projectId, location, modelName, directoryPath);
+            String output =  " t e s t"; //quickstart(projectId, location, modelName, directoryPath);
             return new ResponseEntity<>(savedJournal.getJournalId() + output, HttpStatus.OK);            
         } catch (Exception e) {
             // TODO Auto-generated catch block
@@ -111,9 +111,16 @@ public class JournalController {
         return new ResponseEntity<>(savedJournal, HttpStatus.CREATED);
     }
     @PutMapping("/{journalId}")
-    public ResponseEntity<Journal> updateJournal(@PathVariable Long journalId, @RequestBody Journal journal) {
-        Journal updatedJournal = journalService.updateJournal(journalId, journal);
-        return new ResponseEntity<>(updatedJournal, HttpStatus.OK);
+    public ResponseEntity<String> updateJournal(
+            @PathVariable Long journalId,
+            @RequestBody JournalUpdateDTO journalUpdateDTO) {
+        boolean isUpdated = journalService.updateJournal(journalId, journalUpdateDTO);
+        
+        if (isUpdated) {
+            return ResponseEntity.ok("저널이 성공적으로 업데이트되었습니다.");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("저널을 찾을 수 없습니다.");
+        }
     }
     @PutMapping("/{journalId}/sequence")
     public ResponseEntity<Journal> updateJournalSequences(@PathVariable Long journalId, @RequestBody SequenceInfoRequest sequenceInfoRequest) {
