@@ -73,4 +73,11 @@ public class TravelController {
         boolean deleted = travelService.deleteTravel(travelId);
         return deleted ? new ResponseEntity<>(HttpStatus.NO_CONTENT) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+
+    // 모든 여행 정보 가져오기
+    @GetMapping
+    public ResponseEntity<List<Travel>> getAllTravels() {
+        List<Travel> travels = travelService.getAllTravels();
+        return new ResponseEntity<>(travels, HttpStatus.OK);
+    }
 }

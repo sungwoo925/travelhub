@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Cube from '../../components/Cube/Cube';
 import './Home.css';
 import axios from 'axios';
@@ -12,9 +12,10 @@ function Home() {
   const [error, setError] = useState(null);
   const [sortOption, setSortOption] = useState('최신순'); // 정렬 옵션
   const [myTravelOnly, setMyTravelOnly] = useState(false); // 나의 여행 필터
+
   const fetchData = async () => {
     try {
-      const response = await axios.get('http://localhost:9826/maps/타임슬라이스');
+      const response = await axios.get('http://localhost:9826/travels');
       console.log(response.data);
       setData(response.data);
     } catch (error) {
@@ -22,9 +23,12 @@ function Home() {
       console.log(error);
     } finally {
       setLoading(false);
-      console.log(data);
     }
   };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   const handleSortChange = (option) => {
     setSortOption(option);
@@ -42,6 +46,12 @@ function Home() {
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
   const totalPages = Math.ceil(data.length / itemsPerPage);
+
+  // 날짜 형식을 변환하는 함수 추가
+  const formatDate = (dateString) => {
+    if (!dateString) return '';
+    return dateString.split('T')[0]; // T 이전의 날짜 부분만 반환
+  };
 
   return (
     <div className="home-container">
@@ -64,9 +74,13 @@ function Home() {
         <div className="slide-view">
           {currentItems.map((item, index) => (
             <div key={index} className="list-item">
-              <span className="item-number">{index + 1 + indexOfFirstItem}.</span>
-              <div className="item-title">{item.title}</div>
-              <div className="travel-dates">{item.startDate} - {item.endDate}</div>
+              <span className="item-number">{index + 1 + indexOfFirstItem}. {item.travel_title || '제목 없음'}</span>
+              <div className="item-title">{item.travel_title || '제목 없음'}</div>
+              <div className="travel-dates">
+                {item.travel_start_date && item.travel_end_date 
+                  ? `${formatDate(item.travel_start_date)} ~ ${formatDate(item.travel_end_date)}`
+                  : '날짜 정보 없음'}
+              </div>
               <div className="travel-summary">{item.summary}</div>
               <Cube />
               <button className="edit-button">수정</button>
@@ -75,9 +89,14 @@ function Home() {
         </div>
       ) : (
         <div className="grid-view">
-          {currentItems.map((title, index) => (
+          {currentItems.map((item, index) => (
             <div key={index} className="cube-container">
-              <span>{index + 1 + indexOfFirstItem}.{title}</span>
+              <span>{index + 1 + indexOfFirstItem}. {item.travel_title || '제목 없음'}</span>
+              <div className="travel-dates">
+                {item.travel_start_date && item.travel_end_date 
+                  ? `${formatDate(item.travel_start_date)} ~ ${formatDate(item.travel_end_date)}`
+                  : '날짜 정보 없음'}
+              </div>
               <Cube />
               <button className="edit-button">수정</button>
             </div>
