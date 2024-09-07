@@ -70,4 +70,8 @@ public class TravelService {
         return travelRepository.findById(travelId)
                 .orElse(new Travel()); 
     }
+
+    public List<Travel> getAllTravels() {
+        return travelRepository.findAll();
+    }
 }

@@ -6,6 +6,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.ElementCollection;
 import java.time.LocalDateTime;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -90,7 +91,7 @@ public class Travel {
         this.summary = summary;
     }
 
-    // Getter와 Setter 메소드들
+    // getter와 setter 메소드들
     public int getTravelId() {
         return travelId;
     }
