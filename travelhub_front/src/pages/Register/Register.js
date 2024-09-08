@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Register.css';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios'; // axios를 사용하여 서버와 통신
@@ -71,6 +71,59 @@ function Register() {
     }
   };
 
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = 'https://developers.kakao.com/sdk/js/kakao.js';
+    script.async = true;
+    script.onload = () => {
+      window.Kakao.init("cabed8da4b2445c6972f2872a1f7d3ea");
+    };
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
+
+  const handleKakaoLogin = () => {
+    window.Kakao.Auth.login({
+      scope: 'profile_nickname, profile_image, account_email',
+      success: function(authObj) {
+        console.log(authObj);
+        getInfo();
+      },
+      fail: function(err) {
+        console.error(err);
+      },
+    });
+  };
+
+  function getInfo() {
+    window.Kakao.API.request({
+      url: '/v2/user/me',
+      success: function (res) {
+        console.log(res);
+        var email = res.kakao_account.email;
+        var gender = res.kakao_account.gender;
+        var profile_nickname = res.kakao_account.profile.nickname;
+        var profile_image = res.kakao_account.profile.thumbnail_image_url;
+
+        console.log(email, gender, profile_nickname, profile_image);
+
+        if (email) {
+          // 여기에 카카오 로그인 후 처리 로직을 추가하세요
+          alert('카카오 로그인 성공');
+          // navigate('/'); // 필요한 경우 페이지 이동
+        } else {
+          alert('로그인에 실패했습니다. 이메일을 확인하세요.');
+        }
+      },
+      fail: function (error) {
+        alert('카카오 로그인에 실패했습니다. 관리자에게 문의하세요.' + JSON.stringify(error));
+      }
+    });
+  }
+
   return (
     <div className="register-container">
       <div style={{
@@ -136,8 +189,9 @@ function Register() {
           <button className="google-btn">
             <img src="./images/googleicon.png" className="google-icon" alt="google icon" />
           </button>
-          <button className="kakao-btn">
-            <img src="./images/kakaoicon.png" className="kakao-icon" alt="Kakao icon" />
+          <button className="kakao-btn" onClick={handleKakaoLogin} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <img width="100%" src="./images/kakao-button.png" alt="kakao" />
+            <span style={{ marginLeft: '8px' }}>카카오로 쉬운 시작</span>
           </button>
         </div>
         <div className="signup-link">

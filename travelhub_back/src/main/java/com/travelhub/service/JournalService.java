@@ -2,6 +2,8 @@ package com.travelhub.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.travelhub.dto.JournalUpdateDTO;
 import com.travelhub.entity.Journal;
 import com.travelhub.repository.JournalRepository;
 
@@ -17,19 +19,26 @@ public class JournalService {
         return journalRepository.save(journal);
     }
 
-    public Journal updateJournal(Long journalId, Journal journalDetails) {
+    public JournalService(JournalRepository journalRepository) {
+        this.journalRepository = journalRepository;
+    }
+
+    @Transactional
+    public boolean updateJournal(Long journalId, JournalUpdateDTO journalUpdateDTO) {
         Journal journal = journalRepository.findById(journalId)
-                .orElseThrow(() -> new IllegalArgumentException("Journal not found with id: " + journalId));
+                .orElseThrow(() -> new IllegalArgumentException("저널을 찾을 수 없습니다. ID: " + journalId));
 
-        journal.setJournalText(journalDetails.getJournalText());
-        journal.setJournalDate(journalDetails.getJournalDate());
-        journal.setJournalLocationName(journalDetails.getJournalLocationName());
-        journal.setJournalLocationLatitude(journalDetails.getJournalLocationLatitude());
-        journal.setJournalLocationLongitude(journalDetails.getJournalLocationLongitude());
-        journal.setPhotoLink(journalDetails.getPhotoLink());
-        journal.setSequenceInfo(journalDetails.getSequenceInfo());
+        // DTO의 값으로 저널 업데이트
+        journal.setJournalDate(journalUpdateDTO.getJournalDate());
+        journal.setJournalText(journalUpdateDTO.getJournalText());
+        journal.setJournalLocationName(journalUpdateDTO.getJournalLocationName());
+        journal.setJournalLocationLatitude(journalUpdateDTO.getJournalLocationLatitude());
+        journal.setJournalLocationLongitude(journalUpdateDTO.getJournalLocationLongitude());
+        journal.setWeather(journalUpdateDTO.getWeather());
+        journal.setSequenceInfo(journalUpdateDTO.getSequenceInfo());
 
-        return journalRepository.save(journal);
+        journalRepository.save(journal); // 변경된 저널 저장
+        return true; // 업데이트 성공
     }
 
     public Journal updateJournalSequence(Long journalId, short sequenceInfo) {

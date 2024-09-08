@@ -42,9 +42,13 @@ public class TravelController {
 
     // 여행 입력
     @PostMapping
-    public ResponseEntity<Travel> createTravel(@RequestBody Travel travel) {
+    public ResponseEntity<String> createTravel(@RequestBody Travel travel) {
         Travel savedTravel = travelService.createTravel(travel);
-        return new ResponseEntity<>(savedTravel, HttpStatus.CREATED);
+        // travelId가 null인지 확인
+        if (savedTravel.getTravelId() == 0) {
+            return new ResponseEntity<>("여행 ID가 생성되지 않았습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<>(Integer.toString(savedTravel.getTravelId()), HttpStatus.CREATED);
     }
 
     // 여행 수정
@@ -68,5 +72,12 @@ public class TravelController {
     public ResponseEntity<Void> deleteTravel(@PathVariable Long travelId) {
         boolean deleted = travelService.deleteTravel(travelId);
         return deleted ? new ResponseEntity<>(HttpStatus.NO_CONTENT) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    // 모든 여행 정보 가져오기
+    @GetMapping
+    public ResponseEntity<List<Travel>> getAllTravels() {
+        List<Travel> travels = travelService.getAllTravels();
+        return new ResponseEntity<>(travels, HttpStatus.OK);
     }
 }
