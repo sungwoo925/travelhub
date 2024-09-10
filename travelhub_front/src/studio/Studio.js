@@ -39,7 +39,7 @@ function addImagePlane(scene, imagePath, position, width, objectName, rotation) 
 
 function addFrame(scene, width, height, position, rotation) {
   const frameThickness = 0.05; // 프레임 두께 설정
-  const frameColor = 0x000000; // 프레임 색상 설정
+  const frameColor = 0x7F4F2F; // 프레임 색상 설정
 
   // 프레임을 구성하는 박스 생성
   const frameMaterial = new THREE.MeshBasicMaterial({ color: frameColor });
