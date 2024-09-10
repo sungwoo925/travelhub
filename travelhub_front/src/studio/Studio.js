@@ -55,8 +55,15 @@ function addFrame(scene, width, height, position, rotation) {
   // 프레임 위치 설정
   frameMeshes[0].position.set(position.x, position.y + height / 2 + frameThickness / 2, position.z); // 상단 프레임
   frameMeshes[1].position.set(position.x, position.y - height / 2 - frameThickness / 2, position.z); // 하단 프레임
-  frameMeshes[2].position.set(position.x - width / 2 - frameThickness / 2, position.y, position.z); // 좌측 프레임
-  frameMeshes[3].position.set(position.x + width / 2 + frameThickness / 2, position.y, position.z); // 우측 프레임
+  if(rotation.y === -1.5708 || rotation.y === 1.5708){
+    frameMeshes[2].position.set(position.x, position.y, position.z - width / 2 - frameThickness / 2); // 좌측 프레임
+    frameMeshes[3].position.set(position.x, position.y, position.z + width / 2 + frameThickness / 2); // 우측 프레임
+  }else{
+    frameMeshes[2].position.set(position.x - width / 2 - frameThickness / 2, position.y, position.z); // 좌측 프레임
+    frameMeshes[3].position.set(position.x + width / 2 + frameThickness / 2, position.y, position.z); // 우측 프레임
+  }
+  console.log(rotation);
+  
 
   // 프레임 회전 설정
   frameMeshes.forEach(mesh => {
@@ -92,7 +99,7 @@ const Studio = () => {
       .then(mapJson => SetMapJson(mapJson))
       .catch(error => console.log('error'));
   }
-  const [isCameraMoved, setIsCameraMoved] = useState(false); // 카메라 이동 상태 관리
+  const [isCameraMoved, setIsCameraMoved] = useState(true); // 카메라 이동 상태 관리
 
   const handleCameraPositionToggle = () => {
     setIsCameraMoved(prev => !prev); // 상태 토글
@@ -156,10 +163,10 @@ const Studio = () => {
     });
 
     // Chair_and_Table 모델 추가 (크기 1, 위치 (0, 0, 0), 텍스처 경로)
-    addModel(scene, '/OBJ_file/Chair_and_Table.obj', '/OBJ_file/Chair_and_Table.mtl', new THREE.Vector3(0, 0, 10), new THREE.Vector3(30, 30, 30), '/textures/Chair and table_Normal.jpg'); // 텍스처 적용
+    // addModel(scene, '/OBJ_file/Chair_and_Table.obj', '/OBJ_file/Chair_and_Table.mtl', new THREE.Vector3(0, 0, 10), new THREE.Vector3(30, 30, 30), '/textures/Chair and table_Normal.jpg'); // 텍스처 적용
 
     // trees9 모델 추가 (크기 100배 줄임, 위치 (5, 0, 0), 텍스처 경로)
-    addModel(scene, '/OBJ_file/trees9.obj', '/OBJ_file/trees9.mtl', new THREE.Vector3(5, 0, 0), new THREE.Vector3(0.05, 0.05, 0.05), '/textures/Oak_Leav.png'); // 텍스처 적용
+    // addModel(scene, '/OBJ_file/trees9.obj', '/OBJ_file/trees9.mtl', new THREE.Vector3(5, 0, 0), new THREE.Vector3(0.05, 0.05, 0.05), '/textures/Oak_Leav.png'); // 텍스처 적용
     // Camera
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     camera.position.y = 2;
@@ -409,7 +416,7 @@ const Studio = () => {
 
   return (
     <div ref={containerRef} style={{ width: '100%', height: '100vh', overflow: 'hidden' }}>
-      <button onClick={handleCameraPositionToggle}>카메라 위치 토글</button> {/* 버튼 추가 */}
+      <button style={{position:'fixed'}}onClick={handleCameraPositionToggle}>카메라 위치 토글</button> {/* 버튼 추가 */}
       <div className='sidebar-studio'></div>
     </div>
   );
