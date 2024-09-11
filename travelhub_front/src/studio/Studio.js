@@ -62,8 +62,6 @@ function addFrame(scene, width, height, position, rotation) {
     frameMeshes[2].position.set(position.x - width / 2 - frameThickness / 2, position.y, position.z); // 좌측 프레임
     frameMeshes[3].position.set(position.x + width / 2 + frameThickness / 2, position.y, position.z); // 우측 프레임
   }
-  console.log(rotation);
-  
 
   // 프레임 회전 설정
   frameMeshes.forEach(mesh => {
@@ -338,10 +336,10 @@ const Studio = () => {
         movingCircle = 0;
       }
 
-      console.log(camera.position.x);
-      console.log(camera.position.z);
-      console.log(movingCircle);
-      console.log(movingFlow);
+      // console.log(camera.position.x);
+      // console.log(camera.position.z);
+      // console.log(movingCircle);
+      // console.log(movingFlow);
       renderer.render(scene, camera);
     };
 
