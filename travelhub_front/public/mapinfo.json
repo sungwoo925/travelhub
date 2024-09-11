@@ -72,7 +72,7 @@
       "imagePath": "/images/image9.jpg"
     },
     {
-      "coordinates": [-9, 2, 0],
+      "coordinates": [-9.05, 2, 0],
       "width": 3,
       "name": "frame10",
       "rotation": [0, -1.5708, 0],
@@ -93,7 +93,7 @@
       "imagePath": "/images/image12.jpg"
     },
     {
-      "coordinates": [-3, 2, 0],
+      "coordinates": [-3.05, 2, 0],
       "width": 3,
       "name": "frame13",
       "rotation": [0, -1.5708, 0],

@@ -96,7 +96,7 @@ public class JournalController {
             String location = "us-central1";
             String modelName = "gemini-1.0-pro-vision";
 
-            String output =  " t e s t"; //quickstart(projectId, location, modelName, directoryPath);
+            String output =  " t e s t"; //quickstart(projectId, location, modelName, directoryPath);// 제미나이 비용 발생으로 막아둠
             return new ResponseEntity<>(savedJournal.getJournalId() + output, HttpStatus.OK);            
         } catch (Exception e) {
             // TODO Auto-generated catch block
