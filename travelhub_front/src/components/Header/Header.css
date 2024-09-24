@@ -1,100 +1,340 @@
 /* Header.css */
+@charset "utf-8";
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+ul,
+li {
+  list-style: none;
+}
+a:link,
+a:visited {
+  text-decoration: none;
+  color: black;
+}
+
+.clearfix:after {
+  content: "";
+  display: block;
+  clear: both;
+}
+body {
+  height: 300vh;
+  font-family: "Noto Sans KR", sans-serif;
+}
+
+.container {
+  width: 1360px;
+  margin: 0 auto;
+  /* position: relative; */
+}
+
+.bg-gray {
+  background-color: #ddd !important;
+}
+.bg-orange {
+  background-color: orange !important;
+}
+.bg-sky {
+  background-color: skyblue !important;
+}
+
+.hd {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  width: 100%;
+  background-color: #bfeffd;
+  margin-bottom: 20px;
+  z-index: 1;
+}
+.menuWrap {
+  display: flex;
+  justify-content: space-between;
+  /* height: 70px; */
+  padding: 10px 0;
+  /* align-items: center; */
+}
+
+.menuWrap .gnb ul {
+  display: flex;
+}
+.menuWrap .gnb li {
+  width: 150px;
+  height: 50px;
+}
+.menuWrap .gnb a {
+  display: block;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.menuWrap .gnb a:hover {
+  font-weight: bold;
+}
+
+.menuWrap .sns {
+  display: flex;
+  align-self: center;
+  gap: 10px;
+}
+.menuWrap .sns li {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  background: #00f;
+  color: white;
+}
+
 .navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem;
-    background-color: #333;
-    color: white;
-    position: static;
-    z-index: 2000   ;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background-color: skyblue;
+  color: white;
+  position: static;
+  z-index: 2000;
+  transition: background-color 0.3s;
+}
+
+.navbar a {
+  color: black;
+  text-decoration: none;
+  margin: 0 1rem;
+  transition: color 0.3s;
+}
+
+.navbar a:hover {
+  color: #f1f1f1;
+}
+
+.search-container {
+  display: flex;
+}
+
+.search {
+  padding: 0.5rem;
+  margin-right: 0.5rem;
+  border: none;
+  border-radius: 4px;
+}
+
+.login,
+.register {
+  margin-left: 1rem;
+}
+.logo {
+  max-height: 50px; /* 원하는 최대 높이 설정 */
+  height: auto; /* 비율을 유지하기 위해 자동으로 설정 */
+  width: auto; /* 비율을 유지하기 위해 자동으로 설정 */
+}
+/* Sidebar styles */
+.sidebar {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #333;
+  overflow-x: hidden;
+  transition: width 0.5s;
+  padding-top: 60px;
+}
+
+.sidebar a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 25px;
+  color: white;
+  display: block;
+  transition: background-color 0.3s;
+}
+
+.sidebar a:hover {
+  color: #f1f1f1;
+  background-color: #444;
+}
+
+.sidebar .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+  margin-left: 50px;
+  margin-top: 10px;
+  background-color: #333;
+}
+
+/* Menu button styles */
+.menu-btn {
+  font-size: 30px;
+  cursor: pointer;
+  display: none;
+  color: white;
+}
+
+/* Media queries for responsiveness */
+@media screen and (max-width: 680px) {
+  .navbar {
+    background-color: #444; /* Change background for mobile */
+    padding: 10px;
   }
-  @media (max-width: 680px) {
-    .navbar{
-        background-color: transparent;
-        padding: 10px;
-        width: 0;
-        position: fixed;
-    }
-  }
-  
+
   .navbar a {
-    color: white;
-    text-decoration: none;
-    margin: 0 1rem;
+    display: none; /* Hide links in mobile view */
   }
-  
+
   .search-container {
-    display: flex;
+    display: none; /* Hide search in mobile view */
   }
-  
-  .search {
-    padding: 0.5rem;
-    margin-right: 0.5rem;
+
+  .login,
+  .register {
+    display: none; /* Hide login/register in mobile view */
   }
-  
-  .login, .register {
-    margin-left: 1rem;
-  }
-  
-  /* Sidebar styles */
-  .sidebar {
-    height: 100%;
-    width: 0;
-    position: fixed;
-    z-index: 1;
-    top: 0;
-    left: 0;
-    background-color: #333;
-    overflow-x: hidden;
-    transition: 0.5s;
-    padding-top: 60px;
-  }
-  
-  .sidebar a {
-    padding: 8px 8px 8px 32px;
-    text-decoration: none;
-    font-size: 25px;
-    color: white;
-    display: block;
-    transition: 0.3s;
-  }
-  
-  .sidebar a:hover {
-    color: #f1f1f1;
-    background-color: #000;
-  }
-  
-  .sidebar .closebtn {
-    position: absolute;
-    top: 0;
-    right: 25px;
-    font-size: 36px;
-    margin-left: 50px;
-    margin-top: 10px;
-    background-color: #333;
-  }
-  
-  /* Menu button styles */
+
   .menu-btn {
-    font-size: 30px;
-    cursor: pointer;
-    display: none;
-    color: #000;
+    display: block; /* Show menu button in mobile view */
   }
-  
-  @media screen and (max-width: 680px) {
-    .navbar a {
-      display: none;
-    }
-    .search-container {
-      display: none;
-    }
-    .login, .register {
-      display: none;
-    }
-    .menu-btn {
-      display: block;
-    }
+
+  .sidebar {
+    width: 250px; /* Set sidebar width */
   }
-  
+
+  .sidebar a {
+    font-size: 20px; /* Adjust font size for sidebar */
+  }
+}
+
+/* 전체 네비게이션 wrapper */
+.nav-wrapper {
+  background-color: black;
+}
+
+/* 네비게이션의 Flex 컨테이너 */
+.nav-flex {
+  display: flex;
+  justify-content: space-around;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+/* 중앙의 텍스트 컨테이너 */
+.nav-container {
+  display: flex;
+  justify-content: center;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  color: white;
+}
+
+/* 타이틀 스타일 */
+.nav-title {
+  font-weight: bold;
+  font-size: 1.2rem;
+  height: 4.8rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+/* 우측 매장찾기 링크 */
+.nav-link-wrapper {
+  display: none;
+  color: white;
+  padding-right: 40px;
+}
+
+.nav-store-link {
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  text-align: center;
+  font-size: 1.2rem;
+  padding: 0 20px;
+  white-space: nowrap;
+}
+
+.nav-icon {
+  margin-right: 8px;
+}
+
+/* 네비게이션 메뉴 섹션 */
+.nav-menu {
+  display: flex;
+  justify-content: space-around;
+  background-color: white;
+}
+
+/* 로고 스타일 */
+.nav-logo-wrapper {
+  display: none;
+}
+
+.nav-logo-wrapper-mobile {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 네비게이션 아이콘 리스트 */
+.nav-icons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-left: 0.5rem;
+}
+
+.nav-icon-item {
+  padding: 0.5rem;
+}
+
+/* 메인 네비게이션 링크들 */
+.nav-main-links {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-right: 9rem;
+}
+
+.nav-link-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.nav-link {
+  font-weight: 600;
+  color: black;
+  padding: 0 3rem;
+}
+
+/* 유저 섹션 */
+.nav-user-section {
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 2rem;
+  color: black;
+}
+
+.nav-user-icons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.nav-icon-item i {
+  padding: 0.5rem;
+}
