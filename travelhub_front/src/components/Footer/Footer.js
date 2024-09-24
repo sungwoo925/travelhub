@@ -15,27 +15,27 @@ const Footer = () => {
   return (
     <div className={`footer ${className}`}>
       <div className="footer-inner">
-        <div className="footer-logo"></div>
+        <img
+          className="footer-logo"
+          src="./images/footer-logo-removebg-preview.png"
+        ></img>
 
         <div className="info-area">
           <ul className="info-list">
-            <li className="info-item">(주)웅진컴퍼스</li>
-            <li className="info-item">대표 : 서종윤</li>
-            <li className="info-item">사업자 등록번호 : 214-87-35792</li>
-            <li className="info-item">
-              통신판매신고 : 제 2005-서울서초-05631호
-            </li>
+            <li className="info-item">담당교수 : 김숙연</li>
+            <li className="info-item">팀원 : 한민욱, 박성우, 차기석 </li>
+            <li className="info-item">여행담은스토리</li>
+            <li className="info-item">2024 캡스톤 디자인</li>
           </ul>
           <ul className="info-list">
             <li className="info-item">
-              주소 : 서울시 서초구 강남대로 39길 15-10 한라비발디스튜디오 193,
-              3층
+              나의 여행을 담을 수 있는 3D전시관 제작
             </li>
-            <li className="info-item">전화번호 : 02-3471-0013</li>
+            <li className="info-item">전화번호 : 031-1234-5678</li>
           </ul>
         </div>
         <div className="copyright">
-          © woongjin compass. All Rights Reserved.
+          Creating a 3D exhibition hall that can contain my travels
         </div>
       </div>
     </div>

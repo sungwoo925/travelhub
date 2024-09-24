@@ -9,6 +9,11 @@ li {
 body {
   font-family: "Noto Sans KR", sans-serif;
 }
+.container {
+  width: 1360px;
+  margin: 0 auto;
+  /* position: relative; */
+}
 
 :root {
   --black: #1b1b1b;
@@ -24,8 +29,8 @@ body {
 .footer {
   position: relative;
   height: 340px;
-  background-color: var(--black);
-  color: var(--gray);
+  background-color: #a9ecff;
+  color: var(--black);
   font-size: var(--small-text);
   font-family: Pretendard;
 }
@@ -38,15 +43,13 @@ body {
 }
 
 .footer .footer-logo {
-  width: 200px;
-  height: 42px;
-  background-image: url("../../../public/images/footer-logo.png");
-  background-repeat: no-repeat;
-  background-size: cover;
+  max-height: 50px; /* 원하는 최대 높이 설정 */
+  height: auto; /* 비율을 유지하기 위해 자동으로 설정 */
+  width: auto; /* 비율을 유지하기 위해 자동으로 설정 */
 }
 
 .footer .info-area {
-  padding-top: 60px;
+  padding-top: 20px;
 }
 
 .footer .info-area .info-list {
@@ -77,7 +80,7 @@ body {
   right: 12px;
   width: 1px;
   height: 14px;
-  background-color: var(--gray);
+  background-color: var(--black);
   transform: translateY(-50%);
 }
 
