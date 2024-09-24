@@ -39,7 +39,7 @@ function addImagePlane(scene, imagePath, position, width, objectName, rotation) 
 
 function addFrame(scene, width, height, position, rotation) {
   const frameThickness = 0.05; // 프레임 두께 설정
-  const frameColor = 0x000000; // 프레임 색상 설정
+  const frameColor = 0x7F4F2F; // 프레임 색상 설정
 
   // 프레임을 구성하는 박스 생성
   const frameMaterial = new THREE.MeshBasicMaterial({ color: frameColor });
@@ -62,8 +62,6 @@ function addFrame(scene, width, height, position, rotation) {
     frameMeshes[2].position.set(position.x - width / 2 - frameThickness / 2, position.y, position.z); // 좌측 프레임
     frameMeshes[3].position.set(position.x + width / 2 + frameThickness / 2, position.y, position.z); // 우측 프레임
   }
-  console.log(rotation);
-  
 
   // 프레임 회전 설정
   frameMeshes.forEach(mesh => {
@@ -338,10 +336,10 @@ const Studio = () => {
         movingCircle = 0;
       }
 
-      console.log(camera.position.x);
-      console.log(camera.position.z);
-      console.log(movingCircle);
-      console.log(movingFlow);
+      // console.log(camera.position.x);
+      // console.log(camera.position.z);
+      // console.log(movingCircle);
+      // console.log(movingFlow);
       renderer.render(scene, camera);
     };
 
