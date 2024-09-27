@@ -1,6 +1,7 @@
 package com.travelhub.controller;
 
 import com.travelhub.entity.Travel;
+import com.travelhub.entity.User;
 import com.travelhub.service.TravelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -43,12 +44,19 @@ public class TravelController {
     // 여행 입력
     @PostMapping
     public ResponseEntity<String> createTravel(@RequestBody Travel travel) {
-        Travel savedTravel = travelService.createTravel(travel);
-        // travelId가 null인지 확인
-        if (savedTravel.getTravelId() == 0) {
-            return new ResponseEntity<>("여행 ID가 생성되지 않았습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
+        User user = travel.getUserId();
+        List<Travel> findTravelList = travelService.searchByUserIdAndLocation(user, travel.getTravelLocationLatitude());
+        if(findTravelList.isEmpty()){
+            Travel savedTravel = travelService.createTravel(travel);
+            // travelId가 null인지 확인
+            if (savedTravel.getTravelId() == 0) {
+                return new ResponseEntity<>("여행 ID가 생성되지 않았습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+            return new ResponseEntity<>(Integer.toString(savedTravel.getTravelId()), HttpStatus.CREATED);
+        }else{
+            return new ResponseEntity<>(Integer.toString(findTravelList.get(0).getTravelId()), HttpStatus.CREATED);
         }
-        return new ResponseEntity<>(Integer.toString(savedTravel.getTravelId()), HttpStatus.CREATED);
+        
     }
 
     // 여행 수정

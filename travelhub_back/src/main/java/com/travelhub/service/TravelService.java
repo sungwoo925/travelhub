@@ -1,6 +1,7 @@
 package com.travelhub.service;
 
 import com.travelhub.entity.Travel;
+import com.travelhub.entity.User;
 import com.travelhub.repository.TravelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,10 @@ public class TravelService {
 
     public List<Travel> searchByTitle(String title) {
         return travelRepository.findByTravelTitleContaining(title);
+    }
+
+    public List<Travel> searchByUserIdAndLocation(User userId, Double travelLocationLatitude) {
+        return travelRepository.findByUserIdAndTravelLocationLatitude(userId, travelLocationLatitude);
     }
 
     public Optional<Travel> getTravel(Long travelId) {
