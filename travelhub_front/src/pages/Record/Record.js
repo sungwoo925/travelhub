@@ -47,8 +47,6 @@ function Record() {
     }else{//http://localhost:9826/auth/checkToken
       
     }
-
-
   }, []);
 
   const startRecord = async () =>{
@@ -69,7 +67,7 @@ function Record() {
           "travel_end_date": "2023-07-10T00:00:00",
           "travel_share_option": true,
           "travel_location_name": "for",
-          "travel_location_latitude": 21.3069,
+          "travel_location_latitude": 999,
           "travel_location_longitude": -157.8583,
           "travel_text": "start",
           "like_count": 0,
