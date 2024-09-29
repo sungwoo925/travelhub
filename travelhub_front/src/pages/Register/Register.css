@@ -1,87 +1,89 @@
+.register-layout-container {
+  width: 100px;
+}
+
 .register-container {
-    width: 400px;
-    height: auto;
-    margin: 0 auto;
-    padding: 20px;
-    border: 1px solid #a5a5a5;
-    background-color: #a5a5a5;
-    border-radius: 10px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-  
-  .register-form {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .form-group {
-    margin-bottom: 10px; /* 각 항목의 박스 간격을 줄입니다. */
-  }
-  
-  label {
-    font-weight: bold;
-  }
-  
-  
-  .Register-btn {
-    background-color: #ff2e2e;
-    color: #333;
-    border-radius: 5px;
-    border: none;
-    padding: 10px;
-    cursor: pointer;
+  width: 400px;
+  height: auto;
+  margin: 0 auto;
+  padding: 20px;
+  border: 2px solid rgb(105, 105, 105);
+  background-image: url("../../../public/images/background1.jpg");
+  border-radius: 10px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.register-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group {
+  margin-bottom: 10px; /* 각 항목의 박스 간격을 줄입니다. */
+}
+
+label {
+  font-weight: bold;
+}
+
+.Register-btn {
+  background-color: #ff2e2e;
+  color: #ffffff;
+  border-radius: 5px;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
 }
 
 .Register-btn:hover {
-    background-color: #fd6262;
+  background-color: #fd6262;
 }
 
-  
-  .google-btn,
-  .kakao-btn {
-    height: 55px;
-    width: 100%;
-    padding: 10px;
-    margin-top: 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .gender-options {
-    display: flex;
-  }
-  
-  .gender-options label {
-    margin-right: 10px;
-  }
-  
-  .login-options {
-    margin-top: 20px;
-  }
-  
-  .signup-link {
-    margin-top: 10px;
-  }
-  
-  .signup-link a {
-    color: blue;
-  }
-  
-  .input-box {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
+.google-btn,
+.kakao-btn {
+  height: 55px;
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
 
-  .input-box input {
-    flex-grow: 1;
-    margin-right: 10px; /* 버튼과의 간격 */
-  }
+.gender-options {
+  display: flex;
+}
 
-  .input-box button {
-    white-space: nowrap; /* 버튼 텍스트가 줄바꿈 되지 않도록 */
-  }
+.gender-options label {
+  margin-right: 10px;
+}
+
+.login-options {
+  margin-top: 20px;
+}
+
+.signup-link {
+  margin-top: 10px;
+}
+
+.signup-link a {
+  color: blue;
+}
+
+.input-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.input-box input {
+  flex-grow: 1;
+  margin-right: 10px; /* 버튼과의 간격 */
+}
+
+.input-box button {
+  white-space: nowrap; /* 버튼 텍스트가 줄바꿈 되지 않도록 */
+}

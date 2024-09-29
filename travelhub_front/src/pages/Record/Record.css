@@ -1,505 +1,513 @@
 /* 스타일 초기화 */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  /* 버튼 스타일 */
-  button {
-    padding: 10px 20px;
-    background-color: #14bae4;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s ease;
-  }
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
+/* 버튼 스타일 */
+button {
+  padding: 10px 20px;
+  background-color: #14bae4;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
 
-  button:hover {
-    background-color: #32c7d1; /* 민트색과 어울리는 hover 색상 */
-  }
-  
-  /* split-screen 레이아웃 */
-  .split-screen {
-    display: flex;
-    height: 100vh; 
-    overflow: hidden; 
-    background-color: #f4f4f8; /* 배경색 변경 */
-  }
-  
-  .left-pane {
-    width: 80%;
-    overflow-y: auto;
-    font-size: small;
-    background-color: #ffffff; /* 배경색 추가 */
-    box-shadow: 2px 0 5px rgba(0,0,0,0.1); /* 그림자 추가 */
-  }
-  
+button:hover {
+  background-color: #32c7d1; /* 민트색과 어울리는 hover 색상 */
+}
+
+/* split-screen 레이아웃 */
+.split-screen {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+  background-color: #f4f4f8; /* 배경색 변경 */
+}
+
+.left-pane {
+  height: 100%;
+  width: 80%;
+  overflow-y: auto;
+  font-size: small;
+  background-color: #ffffff; /* 배경색 추가 */
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* 그림자 추가 */
+}
+
 .right-pane {
-    position: flex; /* 절대 위치 설정 */
-    right: 0; /* 오른쪽에 붙이기 */
-    width: 20%; /* 너비 설정 (필요에 따라 조정) */
-    height: 100vh; /* 전체 높이 설정 */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px; /* 패딩 추가 */
-    background-color: #f0f8ff; /* 배경색 변경 */
-    border-radius: 10px; /* 둥근 모서리 추가 */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* 그림자 추가 */
+  position: flex; /* 절대 위치 설정 */
+  right: 0; /* 오른쪽에 붙이기 */
+  width: 20%; /* 너비 설정 (필요에 따라 조정) */
+  height: 100vh; /* 전체 높이 설정 */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px; /* 패딩 추가 */
+  background-color: #f0f8ff; /* 배경색 변경 */
+  border-radius: 10px; /* 둥근 모서리 추가 */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* 그림자 추가 */
 }
 
-  .grid-container {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr)); /* 최소 너비를 0으로 설정하여 자유롭게 조정 가능 */
-    grid-template-rows: repeat(4, minmax(0, 1fr)); /* 최소 높이를 0으로 설정하여 자유롭게 조정 가능 */
-    gap: 15px; /* 간격 조정 */
-    width: 100%;
-    height: 100%;
-    padding: 10px; /* 패딩 추가 */
-    border: 2px solid #14bae4; /* 테두리 추가 */
-    border-radius: 10px; /* 둥근 모서리 추가 */
-    background-color: #ffffff; /* 배경색 변경 */
-  }
-  
-  .grid-item {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #e0e0e0; /* 기본 배경색 변경 */
-    border: 2px solid #ccc; /* 테두리 색상 변경 */
-    border-radius: 8px; /* 둥근 모서리 추가 */
-    height: 60px; /* 높이 조정 */
-    transition: background-color 0.3s, transform 0.2s; /* 배경색 변화 및 크기 변화 애니메이션 추가 */
-  }
-
-  .grid-item:hover {
-    background-color: #d1e7dd; /* 호버 시 배경색 변경 */
-    transform: scale(1.05); /* 호버 시 크기 증가 */
-  }
-
-  .grid-item.yellow {
-    background-color: #ffeb3b; /* 노란색 클래스 변경 */
-  }
-  
-  .grid-item:nth-child(1) {
-    grid-column: 1 / 2;
-    grid-row: 2 / 3;
-  }
-  
-  .grid-item:nth-child(2) {
-    grid-column: 2 / 3;
-    grid-row: 1 / 2;
-  }
-  
-  .grid-item:nth-child(3) {
-    grid-column: 3 / 4;
-    grid-row: 1 / 2;
-  }
-  
-  .grid-item:nth-child(4) {
-    grid-column: 4 / 5;
-    grid-row: 2 / 3;
-  }
-  
-  .grid-item:nth-child(5) {
-    grid-column: 4 / 5;
-    grid-row: 3 / 4;
-  }
-  
-  .grid-item:nth-child(6) {
-    grid-column: 4 / 5;
-    grid-row: 4 / 5;
-  }
-  
-  .grid-item:nth-child(7) {
-    grid-column: 3 / 4;
-    grid-row: 5 / 6;
-  }
-  
-  .grid-item:nth-child(8) {
-    grid-column: 2 / 3;
-    grid-row: 5 / 6;
-  }
-  
-  .grid-item:nth-child(9) {
-    grid-column: 1 / 2;
-    grid-row: 4 / 5;
-  }
-
-  .grid-item:nth-child(10) {
-    grid-column: 2 / 3;
-    grid-row: 4 / 5;
-    height: 30px; /* 세로 길이를 절반으로 설정 */
-
-  }
-  
-  .grid-item:nth-child(11) {
-    grid-column: 3 / 4;
-    grid-row: 4 / 5; /* 위치를 3/5에서 아래쪽으로 변경 */
-    height: 30px; /* 세로 길이를 절반으로 설정 */
-
-  }
-  
-  .grid-item:nth-child(12) {
-    grid-column: 1 / 2;
-    grid-row: 3 / 4;
-  }
-  
-  .grid-item:nth-child(13) {
-    grid-column: 2 / 3;
-    grid-row: 3 / 4;
-    height: 30px; /* 세로 길이를 절반으로 설정 */
-  }
-  
-  .grid-item:nth-child(14) {
-    grid-column: 3 / 4;
-    grid-row: 3 / 4;
-    height: 30px; /* 세로 길이를 절반으로 설정 */
-    
-  }
-  
-  .save {
-    margin-top: 20px;
-    background-color: lightgreen;
-    padding: 10px 20px;
-    border: none;
-    cursor: pointer;
-  }
-  
-  /* 텍스트 입력 */
-  .text-input-container {
-    display: flex; /* 가로로 */
-    align-items: center;
-    width:90%;
-    padding: 10px 0; /* 패딩 추가 */
-  }
-  
-  .text-input-box {
-    background-color: #ffffff; 
-    display: flex; /* inline-block에서 block으로 변경 */
-    padding: 12px; /* 패딩 변경 */
-    margin-top: 3%;
-    margin-left: 5%;  
-    margin-right: 4%;
-    border: 2px solid #d1d1d1; /* 테두리 색상 변경 */
-    border-radius: 8px; /* 둥근 모서리 변경 */
-    width: 100%; 
-    box-shadow: 0px 2px 4px rgba(0,0,0,0.1); /* 그림자 추가 */
-  }
-  
-  .text-input-box input {
-    width: 100%;
-    padding: 8px; /* 패딩 변경 */
-    border: none;
-    outline: none;
-    font-size: 14px; /* 폰트 크기 변경 */
-  }
-  
-  /* 해시태그 입력 */
-  .record-hashtag-container {
-    display: flex;
-    overflow-x: auto;
-    white-space: nowrap;
-    padding: 10px;
-    background-color: #ffffff;
-  }
-  
-  .record-hashtag {
-    display: inline-block;
-    padding: 5px 10px;
-    margin: 0 5px;
-    background-color: #14bae4;
-    color: white;
-    border-radius: 20px;
-    cursor: pointer;
-  }
-  
-  .record-hashtag-input {
-    width: 150px;
-    display: inline-block; /* 입력 칸 보이기 */
-  }
-  
-  .record-add-hashtag-button {
-    padding: 8px 15px; /* 패딩 조정 */
-    margin: 0 5px;
-    background-color: #007bff; /* 배경색 변경 */
-    color: white;
-    border: none; /* 테두리 제거 */
-    border-radius: 25px; /* 둥근 모서리 변경 */
-    cursor: pointer;
-    font-weight: bold; /* 글자 두껍게 */
-    transition: background-color 0.3s, transform 0.2s; /* 애니메이션 추가 */
-  }
-
-  .record-add-hashtag-button:hover {
-    background-color: #0056b3; /* 호버 시 배경색 변경 */
-    transform: scale(1.05); /* 호버 시 크기 증가 */
-  }
-
-  .record-add-hashtag-button:active {
-    transform: scale(0.95); /* 클릭 시 크기 감소 */
-  }
-  
-  .record-hashtag-container::-webkit-scrollbar {
-    width: 10px;
-  }
-  
-  .record-hashtag-container::-webkit-scrollbar-track {
-    background: #f2f2f2;
-  }
-  
-  .record-hashtag-container::-webkit-scrollbar-thumb {
-    background: #14bae4;
-    border-radius: 10px;
-  }
-  
-  /* 레코드 입력 */
-  .record-inputs {
-    display: flex; 
-    align-items: center; 
-    padding: 10px; 
-    width: 100%; 
-  }
-  
-  .record-text-input-box {
-    width: 26%; 
-    background-color: #ffffff; 
-    display: flex; 
-    padding: 12px; 
-    margin: 5px; 
-    margin-left: 5%;
-    border: 2px solid #d1d1d1; 
-    border-radius: 8px; 
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); 
-  }
-
-  .styled-input {
-    width: 100%; 
-    padding: 12px 20px; 
-    border: 2px solid #ccc; 
-    border-radius: 8px; 
-    box-sizing: border-box; 
-    font-size: 16px; 
-    font-family: 'Arial', sans-serif; 
-    background-color: #f9f9f9; 
-    transition: border-color 0.3s ease, box-shadow 0.3s ease; 
-  }
-  
-  .styled-input:focus {
-    border-color: #14bae4; 
-    box-shadow: 0 0 8px rgba(0, 123, 255, 0.25); 
-    outline: none; 
-  }
-  
-  .styled-input::placeholder {
-    color: #aaa; 
-    font-style: italic; 
-  }
-  
-  /* 모달 관련 스타일 */
-  .modal {
-    position: fixed;
-    top: 50%; /* 화면 중앙 */
-    left: 50%; /* 화면 중앙 */
-    transform: translate(-50%, -50%); /* 중앙 정렬 */
-    border-radius: 10px;
-    justify-content: center;
-    align-items: center;
-    background-color: white; /* 배경색 */
-    padding: 20px; /* 패딩 */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 그림자 */
-    z-index: 1000; /* 다른 요소 위에 표시 */
-  }
-  
-  .modal-content {
-    background-color: white;
-    padding: 20px;
-    border-radius: 10px;
-    width: 80%;
-    max-width: 500px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    text-align: center;
-    max-height: 400px; /* 최대 높이 설정 */
-    overflow-y: auto; /* 세로 스크롤 가능 */
-  }
-  
-  .modal-input {
-    width: calc(100% - 40px);
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 16px;
-  }
-  
-  .modal-button {
-    padding: 10px 20px;
-    background-color: #14bae4;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    margin: 5px;
-    transition: background-color 0.3s ease;
-  }
-  
-  .modal-button:hover {
-    background-color: #32c7d1;
-  }
-  
-  .record-locations {
-    padding: 10px;
-    margin: 5px 0;
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-
-  .record-locations-container {
-    max-height: 300px; /* 최대 높이 설정 */
-    overflow-y: auto; /* 세로 스크롤 가능 */
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(
+    4,
+    minmax(0, 1fr)
+  ); /* 최소 너비를 0으로 설정하여 자유롭게 조정 가능 */
+  grid-template-rows: repeat(
+    4,
+    minmax(0, 1fr)
+  ); /* 최소 높이를 0으로 설정하여 자유롭게 조정 가능 */
+  gap: 15px; /* 간격 조정 */
+  width: 100%;
+  height: 100%;
+  padding: 10px; /* 패딩 추가 */
+  border: 2px solid #14bae4; /* 테두리 추가 */
+  border-radius: 10px; /* 둥근 모서리 추가 */
+  background-color: #ffffff; /* 배경색 변경 */
 }
-  
-  .record-locations:hover {
-    background-color: #f1f1f1;
-  }
-  
-  /* 공유 버튼 */
-  .share {
-    padding: 3.2px;
-    margin: 0;
-    margin-left: 60px;
-    width: 30px;
-  }
-  
-  /* 토글 스위치 */
-  .toggle-switch {
-    margin-left: 50%;
-    position: relative;
-    display: inline-block;
-    width: 60px;
-    height: 24px;
-    cursor: pointer;
-    background-color: #ccc; /* 배경색 추가 */
-    border-radius: 12px; /* 둥근 모서리 추가 */
-  }
-  
-  .toggle-switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-  }
-  
-  .slider {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-    transition: 0.4s;
-    border-radius: 12px; /* 둥근 모서리 변경 */
-  }
-  
-  .slider:before {
-    position: absolute;
-    content: '';
-    height: 20px; /* 크기 변경 */
-    width: 20px; /* 크기 변경 */
-    left: 4px; /* 위치 변경 */
-    bottom: 2px; /* 위치 변경 */
-    background-color: white;
-    transition: 0.4s;
-    border-radius: 50%;
-  }
-  
-  .toggle-switch.checked .slider {
-    background-color: #14bae4; /* 색상 변경 */
-  }
-  
-  .toggle-switch.checked .slider:before {
-    transform: translateX(36px); /* 이동 거리 변경 */
-  }
-  
-  /* 저널 추가 */
-  .add-journal {
-    width: 89%;
-    height: 7%;
-    margin: 5%;
-  }
-  
-  /* 이미지 프리뷰 */
-  .preview-image {
-    width: auto; /* 너비를 박스에 맞춤 */
-    height: auto; /* 높이를 자동으로 조절하여 비율을 유지 */
-    max-height: 200px; /* 최대 높이 설정 */
-    object-fit: contain; /* 이미지 비율을 유지하면서 박스 안에 전체 이미지가 보이게 함 */
-    border: 1px solid #ccc; /* 이미지 주위에 테두리 추가 */
-    box-shadow: 0px 0px 8px #888888; /* 이미지에 그림자 효과 추가 */
-    margin-right: 5px;  /* 오른쪽 여백 */
-    margin-bottom: 5px;  /* 아래 여백 */
-  }
-  
-  .file-input {
-    margin-top: 20px;  /* 상단 여백 추가 */
-    margin-bottom: 20px;  /* 하단 여백 추가 */
-    width: 100%;  /* 너비 조정 */
-    display: block;  /* 블록 레벨 요소로 변경 */
-    display: none;
-  }
-  
-  .custom-file-input {
-    margin-top: 3%;
-    padding: 10px 20px;
-    font-size: 20px;
-    font-weight: bold;
-    color: white;
-    background-color: #14bae4;
-    border: none;
-    border-radius: 15px;
-    cursor: pointer;
-  }
-  
-  .custom-file-input:hover {
-    background-color: #32c7d1;
-  }
-  
-  /* 이미지 세부 사항 */
-  .image-detail-container {
-    display: flex;
-    flex-direction: column; /* 세로 정렬로 변경 */
-    align-items: center; /* 가운데 정렬 */
-    margin-bottom: 20px;
-  }
-  
-  .image-detail-container input,
-  .image-detail-container textarea {
-    width: 90%; /* 폭 조정 */
-    margin: 5px 0; /* 상하 여백 추가 */
-  }
-  
+
+.grid-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #e0e0e0; /* 기본 배경색 변경 */
+  border: 2px solid #ccc; /* 테두리 색상 변경 */
+  border-radius: 8px; /* 둥근 모서리 추가 */
+  height: 60px; /* 높이 조정 */
+  transition: background-color 0.3s, transform 0.2s; /* 배경색 변화 및 크기 변화 애니메이션 추가 */
+}
+
+.grid-item:hover {
+  background-color: #d1e7dd; /* 호버 시 배경색 변경 */
+  transform: scale(1.05); /* 호버 시 크기 증가 */
+}
+
+.grid-item.yellow {
+  background-color: #ffeb3b; /* 노란색 클래스 변경 */
+}
+
+.grid-item:nth-child(1) {
+  grid-column: 1 / 2;
+  grid-row: 2 / 3;
+}
+
+.grid-item:nth-child(2) {
+  grid-column: 2 / 3;
+  grid-row: 1 / 2;
+}
+
+.grid-item:nth-child(3) {
+  grid-column: 3 / 4;
+  grid-row: 1 / 2;
+}
+
+.grid-item:nth-child(4) {
+  grid-column: 4 / 5;
+  grid-row: 2 / 3;
+}
+
+.grid-item:nth-child(5) {
+  grid-column: 4 / 5;
+  grid-row: 3 / 4;
+}
+
+.grid-item:nth-child(6) {
+  grid-column: 4 / 5;
+  grid-row: 4 / 5;
+}
+
+.grid-item:nth-child(7) {
+  grid-column: 3 / 4;
+  grid-row: 5 / 6;
+}
+
+.grid-item:nth-child(8) {
+  grid-column: 2 / 3;
+  grid-row: 5 / 6;
+}
+
+.grid-item:nth-child(9) {
+  grid-column: 1 / 2;
+  grid-row: 4 / 5;
+}
+
+.grid-item:nth-child(10) {
+  grid-column: 2 / 3;
+  grid-row: 4 / 5;
+  height: 30px; /* 세로 길이를 절반으로 설정 */
+}
+
+.grid-item:nth-child(11) {
+  grid-column: 3 / 4;
+  grid-row: 4 / 5; /* 위치를 3/5에서 아래쪽으로 변경 */
+  height: 30px; /* 세로 길이를 절반으로 설정 */
+}
+
+.grid-item:nth-child(12) {
+  grid-column: 1 / 2;
+  grid-row: 3 / 4;
+}
+
+.grid-item:nth-child(13) {
+  grid-column: 2 / 3;
+  grid-row: 3 / 4;
+  height: 30px; /* 세로 길이를 절반으로 설정 */
+}
+
+.grid-item:nth-child(14) {
+  grid-column: 3 / 4;
+  grid-row: 3 / 4;
+  height: 30px; /* 세로 길이를 절반으로 설정 */
+}
+
+.save {
+  margin-top: 20px;
+  background-color: lightgreen;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+}
+
+/* 텍스트 입력 */
+.text-input-container {
+  display: flex; /* 가로로 */
+  align-items: center;
+  width: 90%;
+  padding: 10px 0; /* 패딩 추가 */
+}
+
+.text-input-box {
+  background-color: #ffffff;
+  display: flex; /* inline-block에서 block으로 변경 */
+  padding: 12px; /* 패딩 변경 */
+  margin-top: 3%;
+  margin-left: 5%;
+  margin-right: 4%;
+  border: 2px solid #d1d1d1; /* 테두리 색상 변경 */
+  border-radius: 8px; /* 둥근 모서리 변경 */
+  width: 100%;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* 그림자 추가 */
+}
+
+.text-input-box input {
+  width: 100%;
+  padding: 8px; /* 패딩 변경 */
+  border: none;
+  outline: none;
+  font-size: 14px; /* 폰트 크기 변경 */
+}
+
+/* 해시태그 입력 */
+.record-hashtag-container {
+  display: flex;
+  overflow-x: auto;
+  white-space: nowrap;
+  padding: 10px;
+  background-color: #ffffff;
+}
+
+.record-hashtag {
+  border: 2px solid rgb(105, 105, 105);
+  background-color: #cfe8ff; /* 해시태그 배경색 */
+  color: #333; /* 해시태그 글자색 */
+  border-radius: 15px; /* 둥근 모서리 */
+  padding: 5px 10px; /* 패딩 추가 */
+  margin: 5px; /* 해시태그 간격 */
+  cursor: pointer; /* 포인터 커서 */
+  transition: background-color 0.3s; /* 배경색 전환 효과 */
+  position: relative; /* 상대 위치 설정 */
+  display: inline-block; /* 인라인 블록으로 설정 */
+  font-weight: bold; /* - 표시 두껍게 설정 */
+}
+
+.record-hashtag-input {
+  width: 150px;
+  display: inline-block; /* 입력 칸 보이기 */
+}
+
+.record-add-hashtag-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 8px 15px; /* 패딩 조정 */
+  margin: 0 5px;
+  background-color: #007bff; /* 배경색 변경 */
+  color: white;
+  border: none; /* 테두리 제거 */
+  border-radius: 25px; /* 둥근 모서리 변경 */
+  cursor: pointer;
+  font-weight: bold; /* 글자 두껍게 */
+  transition: background-color 0.3s, transform 0.2s; /* 애니메이션 추가 */
+}
+
+.record-add-hashtag-button:hover {
+  background-color: #0056b3; /* 호버 시 배경색 변경 */
+  transform: scale(1.05); /* 호버 시 크기 증가 */
+}
+
+.record-add-hashtag-button:active {
+  transform: scale(0.95); /* 클릭 시 크기 감소 */
+}
+
+.record-hashtag-container::-webkit-scrollbar {
+  width: 10px;
+}
+
+.record-hashtag-container::-webkit-scrollbar-track {
+  background: #f2f2f2;
+}
+
+.record-hashtag-container::-webkit-scrollbar-thumb {
+  background: #14bae4;
+  border-radius: 10px;
+}
+
+/* 레코드 입력 */
+.record-inputs {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  width: 100%;
+}
+
+.record-text-input-box {
+  width: 26%;
+  background-color: #ffffff;
+  display: flex;
+  padding: 12px;
+  margin: 5px;
+  margin-left: 5%;
+  border: 2px solid #d1d1d1;
+  border-radius: 8px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.styled-input {
+  width: 100%;
+  padding: 12px 20px;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-family: "Arial", sans-serif;
+  background-color: #f9f9f9;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.styled-input:focus {
+  border-color: #14bae4;
+  box-shadow: 0 0 8px rgba(0, 123, 255, 0.25);
+  outline: none;
+}
+
+.styled-input::placeholder {
+  color: #aaa;
+  font-style: italic;
+}
+
+/* 모달 관련 스타일 */
+.modal {
+  position: fixed;
+  top: 50%; /* 화면 중앙 */
+  left: 50%; /* 화면 중앙 */
+  transform: translate(-50%, -50%); /* 중앙 정렬 */
+  border-radius: 10px;
+  justify-content: center;
+  align-items: center;
+  background-color: white; /* 배경색 */
+  padding: 20px; /* 패딩 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 그림자 */
+  z-index: 1000; /* 다른 요소 위에 표시 */
+}
+
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 80%;
+  max-width: 500px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  max-height: 400px; /* 최대 높이 설정 */
+  overflow-y: auto; /* 세로 스크롤 가능 */
+}
+
+.modal-input {
+  width: calc(100% - 40px);
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.modal-button {
+  padding: 10px 20px;
+  background-color: #14bae4;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  margin: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.modal-button:hover {
+  background-color: #32c7d1;
+}
+
+.record-locations {
+  padding: 10px;
+  margin: 5px 0;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.record-locations-container {
+  max-height: 300px; /* 최대 높이 설정 */
+  overflow-y: auto; /* 세로 스크롤 가능 */
+}
+
+.record-locations:hover {
+  background-color: #f1f1f1;
+}
+
+/* 공유 버튼 */
+.share {
+  padding: 3.2px;
+  margin: 0;
+  margin-left: 60px;
+  width: 30px;
+}
+
+/* 토글 스위치 */
+.toggle-switch {
+  margin-left: 50%;
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 24px;
+  cursor: pointer;
+  background-color: #ccc; /* 배경색 추가 */
+  border-radius: 12px; /* 둥근 모서리 추가 */
+}
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 12px; /* 둥근 모서리 변경 */
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 20px; /* 크기 변경 */
+  width: 20px; /* 크기 변경 */
+  left: 4px; /* 위치 변경 */
+  bottom: 2px; /* 위치 변경 */
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+.toggle-switch.checked .slider {
+  background-color: #14bae4; /* 색상 변경 */
+}
+
+.toggle-switch.checked .slider:before {
+  transform: translateX(36px); /* 이동 거리 변경 */
+}
+
+/* 저널 추가 */
+.add-journal {
+  width: 89%;
+  height: 7%;
+  margin: 5%;
+}
+
+/* 이미지 프리뷰 */
+.preview-image {
+  width: auto; /* 너비를 박스에 맞춤 */
+  height: auto; /* 높이를 자동으로 조절하여 비율을 유지 */
+  max-height: 200px; /* 최대 높이 설정 */
+  object-fit: contain; /* 이미지 비율을 유지하면서 박스 안에 전체 이미지가 보이게 함 */
+  border: 1px solid #ccc; /* 이미지 주위에 테두리 추가 */
+  box-shadow: 0px 0px 8px #888888; /* 이미지에 그림자 효과 추가 */
+  margin-right: 5px; /* 오른쪽 여백 */
+  margin-bottom: 5px; /* 아래 여백 */
+}
+
+.file-input {
+  margin-top: 20px; /* 상단 여백 추가 */
+  margin-bottom: 20px; /* 하단 여백 추가 */
+  width: 100%; /* 너비 조정 */
+  display: block; /* 블록 레벨 요소로 변경 */
+  display: none;
+}
+
+.custom-file-input {
+  margin-top: 3%;
+  padding: 10px 20px;
+  font-size: 20px;
+  font-weight: bold;
+  color: white;
+  background-color: #14bae4;
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+}
+
+.custom-file-input:hover {
+  background-color: #32c7d1;
+}
+
+/* 이미지 세부 사항 */
+.image-detail-container {
+  display: flex;
+  flex-direction: column; /* 세로 정렬로 변경 */
+  align-items: center; /* 가운데 정렬 */
+  margin-bottom: 20px;
+}
+
+.image-detail-container input,
+.image-detail-container textarea {
+  width: 90%; /* 폭 조정 */
+  margin: 5px 0; /* 상하 여백 추가 */
+}
+
 .image-detail-box {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    padding: 10px;
-    margin-bottom: 20px;
-    background-color: #f8f8f8;
-    float: left;
-    margin-left: 5%;  
-    margin-top: 10%;
-    cursor: grab; /* 드래그 커서 */
-    position: relative; /* 상대 위치 설정 */
-  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 10px;
+  margin-bottom: 20px;
+  background-color: #f8f8f8;
+  float: left;
+  margin-left: 4%;
+  cursor: grab; /* 드래그 커서 */
+  position: relative; /* 상대 위치 설정 */
 }
 
 .remove-image-button {
@@ -516,119 +524,121 @@
 }
 
 .image-detail-box:hover .remove-image-button {
-    opacity: 1; /* 호버 시 보이기 */
+  opacity: 1; /* 호버 시 보이기 */
 }
 
-  .image-detail-box:active {
-    cursor: grabbing; /* 드래그 중 커서 변경 */
+.image-detail-box:active {
+  cursor: grabbing; /* 드래그 중 커서 변경 */
 }
 
 .image-detail-box.faded {
-    opacity: 0.5; /* 흐릿해지는 효과 */
+  opacity: 0.5; /* 흐릿해지는 효과 */
 }
-
+.record_title_card {
+  background-image: url("../../../public/images/background1.jpg");
+}
 .image-upload-section {
   min-height: 100px; /* 최소 높이 설정 */
   height: 100%; /* 최대 높이로 설정 */
   padding: 10px; /* 패딩 추가 */
   border-radius: 5px; /* 모서리 둥글게 */
 }
-  
-  .image-detail-box img {
-    width: 350px; /* 고정 너비 설정 */
-    height: 350px; /* 고정 높이 설정 */
-    object-fit: cover; /* 이미지의 비율을 유지하면서 크기에 맞추기 */
-    border-radius: 10px; /* 이미지 모서리 둥글게 설정 */
-    margin-bottom: 10px;
-  }
-  
-  .image-detail-box input,
-  .image-detail-box textarea {
-    width: 90%; /* 입력 필드 너비 */
-    margin: 5px; /* 입력 필드 간격 */
-    padding: 8px; /* 입력 필드 내부 여백 */
-    border: 1px solid #ccc; /* 입력 필드 테두리 */
-    border-radius: 5px; /* 입력 필드 모서리 둥글게 */
-    background-color: #fff; /* 배경색 */
-  }
-  
-  .image-number {
-    position: static;
-    top: 10px;
-    left: 10px;
-    color: rgb(0, 0, 0);
-    font-size: 20px;
-    font-weight: bold;
-    z-index: 10;
-  }
-  
-  /* 날씨 선택 */
-  .weather-selection {
-    display: flex;
-    justify-content: space-between; /* 날씨 가로로 나열되도록 설정 */
-    width: 100%;
-    margin-bottom: 10px;
-  }
-  
-  .weather-box.selected {
-    border-color: #14bae4; /* 선택됐을 때의 테두리 색상 변경 */
-  }
-  
-  .weather-box {
-    width: 60px;
-    height: 60px;
-    border: 2px solid transparent;
-    border-radius: 30px; /* 둥근 모서리 변경 */
-    cursor: pointer;
-    overflow: hidden;
-    transition: border-color 0.3s; /* 테두리 색상 변경 애니메이션 */
-    margin: 10px; /* 상하좌우 모든 방향으로 10px의 여백을 줌 */ 
-    box-shadow: 0px 2px 4px rgba(0,0,0,0.1); /* 그림자 추가 */
-  }
-  
-  .weather-box img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  
-  /* 이미지 업로드 섹션 */
-  .image-upload-section { 
-    display: inline-block;
-    flex-wrap: wrap;
-    gap: 10px;
-    justify-content: center;
-    margin-left: 3%;  
-  }
-  
-  .file-upload-box {
-    margin-left: 10px; /* 텍스트 입력 박스와의 간격 설정 */
-    width: 7%;
-  }
-  
-  .save {
-    margin-left: 70px;
-    padding: 10px 20px;
-    font-size: 16px;
-    font-weight: bold;
-    color: white;
-    background: linear-gradient(135deg, #6d0ed2 0%, #558ef1 100%);
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    outline: none;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+
+.image-detail-box img {
+  width: 350px; /* 고정 너비 설정 */
+  height: 350px; /* 고정 높이 설정 */
+  object-fit: cover; /* 이미지의 비율을 유지하면서 크기에 맞추기 */
+  border-radius: 10px; /* 이미지 모서리 둥글게 설정 */
+  margin-bottom: 10px;
+}
+
+.image-detail-box input,
+.image-detail-box textarea {
+  width: 90%; /* 입력 필드 너비 */
+  margin: 5px; /* 입력 필드 간격 */
+  padding: 8px; /* 입력 필드 내부 여백 */
+  border: 1px solid #ccc; /* 입력 필드 테두리 */
+  border-radius: 5px; /* 입력 필드 모서리 둥글게 */
+  background-color: #fff; /* 배경색 */
+}
+
+.image-number {
+  position: static;
+  top: 10px;
+  left: 10px;
+  color: rgb(0, 0, 0);
+  font-size: 20px;
+  font-weight: bold;
+  z-index: 10;
+}
+
+/* 날씨 선택 */
+.weather-selection {
+  display: flex;
+  justify-content: space-between; /* 날씨 가로로 나열되도록 설정 */
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.weather-box.selected {
+  border-color: #14bae4; /* 선택됐을 때의 테두리 색상 변경 */
+}
+
+.weather-box {
+  width: 60px;
+  height: 60px;
+  border: 2px solid transparent;
+  border-radius: 30px; /* 둥근 모서리 변경 */
+  cursor: pointer;
+  overflow: hidden;
+  transition: border-color 0.3s; /* 테두리 색상 변경 애니메이션 */
+  margin: 10px; /* 상하좌우 모든 방향으로 10px의 여백을 줌 */
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* 그림자 추가 */
+}
+
+.weather-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* 이미지 업로드 섹션 */
+.image-upload-section {
+  display: inline-block;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-left: 3%;
+}
+
+.file-upload-box {
+  margin-left: 10px; /* 텍스트 입력 박스와의 간격 설정 */
+  width: 7%;
+}
+
+.save {
+  margin-left: 70px;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  background: linear-gradient(135deg, #6d0ed2 0%, #558ef1 100%);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  outline: none;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
 
 .save:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
 }
 
 .save:active {
-    transform: translateY(1px);
-    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.12);
+  transform: translateY(1px);
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.12);
 }
 
 .hashtag {
@@ -637,145 +647,127 @@
   background-color: #e1e1e1;
   border-radius: 5px;
   font-family: Arial, sans-serif;
-  
 }
 
 /* Record.css */
 .record-hashtag-container {
-    display: flex;
-    flex-wrap: wrap;
-    margin: 3%;
+  display: flex;
+  flex-wrap: wrap;
+  margin: 20px;
 }
-
-.record-hashtag {
-    background-color: #e0e0e0; /* 해시태그 배경색 */
-    color: #333; /* 해시태그 글자색 */
-    border-radius: 15px; /* 둥근 모서리 */
-    padding: 5px 10px; /* 패딩 추가 */
-    margin: 5px; /* 해시태그 간격 */
-    cursor: pointer; /* 포인터 커서 */
-    transition: background-color 0.3s; /* 배경색 전환 효과 */
-    position: relative; /* 상대 위치 설정 */
-    display: inline-block; /* 인라인 블록으로 설정 */
-    font-weight: bold; /* - 표시 두껍게 설정 */
-
-}
-
 
 .record-hashtag:hover::after {
-    opacity: 1; /* 호버 시 불투명하게 변경 */
+  opacity: 1; /* 호버 시 불투명하게 변경 */
 }
 
 .record-hashtag:hover {
-    color: red; /* 빨간색 */
-    background-color: #b0b0b0; /* 호버 시 배경색 변화 */
-    text-decoration: line-through; /* 호버 시 줄 그어짐 */
-
+  color: red; /* 빨간색 */
+  background-color: #b0b0b0; /* 호버 시 배경색 변화 */
+  text-decoration: line-through; /* 호버 시 줄 그어짐 */
 }
 
 .record-add-hashtag-button {
-    background-color: #007bff; /* 추가 버튼 배경색 */
-    color: white; /* 추가 버튼 글자색 */
-    border: none; /* 테두리 제거 */
-    border-radius: 15px; /* 둥근 모서리 */
-    padding: 5px 10px; /* 패딩 추가 */
-    cursor: pointer; /* 포인터 커서 */
-    transition: background-color 0.3s; /* 배경색 전환 효과 */
+  background-color: #007bff; /* 추가 버튼 배경색 */
+  color: white; /* 추가 버튼 글자색 */
+  border: none; /* 테두리 제거 */
+  border-radius: 15px; /* 둥근 모서리 */
+  padding: 5px 10px; /* 패딩 추가 */
+  cursor: pointer; /* 포인터 커서 */
+  transition: background-color 0.3s; /* 배경색 전환 효과 */
 }
 
 .record-add-hashtag-button:hover {
-    background-color: #0056b3; /* 호버 시 배경색 변화 */
+  background-color: #0056b3; /* 호버 시 배경색 변화 */
 }
 
 .record-hashtag-input {
-    margin-left: 5px;
-    border: 2px solid #007BFF; /* 테두리 색상 */
-    border-radius: 5px; /* 모서리 둥글게 */
-    padding: 10px; /* 패딩 추가 */
-    width: 200px; /* 너비 설정 */
-    transition: border-color 0.3s; /* 테두리 색상 변화 애니메이션 */
+  margin-left: 5px;
+  border: 2px solid #007bff; /* 테두리 색상 */
+  border-radius: 5px; /* 모서리 둥글게 */
+  padding: 10px; /* 패딩 추가 */
+  width: 200px; /* 너비 설정 */
+  transition: border-color 0.3s; /* 테두리 색상 변화 애니메이션 */
 }
 
 .record-hashtag-input:focus {
-    border-color: #2E7D32; /* 포커스 시 테두리 색상 변화 */
-    outline: none; /* 기본 아웃라인 제거 */
+  border-color: #2e7d32; /* 포커스 시 테두리 색상 변화 */
+  outline: none; /* 기본 아웃라인 제거 */
 }
 
 .styled-input {
-    border: 2px solid #007BFF; /* 테두리 색상 */
-    border-radius: 5px; /* 모서리 둥글게 */
-    padding: 10px; /* 패딩 추가 */
-    transition: border-color 0.3s; /* 테두리 색상 변화 애니메이션 */
+  border: 2px solid #007bff; /* 테두리 색상 */
+  border-radius: 5px; /* 모서리 둥글게 */
+  padding: 10px; /* 패딩 추가 */
+  transition: border-color 0.3s; /* 테두리 색상 변화 애니메이션 */
 }
 
 .styled-input:focus {
-    border-color: #2E7D32; /* 포커스 시 테두리 색상 변화 */
-    outline: none; /* 기본 아웃라인 제거 */
+  border-color: #2e7d32; /* 포커스 시 테두리 색상 변화 */
+  outline: none; /* 기본 아웃라인 제거 */
 }
 
 .modal-input {
-    margin-left: 3.5%;
-    border: 2px solid #007BFF; /* 테두리 색상 */
-    border-radius: 5px; /* 모서리 둥글게 */
-    padding: 10px; /* 패딩 추가 */
-    width: 200px; /* 너비 설정 */
-    transition: border-color 0.3s; /* 테두리 색상 변화 애니메이션 */
+  margin-left: 3.5%;
+  border: 2px solid #007bff; /* 테두리 색상 */
+  border-radius: 5px; /* 모서리 둥글게 */
+  padding: 10px; /* 패딩 추가 */
+  width: 200px; /* 너비 설정 */
+  transition: border-color 0.3s; /* 테두리 색상 변화 애니메이션 */
 }
 
 .modal-input:focus {
-    border-color: #2E7D32; /* 포커스 시 테두리 색상 변화 */
-    outline: none; /* 기본 아웃라인 제거 */
+  border-color: #2e7d32; /* 포커스 시 테두리 색상 변화 */
+  outline: none; /* 기본 아웃라인 제거 */
 }
 
 .modal-button {
-    background-color: #007BFF; /* 배경색 */
-    color: white; /* 글자색 */
-    padding: 10px 20px; /* 패딩 */
-    border: none; /* 테두리 제거 */
-    border-radius: 5px; /* 둥근 모서리 */
-    font-size: 16px; /* 폰트 크기 */
-    cursor: pointer; /* 포인터 커서 */
-    transition: background-color 0.3s, transform 0.2s; /* 배경색 변화 및 크기 변화 애니메이션 */
+  background-color: #007bff; /* 배경색 */
+  color: white; /* 글자색 */
+  padding: 10px 20px; /* 패딩 */
+  border: none; /* 테두리 제거 */
+  border-radius: 5px; /* 둥근 모서리 */
+  font-size: 16px; /* 폰트 크기 */
+  cursor: pointer; /* 포인터 커서 */
+  transition: background-color 0.3s, transform 0.2s; /* 배경색 변화 및 크기 변화 애니메이션 */
 }
 
 .modal-button:hover {
-    background-color: #0056b3; /* 호버 시 배경색 변화 */
-    transform: scale(1.05); /* 호버 시 크기 증가 */
+  background-color: #0056b3; /* 호버 시 배경색 변화 */
+  transform: scale(1.05); /* 호버 시 크기 증가 */
 }
 
 .modal-button:active {
-    transform: scale(0.95); /* 클릭 시 크기 감소 */
+  transform: scale(0.95); /* 클릭 시 크기 감소 */
 }
 
 .place-search-button {
-    background-color: #4CAF50; /* 초록색 배경 */
-    color: white; /* 흰색 글자 */
-    border: none; /* 테두리 없음 */ 
-    padding: 10px 20px; /* 패딩 추가 */
-    text-align: center; /* 중앙 정렬 */
-    text-decoration: none; /* 밑줄 없음 */
-    display: inline-block; /* 인라인 블록 */
-    font-size: 16px; /* 글자 크기 */
-    margin: 4px 2px; /* 여백 */
-    cursor: pointer; /* 커서 포인터 */
-    border-radius: 12px; /* 둥근 모서리 */
-    transition: background-color 0.3s; /* 배경색 전환 효과 */
+  background-color: #4caf50; /* 초록색 배경 */
+  color: white; /* 흰색 글자 */
+  border: none; /* 테두리 없음 */
+  padding: 10px 20px; /* 패딩 추가 */
+  text-align: center; /* 중앙 정렬 */
+  text-decoration: none; /* 밑줄 없음 */
+  display: inline-block; /* 인라인 블록 */
+  font-size: 16px; /* 글자 크기 */
+  margin: 4px 2px; /* 여백 */
+  cursor: pointer; /* 커서 포인터 */
+  border-radius: 12px; /* 둥근 모서리 */
+  transition: background-color 0.3s; /* 배경색 전환 효과 */
 }
 
 .place-search-button {
-    background-color: #45a049; /* 호버 시 배경색 변경 */
-    margin-left: 3.2%;
+  background-color: #45a049; /* 호버 시 배경색 변경 */
+  margin-left: 3.2%;
 }
 
 .place-search-button:hover {
-    background-color: #396451; /* 호버 시 배경색 변화 */
-    transform: scale(1.05); /* 호버 시 크기 증가 */
+  background-color: #396451; /* 호버 시 배경색 변화 */
+  transform: scale(1.05); /* 호버 시 크기 증가 */
 }
 
 .place-search-button:active {
-    transform: scale(0.95); /* 클릭 시 크기 감소 */
+  transform: scale(0.95); /* 클릭 시 크기 감소 */
 }
-
 
 .swap-container {
   display: flex;

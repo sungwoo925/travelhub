@@ -1,6 +1,7 @@
 .home-container {
   padding-left: 30px;
   padding-right: 30px;
+  margin-top: 20px;
 }
 
 .sort-options {
@@ -8,6 +9,7 @@
   justify-content: space-between; /* 버튼을 양쪽으로 배치 */
   align-items: center; /* 수직 정렬 */
   margin-bottom: 20px; /* 아래 여백 추가 */
+  margin-top: 20px;
 }
 
 .sort-options button {

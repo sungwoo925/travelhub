@@ -142,7 +142,7 @@ function Login() {
         </form>
         <div className="login-options">
           <p>다른 계정으로 로그인 하시겠습니까?</p>
-          <div>
+          <div className="sns-btn">
             <button
               className="google-btn"
               style={{
@@ -152,7 +152,9 @@ function Login() {
               }}
             >
               <img src="./images/googleicon.png" alt="google icon" />
-              <span style={{ marginLeft: "8px" }}>google로 쉬운 시작</span>
+              <span style={{ marginLeft: "8px", color: "black" }}>
+                google로 쉬운 시작
+              </span>
             </button>
             <button
               className="kakao-btn"
@@ -164,7 +166,9 @@ function Login() {
               }}
             >
               <img src="./images/kakao-button.png" alt="kakao" />
-              <span style={{ marginLeft: "8px" }}>카카오로 쉬운 시작</span>
+              <span style={{ marginLeft: "8px", color: "black" }}>
+                카카오로 쉬운 시작
+              </span>
             </button>
           </div>
           <div className="signup-link">

@@ -68,6 +68,7 @@ function App() {
               <div className="app">
                 <Header />
                 <Record />
+                <Footer />
               </div>
             }
           />
@@ -90,8 +91,13 @@ function App() {
             element={
               <div className="app">
                 <Header />
-                <div className="empty" />
-                <Register />
+
+                <div className="register-main-content">
+                  <div className="re-main-content">
+                    <Register />
+                  </div>
+                </div>
+
                 {/* <Background /> */}
                 <Footer />
               </div>
