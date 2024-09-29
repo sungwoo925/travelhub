@@ -1,8 +1,20 @@
 .app {
-  display: grid;
-  grid-template-rows: auto 1fr auto;
+  display: flex;
+  flex-direction: column;
   min-height: 100vh;
-  width: 100%;
+}
+
+.main-content {
+  height: 600px;
+  /* 배경 이미지 추가 */
+  background-image: url("../public/images/Loginbackground.jpg"); /* 이미지 경로 수정 */
+  background-size: cover; /* 이미지가 컨테이너 크기에 맞게 확장됨 */
+  background-position: center; /* 이미지를 가운데로 정렬 */
+  background-repeat: no-repeat; /* 이미지가 반복되지 않도록 설정 */
+}
+
+.footer {
+  margin-top: auto;
 }
 
 .header {
@@ -11,10 +23,6 @@
 
 .main {
   grid-row: 2;
-}
-
-.footer {
-  grid-row: 3;
 }
 
 .empty {
