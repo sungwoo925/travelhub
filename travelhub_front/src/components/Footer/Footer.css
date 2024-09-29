@@ -41,6 +41,9 @@ body {
   margin: 0 auto;
   padding-top: 60px;
 }
+.footer-login {
+  margin-top: 0;
+}
 
 .footer .footer-logo {
   max-height: 50px; /* 원하는 최대 높이 설정 */
