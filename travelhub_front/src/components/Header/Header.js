@@ -55,7 +55,7 @@ const Header = () => {
 
   return (
     <div>
-      <nav className="hd ">
+      <nav className="hd">
         <div className="container menuWrap">
           <img
             src="./images/footer-logo-removebg-preview.png"

@@ -22,7 +22,7 @@ a:visited {
   clear: both;
 }
 body {
-  height: 300vh;
+  /* height: 300vh; */
   font-family: "Noto Sans KR", sans-serif;
 }
 
@@ -45,8 +45,7 @@ body {
 .hd {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   width: 100%;
-  background-color: #bfeffd;
-  margin-bottom: 20px;
+  background-color: #e1fbff;
   z-index: 1;
 }
 .menuWrap {
