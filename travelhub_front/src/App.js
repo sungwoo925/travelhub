@@ -76,8 +76,10 @@ function App() {
             element={
               <div className="app">
                 <Header />
-                <div className="main-content">
-                  <Login />
+                <div className="Login-main-content">
+                  <div className="main-content">
+                    <Login />
+                  </div>
                 </div>
                 <Footer className="footer" />
               </div>

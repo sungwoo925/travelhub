@@ -1,21 +1,26 @@
 /* 기본 레이아웃 */
 .login-container {
-  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   height: 100%;
-  max-width: 400px;
-  margin: 0 auto;
-  margin-top: 50px;
+  width: 100%;
+}
+.Login-form {
+  display: flex;
+  flex-direction: column;
+  max-width: 400px; /* 폼의 최대 너비 설정 */
+  width: 100%; /* 작은 화면에서는 전체 너비로 설정 */
+  margin: 0 auto; /* 가운데 정렬 */
   padding: 20px;
-  background-color: #f9f9f9;
-  border-radius: 10px;
+  background-color: #fff;
+  border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 
-  /* 배경 이미지 추가 */
   background-image: url("../../../public/images/background1.jpg"); /* 이미지 경로 수정 */
   background-size: cover; /* 이미지가 컨테이너 크기에 맞게 확장됨 */
   background-position: center; /* 이미지를 가운데로 정렬 */
   background-repeat: no-repeat; /* 이미지가 반복되지 않도록 설정 */
-  margin-bottom: 3%;
 }
 
 h2 {

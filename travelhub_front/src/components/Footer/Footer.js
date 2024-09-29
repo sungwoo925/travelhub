@@ -13,7 +13,7 @@ const Footer = () => {
   }
 
   return (
-    <div className={`footer ${className}`}>
+    <div className={`footer footer-login`}>
       <div className="footer-inner">
         <img
           className="footer-logo"
