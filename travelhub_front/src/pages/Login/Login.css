@@ -16,7 +16,7 @@
   background-color: #fff;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-
+  border: 2px solid rgb(105, 105, 105);
   background-image: url("../../../public/images/background1.jpg"); /* 이미지 경로 수정 */
   background-size: cover; /* 이미지가 컨테이너 크기에 맞게 확장됨 */
   background-position: center; /* 이미지를 가운데로 정렬 */
@@ -101,6 +101,10 @@ input[type="password"]:focus {
   width: 100%; /* 원하는 크기로 설정하세요 */
   height: auto; /* 비율에 맞게 높이 자동 조정 */
 }
+.login-options .sns-btn {
+  /* border: 2px solid rgb(105, 105, 105); */
+}
+
 .google-btn,
 .kakao-btn {
   display: inline-block;
@@ -115,7 +119,6 @@ input[type="password"]:focus {
   width: 24px; /* 이미지 크기 통일 */
   height: auto;
 }
-
 .google-btn span {
   margin-left: 10px;
   font-size: 0.9rem;

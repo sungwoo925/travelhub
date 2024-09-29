@@ -56,8 +56,8 @@ function Home() {
   };
 
   return (
-    <div className="home-container">
-      <div className="sort-options">
+    <div className="container home-container">
+      <div className=" sort-options">
         <button onClick={() => handleSortChange("최신순")}>최신순</button>
         <button onClick={() => handleSortChange("조회순")}>조회순</button>
         <button onClick={() => handleSortChange("좋아요순")}>좋아요순</button>
