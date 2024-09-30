@@ -3,7 +3,8 @@ import * as THREE from 'three';
 import './Studio.css';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader'; // OBJLoader 추가
 import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader'; // MTLLoader 추가
-
+import { FontLoader } from 'three/examples/jsm/loaders/FontLoader';
+import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry';
 
 function addImagePlane(scene, imagePath, position, width, objectName, rotation) {
   const textureLoader = new THREE.TextureLoader();
@@ -90,7 +91,11 @@ const Studio = () => {
   const containerRef = useRef();
   const cameraRef = useRef();
   const [mapJson, SetMapJson] = useState(null);
+  const [font, setFont] = useState();
 
+  const fontUrl = 'https://threejs.org/examples/fonts/helvetiker_regular.typeface.json';
+  
+  
   if (!mapJson) {
     fetch(process.env.PUBLIC_URL + '/mapinfo.json')
       .then(response => response.json())
@@ -123,13 +128,13 @@ const Studio = () => {
     // Scene
     const scene = new THREE.Scene();
 
-     // 조명 추가 시작
-     const directionalLight = new THREE.DirectionalLight(0x000000, 2); // 빨간색 방향성 조명 생성
-     directionalLight.position.set(0, 10, 10).normalize(); // 조명 위치 설정
-     directionalLight.castShadow = true; // 그림자 생성
-     scene.add(directionalLight); // 조명을 scene에 추가
+    // 조명 추가 시작
+    const directionalLight = new THREE.DirectionalLight(0x000000, 2); // 빨간색 방향성 조명 생성
+    directionalLight.position.set(0, 10, 10).normalize(); // 조명 위치 설정
+    directionalLight.castShadow = true; // 그림자 생성
+    scene.add(directionalLight); // 조명을 scene에 추가
 
-     const additionalDirectionalLight = new THREE.DirectionalLight(0xff0000, 1); // 빨간색 방향성 조명
+    const additionalDirectionalLight = new THREE.DirectionalLight(0xff0000, 1); // 빨간색 방향성 조명
     additionalDirectionalLight.position.set(0, 0, -10).normalize(); // 조명 위치 설정
     scene.add(additionalDirectionalLight); // 추가 조명을 scene에 추가
     
@@ -160,6 +165,28 @@ const Studio = () => {
       addColumn(scene, column.position, column.width, column.height, column.depth);
     });
 
+    const loader = new FontLoader();
+    loader.load('/noto_sans_kr.typeface.json', setFont);
+        // 3. 텍스트 생성
+    const textGeometry = new TextGeometry('안녕하세요hree.js!\nasdasdasdsa\n이게 찐도빼기', {
+      font: font,
+      size: 0.1,
+      height: 0,
+      curveSegments: 12,
+      bevelEnabled: false,
+      // bevelThickness: 0.0003,
+      // bevelSize: 0.002,
+      // bevelOffset: 0,
+      // bevelSegments: 1
+    });
+
+    const textMaterial = new THREE.MeshBasicMaterial({ color: 0x000000 });
+    const textMesh = new THREE.Mesh(textGeometry, textMaterial);
+    
+    // 텍스트 위치 조정
+    textMesh.position.set(0, 2, -1);
+    scene.add(textMesh);
+    
     // Chair_and_Table 모델 추가 (크기 1, 위치 (0, 0, 0), 텍스처 경로)
     // addModel(scene, '/OBJ_file/Chair_and_Table.obj', '/OBJ_file/Chair_and_Table.mtl', new THREE.Vector3(0, 0, 10), new THREE.Vector3(30, 30, 30), '/textures/Chair and table_Normal.jpg'); // 텍스처 적용
 
@@ -182,7 +209,7 @@ const Studio = () => {
     renderer.setSize(window.innerWidth, window.innerHeight);
     containerRef.current.appendChild(renderer.domElement);
 
-    // Load background images for each face
+    // 배경
     if (mapJson && mapJson.backgrounds && mapJson.backgrounds.length >= 6) {
       const positions = [
         new THREE.Vector3(0, 0, -50), // Front
@@ -208,21 +235,7 @@ const Studio = () => {
       }
     }
 
-    if (mapJson) {
-      for (const mapDataNum in mapJson.defualt) {
-        const frame = mapJson.defualt[mapDataNum];
-        addImagePlane(
-          scene,
-          frame.imagePath, // 각 프레임에 대한 이미지 경로를 사용합니다.
-          new THREE.Vector3(frame.coordinates[0], frame.coordinates[1], frame.coordinates[2]),
-          frame.width,
-          frame.name,
-          new THREE.Vector3(frame.rotation[0], frame.rotation[1], frame.rotation[2])
-        );
-      }
-    }
-
-    // Load marble texture for the floor
+    // 바닥
     const textureLoader = new THREE.TextureLoader();
     const marbleTexture = textureLoader.load('/images/marble.jpg');
     marbleTexture.wrapS = THREE.RepeatWrapping;
@@ -236,6 +249,20 @@ const Studio = () => {
     floor.rotation.x = -Math.PI / 2;
     floor.position.y = 0;
     scene.add(floor);
+
+    if (mapJson) {
+      for (const mapDataNum in mapJson.defualt) {
+        const frame = mapJson.defualt[mapDataNum];
+        addImagePlane(
+          scene,
+          frame.imagePath, // 각 프레임에 대한 이미지 경로를 사용합니다.
+          new THREE.Vector3(frame.coordinates[0], frame.coordinates[1], frame.coordinates[2]),
+          frame.width,
+          frame.name,
+          new THREE.Vector3(frame.rotation[0], frame.rotation[1], frame.rotation[2])
+        );
+      }
+    }
 
     // Add tile lines
     // const gridHelper = new THREE.GridHelper(100, 4, 0x000000, 0x000000);
@@ -259,7 +286,7 @@ const Studio = () => {
     };
 
     // Listen for window resize events
-    window.addEventListener('resize', handleResize);
+    // window.addEventListener('resize', handleResize);
 
     let movingCircle = 0;
     let movingFlow = 0;
@@ -413,7 +440,7 @@ const Studio = () => {
   }, [mapJson, isCameraMoved]); // isCameraMoved를 의존성 배열에 추가
 
   return (
-    <div ref={containerRef} style={{ width: '100%', height: '100vh', overflow: 'hidden' }}>
+    <div ref={containerRef} style={{ width: '100%', height: '100%', overflow: 'hidden', position: 'fixed'}}>
       <button style={{position:'fixed'}}onClick={handleCameraPositionToggle}>카메라 위치 토글</button> {/* 버튼 추가 */}
       <div className='sidebar-studio'></div>
     </div>
