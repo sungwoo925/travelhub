@@ -3,13 +3,14 @@ import * as THREE from 'three';
 import './Studio.css';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader'; // OBJLoader 추가
 import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader'; // MTLLoader 추가
-
+import { FontLoader } from 'three/examples/jsm/loaders/FontLoader';
+import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry';
 
 function addImagePlane(scene, imagePath, position, width, objectName, rotation) {
   const textureLoader = new THREE.TextureLoader();
   textureLoader.load(imagePath, function(texture) {
     const aspectRatio = texture.image.width / texture.image.height;
-    const planeWidth = width || 5; // 이미지의 너비를 설정합니다. 기본값은 5입니다.
+    const planeWidth = (aspectRatio >= 1? width *1.75 : width ) ; // 이미지의 너비를 설정합니다. 기본값은 5입니다.
     const planeHeight = planeWidth / aspectRatio;
 
     const geometry = new THREE.PlaneGeometry(planeWidth, planeHeight); // 이미지의 크기를 설정합니다.
@@ -90,14 +91,18 @@ const Studio = () => {
   const containerRef = useRef();
   const cameraRef = useRef();
   const [mapJson, SetMapJson] = useState(null);
+  const [font, setFont] = useState();
 
+  const fontUrl = 'https://threejs.org/examples/fonts/helvetiker_regular.typeface.json';
+  
+  
   if (!mapJson) {
     fetch(process.env.PUBLIC_URL + '/mapinfo.json')
       .then(response => response.json())
       .then(mapJson => SetMapJson(mapJson))
       .catch(error => console.log('error'));
   }
-  const [isCameraMoved, setIsCameraMoved] = useState(true); // 카메라 이동 상태 관리
+  const [isCameraMoved, setIsCameraMoved] = useState(false); // 카메라 이동 상태 관리
 
   const handleCameraPositionToggle = () => {
     setIsCameraMoved(prev => !prev); // 상태 토글
@@ -123,13 +128,13 @@ const Studio = () => {
     // Scene
     const scene = new THREE.Scene();
 
-     // 조명 추가 시작
-     const directionalLight = new THREE.DirectionalLight(0x000000, 2); // 빨간색 방향성 조명 생성
-     directionalLight.position.set(0, 10, 10).normalize(); // 조명 위치 설정
-     directionalLight.castShadow = true; // 그림자 생성
-     scene.add(directionalLight); // 조명을 scene에 추가
+    // 조명 추가 시작
+    const directionalLight = new THREE.DirectionalLight(0x000000, 2); // 빨간색 방향성 조명 생성
+    directionalLight.position.set(0, 10, 10).normalize(); // 조명 위치 설정
+    directionalLight.castShadow = true; // 그림자 생성
+    scene.add(directionalLight); // 조명을 scene에 추가
 
-     const additionalDirectionalLight = new THREE.DirectionalLight(0xff0000, 1); // 빨간색 방향성 조명
+    const additionalDirectionalLight = new THREE.DirectionalLight(0xff0000, 1); // 빨간색 방향성 조명
     additionalDirectionalLight.position.set(0, 0, -10).normalize(); // 조명 위치 설정
     scene.add(additionalDirectionalLight); // 추가 조명을 scene에 추가
     
@@ -143,7 +148,7 @@ const Studio = () => {
         const material = new THREE.MeshBasicMaterial({ color: 0xffffff }); // 갈색
         const column = new THREE.Mesh(geometry, material);
         column.position.copy(position);
-        scene.add(column);
+        // scene.add(column);
     }
     // addColumn(scene, new THREE.Vector3(0, 10, -40), 10, 5, 10); // 기둥의 위치와 크기 설정
     // addColumn(scene, new THREE.Vector3(10, 10, -40), 10, 5, 10); // 기둥의 위치와 크기 설정
@@ -160,6 +165,28 @@ const Studio = () => {
       addColumn(scene, column.position, column.width, column.height, column.depth);
     });
 
+    const loader = new FontLoader();
+    loader.load('/noto_sans_kr.typeface.json', setFont);
+        // 3. 텍스트 생성
+    const textGeometry = new TextGeometry('요정도?\nasdasdasdsa\n이게 dS', {
+      font: font,
+      size: 0.2,
+      height: 0,
+      curveSegments: 12,
+      bevelEnabled: false,
+      // bevelThickness: 0.0003,
+      // bevelSize: 0.002,
+      // bevelOffset: 0,
+      // bevelSegments: 1
+    });
+
+    const textMaterial = new THREE.MeshBasicMaterial({ color: 0xFFFFFF });
+    const textMesh = new THREE.Mesh(textGeometry, textMaterial);
+    
+    // 텍스트 위치 조정  (좌우 높이 거리)
+    textMesh.position.set(1.75, 2, -3.5);
+    scene.add(textMesh);
+    
     // Chair_and_Table 모델 추가 (크기 1, 위치 (0, 0, 0), 텍스처 경로)
     // addModel(scene, '/OBJ_file/Chair_and_Table.obj', '/OBJ_file/Chair_and_Table.mtl', new THREE.Vector3(0, 0, 10), new THREE.Vector3(30, 30, 30), '/textures/Chair and table_Normal.jpg'); // 텍스처 적용
 
@@ -182,13 +209,13 @@ const Studio = () => {
     renderer.setSize(window.innerWidth, window.innerHeight);
     containerRef.current.appendChild(renderer.domElement);
 
-    // Load background images for each face
+    // 배경
     if (mapJson && mapJson.backgrounds && mapJson.backgrounds.length >= 6) {
       const positions = [
-        new THREE.Vector3(0, 0, -50), // Front
-        new THREE.Vector3(0, 0, 50),  // Back
-        new THREE.Vector3(-50, 0, 0), // Left
-        new THREE.Vector3(50, 0, 0),  // Right
+        new THREE.Vector3(0, 0, -10), // Front
+        new THREE.Vector3(0, 0, 10),  // Back
+        new THREE.Vector3(-20, 0, 0), // Left
+        new THREE.Vector3(5, 0, 0),  // Right
         new THREE.Vector3(0, 50, 0),  // Top
         new THREE.Vector3(0, -50, 0)  // Bottom
       ];
@@ -202,11 +229,27 @@ const Studio = () => {
       ];
 
       for (let i = 0; i < 6; i++) {
-        addBackgroundPlane(scene, mapJson.backgrounds[i], positions[i], rotations[i]);
+        // addBackgroundPlane(scene, mapJson.backgrounds[i], positions[i], rotations[i]);
         // const framePosition = new THREE.Vector3(positions[i].x, positions[i].y + 1, positions[i].z); // 배경 위쪽에 위치
         // addExhibitionFrame(scene, framePosition, new THREE.Vector3(2, 1, 0.1)); // 프레임 크기 설정
       }
     }
+
+    // 바닥
+    const textureLoader = new THREE.TextureLoader();
+    const marbleTexture = textureLoader.load('/images/marble.jpg');
+    marbleTexture.wrapS = THREE.RepeatWrapping;
+    marbleTexture.wrapT = THREE.RepeatWrapping;
+    marbleTexture.repeat.set(4, 4); // 텍스처 반복 설정
+
+    const floorGeometry = new THREE.PlaneGeometry(100, 100);
+    const floorMaterial = new THREE.MeshPhongMaterial({ map: marbleTexture, side: THREE.DoubleSide });
+    const floor = new THREE.Mesh(floorGeometry, floorMaterial);
+    floor.receiveShadow = true; // 그림자 받기 설정
+    floor.rotation.x = -Math.PI / 2;
+    floor.position.y = -2;
+    floor.position.x = 0;
+    scene.add(floor);
 
     if (mapJson) {
       for (const mapDataNum in mapJson.defualt) {
@@ -222,27 +265,12 @@ const Studio = () => {
       }
     }
 
-    // Load marble texture for the floor
-    const textureLoader = new THREE.TextureLoader();
-    const marbleTexture = textureLoader.load('/images/marble.jpg');
-    marbleTexture.wrapS = THREE.RepeatWrapping;
-    marbleTexture.wrapT = THREE.RepeatWrapping;
-    marbleTexture.repeat.set(4, 4); // 텍스처 반복 설정
-
-    const floorGeometry = new THREE.PlaneGeometry(100, 100);
-    const floorMaterial = new THREE.MeshPhongMaterial({ map: marbleTexture, side: THREE.DoubleSide });
-    const floor = new THREE.Mesh(floorGeometry, floorMaterial);
-    floor.receiveShadow = true; // 그림자 받기 설정
-    floor.rotation.x = -Math.PI / 2;
-    floor.position.y = 0;
-    scene.add(floor);
-
     // Add tile lines
     // const gridHelper = new THREE.GridHelper(100, 4, 0x000000, 0x000000);
     // gridHelper.rotation.x = Math.PI / 2;
     // scene.add(gridHelper);
 
-    const light = new THREE.PointLight(0xffffff, 200, 100);
+    const light = new THREE.PointLight(0xffffff, 500, 100);
     light.position.set(0, 10, 0);
     light.castShadow = true;
     scene.add(light);
@@ -259,7 +287,7 @@ const Studio = () => {
     };
 
     // Listen for window resize events
-    window.addEventListener('resize', handleResize);
+    // window.addEventListener('resize', handleResize);
 
     let movingCircle = 0;
     let movingFlow = 0;
@@ -413,7 +441,7 @@ const Studio = () => {
   }, [mapJson, isCameraMoved]); // isCameraMoved를 의존성 배열에 추가
 
   return (
-    <div ref={containerRef} style={{ width: '100%', height: '100vh', overflow: 'hidden' }}>
+    <div ref={containerRef} style={{ width: '100%', height: '100%', overflow: 'hidden', position: 'fixed'}}>
       <button style={{position:'fixed'}}onClick={handleCameraPositionToggle}>카메라 위치 토글</button> {/* 버튼 추가 */}
       <div className='sidebar-studio'></div>
     </div>
