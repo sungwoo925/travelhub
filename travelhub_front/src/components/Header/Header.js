@@ -57,11 +57,13 @@ const Header = () => {
     <div>
       <nav className="hd">
         <div className="container menuWrap">
-          <img
-            src="./images/footer-logo-removebg-preview.png"
-            alt="Logo"
-            className="logo"
-          />{" "}
+          <Link to="/">
+            <img
+              src="./images/footer-logo-removebg-preview.png"
+              alt="Logo"
+              className="logo"
+            />{" "}
+          </Link>
           {/* 로고 이미지 */}
           {windowWidth <= 680 && (
             <span className="menu-btn" onClick={toggleSidebar}>

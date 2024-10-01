@@ -45,7 +45,7 @@ body {
 .hd {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   width: 100%;
-  background-color: #e1fbff;
+  background-color: rgb(225, 251, 255);
   z-index: 1;
 }
 .menuWrap {
