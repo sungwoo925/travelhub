@@ -53,3 +53,9 @@
   height: 100%;
   z-index: -1; /* Ensure background is behind other content */
 }
+
+.About-page-swiper {
+  width: 100%; /* 부모 컨테이너의 너비 */
+  height: 1000px;
+  margin: 0 auto; /* 가운데 정렬 */
+}

@@ -56,8 +56,9 @@ function App() {
             element={
               <div className="app">
                 <Header />
-                <div className="empty" />
-                <About />
+                <div className="About-page-swiper">
+                  <About />
+                </div>
                 <Footer />
               </div>
             }
