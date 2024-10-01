@@ -10,7 +10,7 @@ function addImagePlane(scene, imagePath, position, width, objectName, rotation) 
   const textureLoader = new THREE.TextureLoader();
   textureLoader.load(imagePath, function(texture) {
     const aspectRatio = texture.image.width / texture.image.height;
-    const planeWidth = width || 5; // 이미지의 너비를 설정합니다. 기본값은 5입니다.
+    const planeWidth = (aspectRatio >= 1? width *1.75 : width ) ; // 이미지의 너비를 설정합니다. 기본값은 5입니다.
     const planeHeight = planeWidth / aspectRatio;
 
     const geometry = new THREE.PlaneGeometry(planeWidth, planeHeight); // 이미지의 크기를 설정합니다.
@@ -102,7 +102,7 @@ const Studio = () => {
       .then(mapJson => SetMapJson(mapJson))
       .catch(error => console.log('error'));
   }
-  const [isCameraMoved, setIsCameraMoved] = useState(true); // 카메라 이동 상태 관리
+  const [isCameraMoved, setIsCameraMoved] = useState(false); // 카메라 이동 상태 관리
 
   const handleCameraPositionToggle = () => {
     setIsCameraMoved(prev => !prev); // 상태 토글
@@ -148,7 +148,7 @@ const Studio = () => {
         const material = new THREE.MeshBasicMaterial({ color: 0xffffff }); // 갈색
         const column = new THREE.Mesh(geometry, material);
         column.position.copy(position);
-        scene.add(column);
+        // scene.add(column);
     }
     // addColumn(scene, new THREE.Vector3(0, 10, -40), 10, 5, 10); // 기둥의 위치와 크기 설정
     // addColumn(scene, new THREE.Vector3(10, 10, -40), 10, 5, 10); // 기둥의 위치와 크기 설정
@@ -168,9 +168,9 @@ const Studio = () => {
     const loader = new FontLoader();
     loader.load('/noto_sans_kr.typeface.json', setFont);
         // 3. 텍스트 생성
-    const textGeometry = new TextGeometry('안녕하세요hree.js!\nasdasdasdsa\n이게 찐도빼기', {
+    const textGeometry = new TextGeometry('요정도?\nasdasdasdsa\n이게 dS', {
       font: font,
-      size: 0.1,
+      size: 0.2,
       height: 0,
       curveSegments: 12,
       bevelEnabled: false,
@@ -180,11 +180,11 @@ const Studio = () => {
       // bevelSegments: 1
     });
 
-    const textMaterial = new THREE.MeshBasicMaterial({ color: 0x000000 });
+    const textMaterial = new THREE.MeshBasicMaterial({ color: 0xFFFFFF });
     const textMesh = new THREE.Mesh(textGeometry, textMaterial);
     
-    // 텍스트 위치 조정
-    textMesh.position.set(0, 2, -1);
+    // 텍스트 위치 조정  (좌우 높이 거리)
+    textMesh.position.set(1.75, 2, -3.5);
     scene.add(textMesh);
     
     // Chair_and_Table 모델 추가 (크기 1, 위치 (0, 0, 0), 텍스처 경로)
@@ -212,10 +212,10 @@ const Studio = () => {
     // 배경
     if (mapJson && mapJson.backgrounds && mapJson.backgrounds.length >= 6) {
       const positions = [
-        new THREE.Vector3(0, 0, -50), // Front
-        new THREE.Vector3(0, 0, 50),  // Back
-        new THREE.Vector3(-50, 0, 0), // Left
-        new THREE.Vector3(50, 0, 0),  // Right
+        new THREE.Vector3(0, 0, -10), // Front
+        new THREE.Vector3(0, 0, 10),  // Back
+        new THREE.Vector3(-20, 0, 0), // Left
+        new THREE.Vector3(5, 0, 0),  // Right
         new THREE.Vector3(0, 50, 0),  // Top
         new THREE.Vector3(0, -50, 0)  // Bottom
       ];
@@ -229,7 +229,7 @@ const Studio = () => {
       ];
 
       for (let i = 0; i < 6; i++) {
-        addBackgroundPlane(scene, mapJson.backgrounds[i], positions[i], rotations[i]);
+        // addBackgroundPlane(scene, mapJson.backgrounds[i], positions[i], rotations[i]);
         // const framePosition = new THREE.Vector3(positions[i].x, positions[i].y + 1, positions[i].z); // 배경 위쪽에 위치
         // addExhibitionFrame(scene, framePosition, new THREE.Vector3(2, 1, 0.1)); // 프레임 크기 설정
       }
@@ -247,7 +247,8 @@ const Studio = () => {
     const floor = new THREE.Mesh(floorGeometry, floorMaterial);
     floor.receiveShadow = true; // 그림자 받기 설정
     floor.rotation.x = -Math.PI / 2;
-    floor.position.y = 0;
+    floor.position.y = -2;
+    floor.position.x = 0;
     scene.add(floor);
 
     if (mapJson) {
@@ -269,7 +270,7 @@ const Studio = () => {
     // gridHelper.rotation.x = Math.PI / 2;
     // scene.add(gridHelper);
 
-    const light = new THREE.PointLight(0xffffff, 200, 100);
+    const light = new THREE.PointLight(0xffffff, 500, 100);
     light.position.set(0, 10, 0);
     light.castShadow = true;
     scene.add(light);
