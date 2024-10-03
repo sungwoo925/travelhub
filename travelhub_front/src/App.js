@@ -59,7 +59,9 @@ function App() {
                 <div className="About-page-swiper">
                   <About />
                 </div>
-                <Footer />
+                <div className="About-page-swiper-footer-degine">
+                  <Footer />
+                </div>
               </div>
             }
           />

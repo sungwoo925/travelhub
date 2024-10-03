@@ -56,6 +56,10 @@
 
 .About-page-swiper {
   width: 100%; /* 부모 컨테이너의 너비 */
-  height: 1000px;
+  height: 800px;
   margin: 0 auto; /* 가운데 정렬 */
+}
+
+.About-page-swiper-footer-degine {
+  margin-top: 100px;
 }
