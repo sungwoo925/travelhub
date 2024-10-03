@@ -84,6 +84,27 @@
       "name": "frame11",
       "rotation": [0, 1.5708, 0],
       "imagePath": "/images/image11.jpg"
+    },
+    {
+      "coordinates": [-6, 2, -3],
+      "width": 3,
+      "name": "frame12",
+      "rotation": [0, 0, 0],
+      "imagePath": "/images/image12.jpg"
+    },
+    {
+      "coordinates": [-3.05, 2, 0],
+      "width": 3,
+      "name": "frame13",
+      "rotation": [0, -1.5708, 0],
+      "imagePath": "/images/image13.jpg"
+    },
+    {
+      "coordinates": [-3, 2, 0],
+      "width": 3,
+      "name": "frame14",
+      "rotation": [0, 1.5708, 0],
+      "imagePath": "/images/image14.jpg"
     }
   ]
 }
