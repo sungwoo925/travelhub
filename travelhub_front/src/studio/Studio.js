@@ -6,7 +6,7 @@ import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader'; // MTLLoader �
 import { FontLoader } from 'three/examples/jsm/loaders/FontLoader';
 import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry';
 
-function addImagePlane(scene, imagePath, position, width, objectName, rotation) {
+function addImagePlane(scene, imagePath, position, width, objectName, rotation, font) {
   const textureLoader = new THREE.TextureLoader();
   textureLoader.load(imagePath, function(texture) {
     const aspectRatio = texture.image.width / texture.image.height;
@@ -32,6 +32,29 @@ function addImagePlane(scene, imagePath, position, width, objectName, rotation) 
     pointLight.position.set(position.x, position.y + (planeHeight / 2), position.z); // 조명을 이미지 중앙 위로 설정
     pointLight.castShadow = true; // 그림자 생성
     scene.add(pointLight); // 조명을 scene에 추가
+
+    const textGeometry = new TextGeometry('요정도?\nasdasdasdsa\n이게 dS', {
+      font: font,
+      size: 0.2,
+      height: 0,
+      curveSegments: 12,
+      bevelEnabled: false,
+      // bevelThickness: 0.0003,
+      // bevelSize: 0.002,
+      // bevelOffset: 0,
+      // bevelSegments: 1
+    });
+
+    const textMaterial = new THREE.MeshBasicMaterial({ color: 0xFFFFFF });
+    const textMesh = new THREE.Mesh(textGeometry, textMaterial);
+    
+    // 텍스트 위치 조정  (좌우 높이 거리)
+    textMesh.position.set(position.x, position.y + (planeHeight / 2), position.z);
+    textMesh.name = objectName; // 개체의 이름을 설정합니다.
+    if (rotation) {
+      textMesh.rotation.set(rotation.x, rotation.y, rotation.z); // 전달된 각도로 이미지를 회전시킵니다.
+    }
+    scene.add(textMesh);
 
     // 프레임 추가
     addFrame(scene, planeWidth, planeHeight, position, rotation);
@@ -75,16 +98,17 @@ function addFrame(scene, width, height, position, rotation) {
 
 function addBackgroundPlane(scene, imagePath, position, rotation) {
   const textureLoader = new THREE.TextureLoader();
-  textureLoader.load(imagePath, function(texture) {
-      texture.minFilter = THREE.LinearFilter; // 텍스처 필터링 설정
-      texture.magFilter = THREE.LinearFilter; // 텍스처 필터링 설정
-      const geometry = new THREE.PlaneGeometry(100, 100); // 정사각형 배경 평면
-      const material = new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide }); // 이미지 텍스처를 재질로 사용합니다.
-      const backgroundPlane = new THREE.Mesh(geometry, material);
-      backgroundPlane.position.copy(position); // 전달된 위치로 배경을 이동시킵니다.
-      backgroundPlane.rotation.set(rotation.x, rotation.y, rotation.z); // 전달된 각도로 배경을 회전시킵니다.
-      scene.add(backgroundPlane);
-  });
+  const marbleTexture = textureLoader.load(imagePath);
+  marbleTexture.wrapS = THREE.RepeatWrapping;
+  marbleTexture.wrapT = THREE.RepeatWrapping;
+  marbleTexture.repeat.set(20, 20); // 텍스처 반복 설정
+
+  const floorGeometry = new THREE.PlaneGeometry(100, 100);
+  const floorMaterial = new THREE.MeshPhongMaterial({ map: marbleTexture, side: THREE.DoubleSide });
+  const floor = new THREE.Mesh(floorGeometry, floorMaterial);
+  floor.position.copy(position); // 전달된 위치로 배경을 이동시킵니다.
+  floor.rotation.set(rotation.x, rotation.y, rotation.z); // 전달된 각도로 배경을 회전시킵니다.
+  scene.add(floor);
 }
 
 const Studio = () => {
@@ -93,9 +117,6 @@ const Studio = () => {
   const [mapJson, SetMapJson] = useState(null);
   const [font, setFont] = useState();
 
-  const fontUrl = 'https://threejs.org/examples/fonts/helvetiker_regular.typeface.json';
-  
-  
   if (!mapJson) {
     fetch(process.env.PUBLIC_URL + '/mapinfo.json')
       .then(response => response.json())
@@ -103,6 +124,9 @@ const Studio = () => {
       .catch(error => console.log('error'));
   }
   const [isCameraMoved, setIsCameraMoved] = useState(false); // 카메라 이동 상태 관리
+
+  const loader = new FontLoader();
+  loader.load('/noto_sans_kr.typeface.json', setFont);
 
   const handleCameraPositionToggle = () => {
     setIsCameraMoved(prev => !prev); // 상태 토글
@@ -154,7 +178,7 @@ const Studio = () => {
     // addColumn(scene, new THREE.Vector3(10, 10, -40), 10, 5, 10); // 기둥의 위치와 크기 설정
 
     const columns = [
-      { position: new THREE.Vector3(0, 1, -50), width: 2, height: 40, depth: 1 },
+      { position: new THREE.Vector3(0, 1, -5), width: 2, height: 40, depth: 1 },
       { position: new THREE.Vector3(20, 1, -5), width: 2, height: 40, depth: 1 },
       { position: new THREE.Vector3(-20, 1, -5), width: 2, height: 40, depth: 1 },
       { position: new THREE.Vector3(40, 1, -5), width: 2, height: 40, depth: 1 },
@@ -164,28 +188,6 @@ const Studio = () => {
     columns.forEach(column => {
       addColumn(scene, column.position, column.width, column.height, column.depth);
     });
-
-    const loader = new FontLoader();
-    loader.load('/noto_sans_kr.typeface.json', setFont);
-        // 3. 텍스트 생성
-    const textGeometry = new TextGeometry('요정도?\nasdasdasdsa\n이게 dS', {
-      font: font,
-      size: 0.2,
-      height: 0,
-      curveSegments: 12,
-      bevelEnabled: false,
-      // bevelThickness: 0.0003,
-      // bevelSize: 0.002,
-      // bevelOffset: 0,
-      // bevelSegments: 1
-    });
-
-    const textMaterial = new THREE.MeshBasicMaterial({ color: 0xFFFFFF });
-    const textMesh = new THREE.Mesh(textGeometry, textMaterial);
-    
-    // 텍스트 위치 조정  (좌우 높이 거리)
-    textMesh.position.set(1.75, 2, -3.5);
-    scene.add(textMesh);
     
     // Chair_and_Table 모델 추가 (크기 1, 위치 (0, 0, 0), 텍스처 경로)
     // addModel(scene, '/OBJ_file/Chair_and_Table.obj', '/OBJ_file/Chair_and_Table.mtl', new THREE.Vector3(0, 0, 10), new THREE.Vector3(30, 30, 30), '/textures/Chair and table_Normal.jpg'); // 텍스처 적용
@@ -198,8 +200,8 @@ const Studio = () => {
     cameraRef.current = camera;
     if (isCameraMoved) {
       
-      camera.position.set(10, 5, 7); // 이동된 카메라 위치
-      camera.rotation.set(0, Math.PI / 3, 0); // 왼쪽으로 90도 회전
+      camera.position.set(5, 6.5, 6.5); // 이동된 카메라 위치
+      camera.quaternion.setFromEuler(new THREE.Euler(-0.3, Math.PI / 2 / 90 * 45, 0.3))
     } else {
 
     }
@@ -229,7 +231,7 @@ const Studio = () => {
       ];
 
       for (let i = 0; i < 6; i++) {
-        // addBackgroundPlane(scene, mapJson.backgrounds[i], positions[i], rotations[i]);
+        addBackgroundPlane(scene, mapJson.backgrounds[i], positions[i], rotations[i]);
         // const framePosition = new THREE.Vector3(positions[i].x, positions[i].y + 1, positions[i].z); // 배경 위쪽에 위치
         // addExhibitionFrame(scene, framePosition, new THREE.Vector3(2, 1, 0.1)); // 프레임 크기 설정
       }
@@ -260,7 +262,8 @@ const Studio = () => {
           new THREE.Vector3(frame.coordinates[0], frame.coordinates[1], frame.coordinates[2]),
           frame.width,
           frame.name,
-          new THREE.Vector3(frame.rotation[0], frame.rotation[1], frame.rotation[2])
+          new THREE.Vector3(frame.rotation[0], frame.rotation[1], frame.rotation[2]),
+          font
         );
       }
     }
@@ -416,7 +419,7 @@ const Studio = () => {
     const animate = () => {
       requestAnimationFrame(animate);
 
-      // const frame1 = scene.getObjectByName('frame1');
+      // const frame1 = scene.getObjectByName('frame2');
       // if (frame1 !== undefined) {
       //   frame1.rotation.x += 0.01;
       //   frame1.rotation.y += 0.01;
