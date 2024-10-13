@@ -6,7 +6,39 @@ import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader'; // MTLLoader �
 import { FontLoader } from 'three/examples/jsm/loaders/FontLoader';
 import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry';
 
-function addImagePlane(scene, imagePath, position, width, objectName, rotation, font) {
+const directionValues = {
+  NorthNorth: 0,
+  NorthEast: 0.5,
+  NorthSouth: 1,
+  NorthWest: -0.5,
+  EastNorth: -0.5,
+  EastEast: 0,
+  EastSouth: 0.5,
+  EastWest: 1,
+  SouthNorth: 1,
+  SouthEast: -0.5,
+  SouthSouth: 0,
+  SouthWest: 0.5,
+  WestNorth: 0.5,
+  WestEast: 1,
+  WestSouth: -0.5,
+  WestWest: 0,
+  North: 0,
+  East: -Math.PI/2,
+  South: Math.PI,
+  West: Math.PI/2
+};
+
+function move_cal(start_p,end_p,deg){//카메라 움직임 도와주는 함수 스타트지점 끝지점 정도 deg는 0~1값
+  return start_p + ((end_p-start_p) * deg);
+}
+
+function moving_common(){
+
+}
+
+function addImagePlane(scene, imagePath, position, width, objectName, rotation, font,direction) {
+  if(imagePath){}else{return}
   const textureLoader = new THREE.TextureLoader();
   textureLoader.load(imagePath, function(texture) {
     const aspectRatio = texture.image.width / texture.image.height;
@@ -49,7 +81,18 @@ function addImagePlane(scene, imagePath, position, width, objectName, rotation, 
     const textMesh = new THREE.Mesh(textGeometry, textMaterial);
     
     // 텍스트 위치 조정  (좌우 높이 거리)
-    textMesh.position.set(position.x, position.y + (planeHeight / 2), position.z);
+    if(direction==="North"){
+      textMesh.position.set(position.x+3.5, position.y + (planeHeight / 4), position.z);
+    }
+    if(direction==="East"){
+      textMesh.position.set(position.x, position.y + (planeHeight / 4), position.z+3.5);
+    }
+    if(direction==="South"){
+      textMesh.position.set(position.x-3.5, position.y + (planeHeight / 4), position.z);
+    }
+    if(direction==="West"){
+      textMesh.position.set(position.x, position.y + (planeHeight / 4), position.z-3.5);
+    }
     textMesh.name = objectName; // 개체의 이름을 설정합니다.
     if (rotation) {
       textMesh.rotation.set(rotation.x, rotation.y, rotation.z); // 전달된 각도로 이미지를 회전시킵니다.
@@ -79,7 +122,7 @@ function addFrame(scene, width, height, position, rotation) {
   // 프레임 위치 설정
   frameMeshes[0].position.set(position.x, position.y + height / 2 + frameThickness / 2, position.z); // 상단 프레임
   frameMeshes[1].position.set(position.x, position.y - height / 2 - frameThickness / 2, position.z); // 하단 프레임
-  if(rotation.y === -1.5708 || rotation.y === 1.5708){
+  if(rotation.y === -1.5708 || rotation.y === -4.7124){
     frameMeshes[2].position.set(position.x, position.y, position.z - width / 2 - frameThickness / 2); // 좌측 프레임
     frameMeshes[3].position.set(position.x, position.y, position.z + width / 2 + frameThickness / 2); // 우측 프레임
   }else{
@@ -214,10 +257,10 @@ const Studio = () => {
     // 배경
     if (mapJson && mapJson.backgrounds && mapJson.backgrounds.length >= 6) {
       const positions = [
-        new THREE.Vector3(0, 0, -10), // Front
-        new THREE.Vector3(0, 0, 10),  // Back
-        new THREE.Vector3(-20, 0, 0), // Left
-        new THREE.Vector3(5, 0, 0),  // Right
+        new THREE.Vector3(0, 0, -50), // Front
+        new THREE.Vector3(0, 0, 50),  // Back
+        new THREE.Vector3(-50, 0, 0), // Left
+        new THREE.Vector3(50, 0, 0),  // Right
         new THREE.Vector3(0, 50, 0),  // Top
         new THREE.Vector3(0, -50, 0)  // Bottom
       ];
@@ -256,14 +299,25 @@ const Studio = () => {
     if (mapJson) {
       for (const mapDataNum in mapJson.defualt) {
         const frame = mapJson.defualt[mapDataNum];
+        let imagecoord = new THREE.Vector3(0, 0, 0);
+        if(frame.direction==="North"){
+          imagecoord = new THREE.Vector3(frame.coordinates[0]-2, frame.coordinates[1], frame.coordinates[2]-4);
+        }else if(frame.direction==="East"){
+          imagecoord = new THREE.Vector3(frame.coordinates[0]+4, frame.coordinates[1], frame.coordinates[2]-2);
+        }else if(frame.direction==="South"){
+          imagecoord = new THREE.Vector3(frame.coordinates[0]+2, frame.coordinates[1], frame.coordinates[2]+4);
+        }else if(frame.direction==="West"){
+          imagecoord = new THREE.Vector3(frame.coordinates[0]-4, frame.coordinates[1], frame.coordinates[2]+2);
+        }
         addImagePlane(
           scene,
           frame.imagePath, // 각 프레임에 대한 이미지 경로를 사용합니다.
-          new THREE.Vector3(frame.coordinates[0], frame.coordinates[1], frame.coordinates[2]),
+          imagecoord,
           frame.width,
           frame.name,
           new THREE.Vector3(frame.rotation[0], frame.rotation[1], frame.rotation[2]),
-          font
+          font,
+          frame.direction
         );
       }
     }
@@ -295,64 +349,82 @@ const Studio = () => {
     let movingCircle = 0;
     let movingFlow = 0;
     const handleWheel = (event) => { // 마우스 휠 event control 마우스휠
-      const delta = event.deltaY * 0.005;
+      let delta = event.deltaY * 0.001;
       
       movingCircle += delta;
+      if(movingCircle < 0 || movingCircle > mapJson.defualt.length){
+        movingCircle=0;
+        camera.position.x = 0;
+        camera.position.z = 0;
+        camera.rotation.y = 0;
+        delta = 0;
+      }
       movingFlow += delta;
+      const floor = Math.floor(movingCircle);
+      // console.log(mapJson.defualt.length);
 
-      if (movingCircle >= 0 && movingCircle < 3) {
-        camera.position.x = 0;
-        camera.position.z = 0;
-        camera.rotation.y = -movingCircle * 3.1416 / 2 / 3;
-      } else if (movingCircle >= 3 && movingCircle < 6) {
-        camera.position.x = 0;
-        camera.position.z = (movingCircle - 3) * 2;
-        camera.rotation.y = -1.5708;
-      } else if (movingCircle >= 6 && movingCircle < 9) {
-        camera.position.x = 0;
-        camera.position.z = 6;
-        camera.rotation.y = -1.5708 - (movingCircle - 6) * 1.5708 / 3;
-      } else if (movingCircle >= 9 && movingCircle < 15) {
-        camera.position.x = -(movingCircle - 9) * 2;
-        camera.position.z = 6;
-        camera.rotation.y = -3.1416;
-      } else if (movingCircle >= 15 && movingCircle < 18) {
-        camera.position.x = -12;
-        camera.position.z = 6;
-        camera.rotation.y = -3.1416 - (movingCircle - 3) * 1.5708 / 3;
-      } else if (movingCircle >= 18 && movingCircle < 21) {
-        camera.position.x = -12;
-        camera.position.z = 6 - (movingCircle - 18) * 2;
-        camera.rotation.y = 1.5708;
-      } else if (movingCircle >= 21 && movingCircle < 27) {
-        camera.position.x = -12;
-        camera.position.z = 0;
-        camera.rotation.y = 1.5708 - (movingCircle - 21) * 1.5708 / 3;
-      } else if (movingCircle >= 27 && movingCircle < 28.5) {
-        camera.position.x = -12 + (movingCircle - 27) * 2;
-        camera.position.z = (movingCircle - 27) * 4;
-        camera.rotation.y = -1.5708 + (movingCircle - 3) * 1.5708 / 3 * 2;
-      } else if (movingCircle >= 28.5 && movingCircle < 30) {
-        camera.position.x = -9 + (movingCircle - 28.5) * 2;
-        camera.position.z = 6 - (movingCircle - 28.5) * 4;
-        camera.rotation.y = -1.5708 + (movingCircle - 3) * 1.5708 / 3 * 2;
-      } else if (movingCircle >= 30 && movingCircle < 36) {
-        camera.position.x = -6;
-        camera.position.z = 0;
-        camera.rotation.y = -(movingCircle - 21) * 1.5708 / 3;
-      } else if (movingCircle >= 36 && movingCircle < 37.5) {
-        camera.position.x = -6 + (movingCircle - 36) * 2;
-        camera.position.z = (movingCircle - 36) * 4;
-        camera.rotation.y = -1.5708 + (movingCircle) * 1.5708 / 3 * 2;
-      } else if (movingCircle >= 37.5 && movingCircle < 39) {
-        camera.position.x = -3 + (movingCircle - 37.5) * 2;
-        camera.position.z = 6 - (movingCircle - 37.5) * 4;
-        camera.rotation.y = -1.5708 + (movingCircle) * 1.5708 / 3 * 2;
-      } else if (movingCircle >= 39 && movingCircle < 42) {
-        camera.position.x = 0;
-        camera.position.z = 0;
-        camera.rotation.y = -1.5708 - (movingCircle - 21) * 1.5708 / 3;
-      } else if (movingCircle < 0) {
+      const next_floor = (floor+1)%mapJson.defualt.length;
+      camera.position.x = move_cal(mapJson.defualt[floor].coordinates[0],mapJson.defualt[next_floor].coordinates[0],movingCircle-floor);
+      camera.position.y = move_cal(mapJson.defualt[floor].coordinates[1],mapJson.defualt[next_floor].coordinates[1],movingCircle-floor);
+      camera.position.z = move_cal(mapJson.defualt[floor].coordinates[2],mapJson.defualt[next_floor].coordinates[2],movingCircle-floor);
+      camera.rotation.y = camera.rotation.y-delta*Math.PI*directionValues[mapJson.defualt[floor].direction+mapJson.defualt[next_floor].direction];
+      if(directionValues[mapJson.defualt[floor].direction+mapJson.defualt[next_floor].direction] === 0){
+        camera.rotation.y = directionValues[mapJson.defualt[floor].direction];
+      }
+      // if (movingCircle >= 0 && movingCircle < 3) {
+      //   camera.position.x = 0;
+      //   camera.position.z = 0;
+      //   camera.rotation.y = -movingCircle * 3.1416 / 2 / 3;
+      // } else if (movingCircle >= 3 && movingCircle < 6) {
+      //   camera.position.x = 0;
+      //   camera.position.z = (movingCircle - 3) * 2;
+      //   camera.rotation.y = -1.5708;
+      // } else if (movingCircle >= 6 && movingCircle < 9) {
+      //   camera.position.x = 0;
+      //   camera.position.z = 6;
+      //   camera.rotation.y = -1.5708 - (movingCircle - 6) * 1.5708 / 3;
+      // } else if (movingCircle >= 9 && movingCircle < 15) {
+      //   camera.position.x = -(movingCircle - 9) * 2;
+      //   camera.position.z = 6;
+      //   camera.rotation.y = -3.1416;
+      // } else if (movingCircle >= 15 && movingCircle < 18) {
+      //   camera.position.x = -12;
+      //   camera.position.z = 6;
+      //   camera.rotation.y = -3.1416 - (movingCircle - 3) * 1.5708 / 3;
+      // } else if (movingCircle >= 18 && movingCircle < 21) {
+      //   camera.position.x = -12;
+      //   camera.position.z = 6 - (movingCircle - 18) * 2;
+      //   camera.rotation.y = 1.5708;
+      // } else if (movingCircle >= 21 && movingCircle < 27) {
+      //   camera.position.x = -12;
+      //   camera.position.z = 0;
+      //   camera.rotation.y = 1.5708 - (movingCircle - 21) * 1.5708 / 3;
+      // } else if (movingCircle >= 27 && movingCircle < 28.5) {
+      //   camera.position.x = -12 + (movingCircle - 27) * 2;
+      //   camera.position.z = (movingCircle - 27) * 4;
+      //   camera.rotation.y = -1.5708 + (movingCircle - 3) * 1.5708 / 3 * 2;
+      // } else if (movingCircle >= 28.5 && movingCircle < 30) {
+      //   camera.position.x = -9 + (movingCircle - 28.5) * 2;
+      //   camera.position.z = 6 - (movingCircle - 28.5) * 4;
+      //   camera.rotation.y = -1.5708 + (movingCircle - 3) * 1.5708 / 3 * 2;
+      // } else if (movingCircle >= 30 && movingCircle < 36) {
+      //   camera.position.x = -6;
+      //   camera.position.z = 0;
+      //   camera.rotation.y = -(movingCircle - 21) * 1.5708 / 3;
+      // } else if (movingCircle >= 36 && movingCircle < 37.5) {
+      //   camera.position.x = -6 + (movingCircle - 36) * 2;
+      //   camera.position.z = (movingCircle - 36) * 4;
+      //   camera.rotation.y = -1.5708 + (movingCircle) * 1.5708 / 3 * 2;
+      // } else if (movingCircle >= 37.5 && movingCircle < 39) {
+      //   camera.position.x = -3 + (movingCircle - 37.5) * 2;
+      //   camera.position.z = 6 - (movingCircle - 37.5) * 4;
+      //   camera.rotation.y = -1.5708 + (movingCircle) * 1.5708 / 3 * 2;
+      // } else if (movingCircle >= 39 && movingCircle < 42) {
+      //   camera.position.x = 0;
+      //   camera.position.z = 0;
+      //   camera.rotation.y = -1.5708 - (movingCircle - 21) * 1.5708 / 3;
+      // } else 
+      if (movingCircle < 0) {
         camera.position.x = 0;
         camera.position.z = 0;
         camera.rotation.y = 0;
