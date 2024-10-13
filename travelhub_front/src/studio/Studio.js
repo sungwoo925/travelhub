@@ -254,6 +254,8 @@ const Studio = () => {
     renderer.setSize(window.innerWidth, window.innerHeight);
     containerRef.current.appendChild(renderer.domElement);
 
+    // 안개    
+    // scene.fog = new THREE.Fog(0xFFFFFF, 1, 50);
     // 배경
     if (mapJson && mapJson.backgrounds && mapJson.backgrounds.length >= 6) {
       const positions = [
@@ -274,11 +276,27 @@ const Studio = () => {
       ];
 
       for (let i = 0; i < 6; i++) {
-        addBackgroundPlane(scene, mapJson.backgrounds[i], positions[i], rotations[i]);
+        // addBackgroundPlane(scene, mapJson.backgrounds[i], positions[i], rotations[i]);
         // const framePosition = new THREE.Vector3(positions[i].x, positions[i].y + 1, positions[i].z); // 배경 위쪽에 위치
         // addExhibitionFrame(scene, framePosition, new THREE.Vector3(2, 1, 0.1)); // 프레임 크기 설정
       }
     }
+    //별 구현
+    const starCount = 1500; // 별의 개수
+    const starGeometry = new THREE.BufferGeometry();
+    const starPositions = new Float32Array(starCount * 3); // x, y, z 좌표
+
+    for (let i = 0; i < starCount; i++) {
+        starPositions[i * 3] = (Math.random() - 0.5) * 200; // x
+        starPositions[i * 3 + 1] = (Math.random() - 0.5) * 200; // y
+        starPositions[i * 3 + 2] = (Math.random() - 0.5) * 200; // z
+    }
+
+    starGeometry.setAttribute('position', new THREE.BufferAttribute(starPositions, 3));
+
+    const starMaterial = new THREE.PointsMaterial({ color: 0xffffff, size: 0.5 });
+    const stars = new THREE.Points(starGeometry, starMaterial);
+    scene.add(stars);
 
     // 바닥
     const textureLoader = new THREE.TextureLoader();
@@ -294,7 +312,7 @@ const Studio = () => {
     floor.rotation.x = -Math.PI / 2;
     floor.position.y = -2;
     floor.position.x = 0;
-    scene.add(floor);
+    // scene.add(floor);
 
     if (mapJson) {
       for (const mapDataNum in mapJson.defualt) {
