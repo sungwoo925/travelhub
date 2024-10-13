@@ -9,59 +9,67 @@
   ],
   "defualt": [
     {
-      "coordinates": [-1.75, 2, -3.5],
+      "coordinates": [0, 2, 0],
       "width": 3,
       "name": "frame1",
       "rotation": [0, 0, 0],
+      "direction": "North",
       "imagePath": "/images/image2.jpg"
     },
     {
-      "coordinates": [3, 2, 0],
+      "coordinates": [2, 2, 2],
       "width": 3,
       "name": "frame2",
       "rotation": [0, -1.5708, 0],
+      "direction": "East",
       "imagePath": "/images/image2.jpg"
     },
     {
-      "coordinates": [3, 2, 6],
+      "coordinates": [2, 2, 15],
       "width": 3,
       "name": "frame3",
       "rotation": [0, -1.5708, 0],
+      "direction": "East",
       "imagePath": "/images/image3.jpg"
     },
     {
-      "coordinates": [0, 2, 9],
+      "coordinates": [0, 4, 15],
       "width": 3,
       "name": "frame4",
-      "rotation": [0, 3.1416, 0],
+      "rotation": [0, -3.1416, 0],
+      "direction": "South",
       "imagePath": "/images/image4.jpg"
     },
     {
       "coordinates": [-6, 2, 9],
       "width": 3,
       "name": "frame5",
-      "rotation": [0, 3.1416, 0],
+      "rotation": [0, -3.1416, 0],
+      "direction": "South",
       "imagePath": "/images/image5.jpg"
     },
     {
       "coordinates": [-12, 2, 9],
       "width": 3,
       "name": "frame6",
-      "rotation": [0, 3.1416, 0],
+      "rotation": [0, -3.1416, 0],
+      "direction": "South",
       "imagePath": "/images/image6.jpg"
     },
     {
       "coordinates": [-15, 2, 6],
       "width": 3,
       "name": "frame7",
-      "rotation": [0, 1.5708, 0],
+      "rotation": [0, -4.7124, 0],
+      "direction": "West",
       "imagePath": "/images/image7.jpg"
     },
     {
       "coordinates": [-15, 2, 0],
       "width": 3,
       "name": "frame8",
-      "rotation": [0, 1.5708, 0],
+      "rotation": [0, -4.7124, 0],
+      "direction": "West",
       "imagePath": "/images/image8.jpg"
     },
     {
@@ -69,6 +77,7 @@
       "width": 3,
       "name": "frame9",
       "rotation": [0, 0, 0],
+      "direction": "North",
       "imagePath": "/images/image9.jpg"
     },
     {
@@ -76,13 +85,15 @@
       "width": 3,
       "name": "frame10",
       "rotation": [0, -1.5708, 0],
+      "direction": "East",
       "imagePath": "/images/image10.jpg"
     },
     {
       "coordinates": [-9, 2, 0],
       "width": 3,
       "name": "frame11",
-      "rotation": [0, 1.5708, 0],
+      "rotation": [0, -4.7124, 0],
+      "direction": "West",
       "imagePath": "/images/image11.jpg"
     },
     {
@@ -90,6 +101,7 @@
       "width": 3,
       "name": "frame12",
       "rotation": [0, 0, 0],
+      "direction": "North",
       "imagePath": "/images/image12.jpg"
     },
     {
@@ -97,13 +109,15 @@
       "width": 3,
       "name": "frame13",
       "rotation": [0, -1.5708, 0],
+      "direction": "East",
       "imagePath": "/images/image13.jpg"
     },
     {
       "coordinates": [-3, 2, 0],
       "width": 3,
       "name": "frame14",
-      "rotation": [0, 1.5708, 0],
+      "rotation": [0, -4.7124, 0],
+      "direction": "West",
       "imagePath": "/images/image14.jpg"
     }
   ]
