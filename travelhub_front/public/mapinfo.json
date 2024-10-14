@@ -63,6 +63,22 @@
       "rotation": [0, -4.7124, 0],
       "direction": "West",
       "imagePath": "/images/image7.jpg"
+    },
+    {
+      "coordinates": [-10, 4, 11],
+      "width": 3,
+      "name": "frame8",
+      "rotation": [0, -4.7124, 0],
+      "direction": "West",
+      "imagePath": "/images/image9.jpg"
+    },
+    {
+      "coordinates": [-10, 4, 11],
+      "width": 3,
+      "name": "frame8",
+      "rotation": [0, -0, 0],
+      "direction": "North",
+      "imagePath": ""
     }
   ]
 }

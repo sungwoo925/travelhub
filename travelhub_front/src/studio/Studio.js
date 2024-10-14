@@ -296,6 +296,7 @@ const Studio = () => {
 
     const starMaterial = new THREE.PointsMaterial({ color: 0xffffff, size: 0.5 });
     const stars = new THREE.Points(starGeometry, starMaterial);
+    stars.name = "stars";
     scene.add(stars);
 
     // 바닥
@@ -370,18 +371,20 @@ const Studio = () => {
       let delta = event.deltaY * 0.001;
       
       movingCircle += delta;
-      if(movingCircle < 0 || movingCircle > mapJson.defualt.length){
-        movingCircle=0;
+      if(movingCircle < 0){
+        movingCircle=mapJson.defualt.length-0.001;
         camera.position.x = 0;
         camera.position.z = 0;
         camera.rotation.y = 0;
         delta = 0;
       }
+      if(movingCircle > mapJson.defualt.length){
+        movingCircle=0;
+      }
       movingFlow += delta;
       const floor = Math.floor(movingCircle);
-      // console.log(mapJson.defualt.length);
-
       const next_floor = (floor+1)%mapJson.defualt.length;
+
       camera.position.x = move_cal(mapJson.defualt[floor].coordinates[0],mapJson.defualt[next_floor].coordinates[0],movingCircle-floor);
       camera.position.y = move_cal(mapJson.defualt[floor].coordinates[1],mapJson.defualt[next_floor].coordinates[1],movingCircle-floor);
       camera.position.z = move_cal(mapJson.defualt[floor].coordinates[2],mapJson.defualt[next_floor].coordinates[2],movingCircle-floor);
@@ -389,59 +392,6 @@ const Studio = () => {
       if(directionValues[mapJson.defualt[floor].direction+mapJson.defualt[next_floor].direction] === 0){
         camera.rotation.y = directionValues[mapJson.defualt[floor].direction];
       }
-      // if (movingCircle >= 0 && movingCircle < 3) {
-      //   camera.position.x = 0;
-      //   camera.position.z = 0;
-      //   camera.rotation.y = -movingCircle * 3.1416 / 2 / 3;
-      // } else if (movingCircle >= 3 && movingCircle < 6) {
-      //   camera.position.x = 0;
-      //   camera.position.z = (movingCircle - 3) * 2;
-      //   camera.rotation.y = -1.5708;
-      // } else if (movingCircle >= 6 && movingCircle < 9) {
-      //   camera.position.x = 0;
-      //   camera.position.z = 6;
-      //   camera.rotation.y = -1.5708 - (movingCircle - 6) * 1.5708 / 3;
-      // } else if (movingCircle >= 9 && movingCircle < 15) {
-      //   camera.position.x = -(movingCircle - 9) * 2;
-      //   camera.position.z = 6;
-      //   camera.rotation.y = -3.1416;
-      // } else if (movingCircle >= 15 && movingCircle < 18) {
-      //   camera.position.x = -12;
-      //   camera.position.z = 6;
-      //   camera.rotation.y = -3.1416 - (movingCircle - 3) * 1.5708 / 3;
-      // } else if (movingCircle >= 18 && movingCircle < 21) {
-      //   camera.position.x = -12;
-      //   camera.position.z = 6 - (movingCircle - 18) * 2;
-      //   camera.rotation.y = 1.5708;
-      // } else if (movingCircle >= 21 && movingCircle < 27) {
-      //   camera.position.x = -12;
-      //   camera.position.z = 0;
-      //   camera.rotation.y = 1.5708 - (movingCircle - 21) * 1.5708 / 3;
-      // } else if (movingCircle >= 27 && movingCircle < 28.5) {
-      //   camera.position.x = -12 + (movingCircle - 27) * 2;
-      //   camera.position.z = (movingCircle - 27) * 4;
-      //   camera.rotation.y = -1.5708 + (movingCircle - 3) * 1.5708 / 3 * 2;
-      // } else if (movingCircle >= 28.5 && movingCircle < 30) {
-      //   camera.position.x = -9 + (movingCircle - 28.5) * 2;
-      //   camera.position.z = 6 - (movingCircle - 28.5) * 4;
-      //   camera.rotation.y = -1.5708 + (movingCircle - 3) * 1.5708 / 3 * 2;
-      // } else if (movingCircle >= 30 && movingCircle < 36) {
-      //   camera.position.x = -6;
-      //   camera.position.z = 0;
-      //   camera.rotation.y = -(movingCircle - 21) * 1.5708 / 3;
-      // } else if (movingCircle >= 36 && movingCircle < 37.5) {
-      //   camera.position.x = -6 + (movingCircle - 36) * 2;
-      //   camera.position.z = (movingCircle - 36) * 4;
-      //   camera.rotation.y = -1.5708 + (movingCircle) * 1.5708 / 3 * 2;
-      // } else if (movingCircle >= 37.5 && movingCircle < 39) {
-      //   camera.position.x = -3 + (movingCircle - 37.5) * 2;
-      //   camera.position.z = 6 - (movingCircle - 37.5) * 4;
-      //   camera.rotation.y = -1.5708 + (movingCircle) * 1.5708 / 3 * 2;
-      // } else if (movingCircle >= 39 && movingCircle < 42) {
-      //   camera.position.x = 0;
-      //   camera.position.z = 0;
-      //   camera.rotation.y = -1.5708 - (movingCircle - 21) * 1.5708 / 3;
-      // } else 
       if (movingCircle < 0) {
         camera.position.x = 0;
         camera.position.z = 0;
@@ -450,11 +400,6 @@ const Studio = () => {
         if (movingFlow > 40) {
           movingFlow = movingFlow - movingFlow % 42 + 42 * (Math.round(Number(movingFlow % 42)) !== 0);
         }
-      } else if (movingCircle >= 42) {
-        camera.position.x = 0;
-        camera.position.z = 0;
-        camera.rotation.y = 0;
-        movingCircle = 0;
       }
 
       // console.log(camera.position.x);
@@ -509,11 +454,11 @@ const Studio = () => {
     const animate = () => {
       requestAnimationFrame(animate);
 
-      // const frame1 = scene.getObjectByName('frame2');
-      // if (frame1 !== undefined) {
-      //   frame1.rotation.x += 0.01;
-      //   frame1.rotation.y += 0.01;
-      // }
+      const frame1 = scene.getObjectByName('stars');
+      if (frame1 !== undefined) {
+        frame1.rotation.x += 0.0001;
+        frame1.rotation.y += 0.0001;
+      }
 
       renderer.render(scene, cameraRef.current);
     };
