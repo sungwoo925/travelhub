@@ -1,1 +1,63 @@
-node_modules
+/
+
+/images/
+/travelhub_front/public/OBJ_file/
+# dependencies
+/travelhub_front/node_modules
+/travelhub_front/.pnp
+/travelhub_front/.pnp.js
+
+# testing
+/travelhub_front/coverage
+
+# production
+/travelhub_front/build
+
+# misc
+/travelhub_front/.DS_Store
+/travelhub_front/.env.local
+/travelhub_front/.env.development.local
+/travelhub_front/.env.test.local
+/travelhub_front/.env.production.local
+
+/travelhub_front/npm-debug.log*
+/travelhub_front/yarn-debug.log*
+/travelhub_front/yarn-error.log*
+
+
+
+#spring
+/travelhub_back/src/main/resources/application.properties
+/travelhub_back/HELP.md
+/travelhub_back/target/
+!/travelhub_back/.mvn/wrapper/maven-wrapper.jar
+!/travelhub_back/**/src/main/**/target/
+!/travelhub_back/**/src/test/**/target/
+
+# STS
+/travelhub_back/.apt_generated
+/travelhub_back/.classpath
+/travelhub_back/.factorypath
+/travelhub_back/.project
+/travelhub_back/.settings
+/travelhub_back/.springBeans
+/travelhub_back/.sts4-cache
+
+# IntelliJ IDEA
+/travelhub_back/.idea
+/travelhub_back/*.iws
+/travelhub_back/*.iml
+/travelhub_back/*.ipr
+
+# NetBeans
+/travelhub_back/nbproject/private/
+/travelhub_back/nbbuild/
+/travelhub_back/dist/
+/travelhub_back/nbdist/
+/travelhub_back/.nb-gradle/
+/travelhub_back/build/
+!/travelhub_back/**/src/main/**/build/
+!/travelhub_back/**/src/test/**/build/
+
+# VS Code
+/travelhub_back/.vscode/
