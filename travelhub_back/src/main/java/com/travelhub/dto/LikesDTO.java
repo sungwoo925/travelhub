@@ -1,8 +1,8 @@
 package com.travelhub.dto;
 
 public class LikesDTO {
-    private int userId;
-    private int travelId;
+    private int userId; // user_id
+    private int travelId; // travel_id
 
     // 기본 생성자
     public LikesDTO() {

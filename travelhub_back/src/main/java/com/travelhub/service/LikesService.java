@@ -21,10 +21,21 @@ public class LikesService {
     private TravelRepository travelRepository;
 
     public void addLike(Likes like) {
+        // 이미 좋아요가 존재하는지 확인
+        Likes existingLike = likesRepository.findByUserIdAndTravelId(like.getUserId(), like.getTravelId());
+        
+        if (existingLike != null) {
+            // 이미 좋아요가 존재하면 아무 작업도 하지 않거나, 필요에 따라 처리
+            return; // 또는 기존 좋아요 수를 증가시키는 로직 추가
+        }
+        
+        // 새로운 좋아요 추가
         likesRepository.save(like);
         
-        Travel travel = like.getTravelId();
-        travel.setLikeCount(travel.getLikeCount() + 1);
+        Travel travel = travelRepository.findById((long) like.getTravelId().getTravelId()) // int를 long으로 변환
+            .orElseThrow(() -> new RuntimeException("Travel not found"));
+        
+        travel.setLikeCount(travel.getLikeCount() + 1); // 좋아요 수 증가
         travelRepository.save(travel);
     }
 
