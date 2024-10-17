@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Cube from "../../components/Cube/Cube";
 import "./Home.css";
 import axios from "axios";
+import Cookies from "js-cookie";
 
 function Home() {
   const [data, setData] = useState([]); // 초기 데이터 배열을 빈 배열로 설정
@@ -13,15 +14,13 @@ function Home() {
   const [sortOption, setSortOption] = useState("최신순"); // 정렬 옵션
   const [myTravelOnly, setMyTravelOnly] = useState(false); // 나의 여행 필터
 
+  const jwtToken = Cookies.get("jwtToken");
 
   const fetchData = async () => {
     try {
       const response = await axios.get("http://localhost:9826/travels");
-      console.log(response.data); // 데이터 구조 확인
-      setData(response.data.map(item => ({
-        ...item,
-        likeCount: item.likeCount || item.like_count || 0 // likeCount가 없으면 like_count 사용
-      })));
+      console.log(response.data[0]); // 데이터 구조 확인
+      setData(response.data);
     } catch (error) {
       setError(error);
       console.log(error);
@@ -57,21 +56,15 @@ function Home() {
     return dateString.split("T")[0]; // T 이전의 날짜 부분만 반환
   };
 
-  const toggleLike = async (travelId) =>  {
+  const toggleLike  = async (travelId) => {
+    console.log(travelId)
     try {
-        console.log(travelId);
         const response = await axios.post("http://localhost:9826/likes", {
             userId: 16,
-            travelId: travelId, 
+            travelId: travelId
         });
 
-        setData((prevData) =>
-          prevData.map((item) =>
-            item.travel_id === travelId
-              ? { ...item, likeCount: (item.likeCount || 0) + 1 } // 좋아요 수 증가
-              : item
-          )
-        );
+
         fetchData(); // 좋아요 후 데이터 새로고침
     } catch (error) {
         console.error("Error toggling like:", error);
@@ -122,7 +115,7 @@ function Home() {
               </div>
               <div className="travel-summary">{item.summary}</div>
               <button onClick={() => toggleLike(item)}>좋아요</button>
-              <span>{item.likeCount < 0 ? 0 : item.likeCount}</span>
+              <div>{item.like_count}</div>
               <Cube />
               <button className="edit-button">수정</button>
             </div>
@@ -143,8 +136,8 @@ function Home() {
                     )}`
                   : "날짜 정보 없음"}
               </div>
-              <button onClick={() => toggleLike(item.travel_id)}>좋아요</button> {/* 좋아요 버튼 추가 */}
-              <span>{item.likeCount >= 0 ? item.likeCount : ''}</span> {/* 좋아요 수가 0 이상일 때만 표시 */}
+              <button onClick={() => toggleLike(item.travelId)}>좋아요</button> {/* 좋아요 버튼 추가 */}
+              <span>{item.like_count}</span> {/* 좋아요 수가 0 이상일 때만 표시 */}
               <Cube />
               <button className="edit-button">수정</button>
             </div>
