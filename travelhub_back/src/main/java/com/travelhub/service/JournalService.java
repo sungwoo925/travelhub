@@ -5,7 +5,9 @@ import org.springframework.stereotype.Service;
 
 import com.travelhub.dto.JournalUpdateDTO;
 import com.travelhub.entity.Journal;
+import com.travelhub.entity.Travel;
 import com.travelhub.repository.JournalRepository;
+import java.util.List;
 
 import jakarta.transaction.Transactional;
 
@@ -65,6 +67,8 @@ public class JournalService {
         }
     }
 
-    
+    public List<Journal> getJournalsByTravelId(Travel travel) {
+        return journalRepository.findByTravelId(travel);
+    }    
 
 }

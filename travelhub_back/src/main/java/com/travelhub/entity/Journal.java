@@ -36,7 +36,7 @@ public class Journal {
     @Column(length = 20)
     private String journalLocationLongitude;
 
-    @Column(length = 40)
+    @Column(length = 100)
     private String photoLink;
 
     @Column(length = 40)
