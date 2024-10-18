@@ -44,16 +44,16 @@ function Record() {
 
   useEffect(() => {
     startRecord();
-    console.log(isAuthenticated);
-    if (!isAuthenticated) {
+    // console.log(isAuthenticated);
+    if (jwtToken) {
+    } else {
       alert("로그인 후 이용 가능합니다."); // 알림 메시지 추가
       window.location.href = "/login";
-    } else {
-      //http://localhost:9826/auth/checkToken
     }
   }, []);
 
   const startRecord = async () => {
+    console.log("Record Start");
     const userIdres = await axios.post(
       "http://localhost:9826/auth/checkToken",
       {
@@ -80,10 +80,35 @@ function Record() {
       like_count: 0,
       view_count: 0,
       summary: "before",
-    });
+    })
     setRecordData({ ...recordData, travelId: travel.data, userId: userId });
+
+    const journals = await axios.get("http://localhost:9826/journals/travel/"+travel.data);
+
+    let images = [];
+    journals.data.forEach(function(image){
+      images.push({
+        src : "http://localhost:9826/"+image.photo_link.replace(/\\/g, '/').split("ic/")[1],
+        image_id : image.journalId,
+        journal_date : image.journal_date,
+        journal_text : image.journal_text,
+        journal_location_name : image.journal_location_name,
+        journal_location_latitude : image.journal_location_latitude,
+        journal_location_longitude : image.journal_location_longitude,
+        weather : image.weather,
+      });
+    });
+    setImages(images);
   };
 
+  const deleteImage = async (journalId) => {
+    const deletedImage = await axios.delete("http://localhost:9826/journals/"+journalId);
+    console.log(deletedImage)
+    if(deletedImage.data === "success"){
+      return true;
+    }
+    return false;
+  }
   const setSelected = (locationInfo) => {
     setRecordData({ ...recordData, location: locationInfo });
     setShowModal(false);
@@ -225,7 +250,7 @@ function Record() {
             }
           )
           .then((response) => {
-            console.log("Server response:", response.data.split(" "));
+            // console.log("Server response:", response.data.split(" "));
             setHashtags((prevHashtags) => [
               ...prevHashtags,
               ...response.data.split(" ").slice(1),
@@ -485,25 +510,28 @@ function Record() {
                 <button
                   className="remove-image-button"
                   onClick={() => {
-                    const updatedImages = images.filter((_, i) => i !== index); // 이미지 삭제
-                    setImages(updatedImages);
-                    setGridItems(
-                      updatedImages.map(
-                        (
-                          _,
-                          idx // 그리드 아이템 업데이트
-                        ) => (
-                          <div
-                            key={idx}
-                            className={`grid-item ${
-                              idx < updatedImages.length ? "yellow" : ""
-                            }`}
-                          >
-                            {idx + 1} {/* 번호 매기기 */}
-                          </div>
+                    const deletes = deleteImage(image.image_id);
+                    if(deletes){
+                      const updatedImages = images.filter((_, i) => i !== index); // 이미지 삭제
+                      setImages(updatedImages);
+                      setGridItems(
+                        updatedImages.map(
+                          (
+                            _,
+                            idx // 그리드 아이템 업데이트
+                          ) => (
+                            <div
+                              key={idx}
+                              className={`grid-item ${
+                                idx < updatedImages.length ? "yellow" : ""
+                              }`}
+                            >
+                              {idx + 1} {/* 번호 매기기 */}
+                            </div>
+                          )
                         )
-                      )
-                    );
+                      );
+                    }
                   }}
                 >
                   &times; {/* 삭제 아이콘 */}

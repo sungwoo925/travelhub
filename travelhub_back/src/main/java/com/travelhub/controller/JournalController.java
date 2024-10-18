@@ -6,6 +6,9 @@ import java.time.LocalDate;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -48,7 +51,7 @@ public class JournalController {
 
     @PostMapping("/uploadImage/{travelId}/{userId}")
     public ResponseEntity<String> uploadImage(@PathVariable Long travelId, @PathVariable Long userId, @RequestParam("file") MultipartFile file) {
-        String directoryPath = String.format("./images/%d/%d", travelId, userId);
+        String directoryPath = String.format("./travelhub_back/src/main/resources/static/images/%d/%d", travelId, userId);
         File directory = new File(directoryPath);
         Journal savedJournal ;
 
@@ -140,13 +143,13 @@ public class JournalController {
     }
 
     @DeleteMapping("/{journalId}")
-    public ResponseEntity<Void> deleteJournal(@PathVariable Long journalId) {
+    public ResponseEntity<String> deleteJournal(@PathVariable Long journalId) {
         boolean deleted = journalService.deleteJournal(journalId);
         
         if (deleted) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT); // 삭제 성공
+            return new ResponseEntity<>("success",HttpStatus.OK); // 삭제 성공
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND); // 삭제할 여정이 없는 경우
+            return new ResponseEntity<>("fail",HttpStatus.OK); // 삭제할 여정이 없는 경우
         }
     }
 
@@ -189,6 +192,19 @@ public class JournalController {
             
             // ByteArrayOutputStream에 저장된 데이터를 byte 배열로 변환하여 반환
             return outputStream.toByteArray();
+        }
+    }
+
+    @GetMapping("/travel/{travelId}")
+    public List<Journal> getJournalsByTravelId(@PathVariable Long travelId) {
+        Optional<Travel> traveloOptional = travelService.getTravel(travelId);
+        if (traveloOptional.isPresent()) {
+            Travel travel = traveloOptional.get(); // 값이 존재할 경우 가져오기
+            // travelReal을 사용하여 추가 처리
+            return journalService.getJournalsByTravelId(travel);
+        } else {
+            // travel이 존재하지 않을 경우 처리
+            return new ArrayList<>();
         }
     }
 }
