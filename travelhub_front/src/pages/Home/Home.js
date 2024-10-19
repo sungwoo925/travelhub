@@ -3,6 +3,7 @@ import Cube from "../../components/Cube/Cube";
 import "./Home.css";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { Link } from "react-router-dom";
 
 function Home() {
   const [data, setData] = useState([]); // 초기 데이터 배열을 빈 배열로 설정
@@ -117,7 +118,9 @@ function Home() {
               <button onClick={() => toggleLike(item)}>좋아요</button>
               <div>{item.like_count}</div>
               <Cube />
+              <Link to={"/record/"+item.travelId}>
               <button className="edit-button">수정</button>
+              </Link>
             </div>
           ))}
         </div>
@@ -139,7 +142,9 @@ function Home() {
               <button onClick={() => toggleLike(item.travelId)}>좋아요</button> {/* 좋아요 버튼 추가 */}
               <span>{item.like_count}</span> {/* 좋아요 수가 0 이상일 때만 표시 */}
               <Cube />
+              <Link to={"/record/"+item.travelId}>
               <button className="edit-button">수정</button>
+              </Link>
             </div>
           ))}
         </div>

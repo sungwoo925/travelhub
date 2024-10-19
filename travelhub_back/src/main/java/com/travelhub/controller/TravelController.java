@@ -51,7 +51,7 @@ public class TravelController {
                 return new ResponseEntity<>(travel,HttpStatus.OK);
             }
         }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(new Travel(),HttpStatus.OK);
     }
 
     // 여행 입력
