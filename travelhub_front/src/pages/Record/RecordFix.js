@@ -2,11 +2,12 @@ import React, { useContext, useEffect, useState, useRef } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import "./Record.css";
 import Journal from "../../components/Journal/Journal";
-import Footer from "../../components/Footer/Footer";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { useParams } from "react-router-dom";
 
-function Record() {
+function RecordFix() {
+const { travelId } = useParams();
   const { isAuthenticated } = useContext(AuthContext);
 
   const [isChecked, setChecked] = useState(false);
@@ -54,6 +55,7 @@ function Record() {
 
   const startRecord = async () => {
     console.log("Record Start");
+    const jwtToken = await Cookies.get("jwtToken");
     const userIdres = await axios.post(
       "http://localhost:9826/auth/checkToken",
       {
@@ -64,26 +66,13 @@ function Record() {
       }
     );
     const userId = userIdres.data.split("Token is valid. User ID: ")[1];
-    const travel = await axios.post("http://localhost:9826/travels", {
-      user_id: {
-        userId: userId,
-      },
-      travel_title: "it",
-      hashtag: "is",
-      travel_start_date: "2023-07-01T00:00:00",
-      travel_end_date: "2023-07-10T00:00:00",
-      travel_share_option: false,
-      travel_location_name: "for",
-      travel_location_latitude: 999,
-      travel_location_longitude: -157.8583,
-      travel_text: "start",
-      like_count: 0,
-      view_count: 0,
-      summary: "before",
+    console.log(travelId);
+    const travel = await axios.post("http://localhost:9826/travels/"+travelId,{
+        token: `token000111222${jwtToken}token000111222`
     });
-    setRecordData({ ...recordData, travelId: travel.data, userId: userId });
+    setRecordData({ ...recordData, travelId: travel.travelId, userId: userId });
 
-    const journals = await axios.get("http://localhost:9826/journals/travel/"+travel.data);
+    const journals = await axios.get("http://localhost:9826/journals/travel/"+travelId);
 
     let images = [];
     journals.data.forEach(function(image){
@@ -644,4 +633,4 @@ function Record() {
   );
 }
 
-export default Record;
+export default RecordFix;

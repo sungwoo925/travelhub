@@ -14,6 +14,7 @@ import "./App.css";
 import Background from "./components/Background/Background";
 import Cookies from "js-cookie";
 import axios from "axios";
+import RecordFix from "./pages/Record/RecordFix";
 
 function App() {
   const { login } = useContext(AuthContext);
@@ -71,6 +72,16 @@ function App() {
               <div className="app">
                 <Header />
                 <Record />
+                <Footer />
+              </div>
+            }
+          />
+          <Route
+            path="/record/:travelId"
+            element={
+              <div className="app">
+                <Header />
+                <RecordFix />
                 <Footer />
               </div>
             }
