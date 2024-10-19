@@ -72,7 +72,7 @@ function Record() {
       hashtag: "is",
       travel_start_date: "2023-07-01T00:00:00",
       travel_end_date: "2023-07-10T00:00:00",
-      travel_share_option: true,
+      travel_share_option: false,
       travel_location_name: "for",
       travel_location_latitude: 999,
       travel_location_longitude: -157.8583,
