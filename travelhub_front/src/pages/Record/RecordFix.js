@@ -7,7 +7,7 @@ import Cookies from "js-cookie";
 import { useParams } from "react-router-dom";
 
 function RecordFix() {
-const { travelId } = useParams();
+  const { travelId } = useParams();
   const { isAuthenticated } = useContext(AuthContext);
 
   const [isChecked, setChecked] = useState(false);
@@ -20,7 +20,7 @@ const { travelId } = useParams();
     location: "",
     date: "",
     weather: "",
-    text: "",
+    text: ""
   });
   const [hashtags, setHashtags] = useState([
     "#해시태그1",
@@ -55,7 +55,7 @@ const { travelId } = useParams();
 
   const startRecord = async () => {
     console.log("Record Start");
-    const jwtToken = await Cookies.get("jwtToken");
+    const jwtToken = Cookies.get("jwtToken");
     const userIdres = await axios.post(
       "http://localhost:9826/auth/checkToken",
       {
@@ -70,7 +70,20 @@ const { travelId } = useParams();
     const travel = await axios.post("http://localhost:9826/travels/"+travelId,{
         token: `token000111222${jwtToken}token000111222`
     });
-    setRecordData({ ...recordData, travelId: travel.travelId, userId: userId });
+    if(travel.data.travelId===0){
+      alert("감히 공격을 시도해~~??? 뒤져"); // 알림 메시지 추가
+      window.location.href = "/";
+    }
+    setRecordData({ travelId: travelId,
+      userId: userId,
+      title: travel.data.travel_title,
+      location: travel.data.travel_location_name + " latitude:"+
+      travel.data.travel_location_latitude+" longitude:"+
+      travel.data.travel_location_longitude,
+      date: travel.data.travel_start_date,
+      weather: travel.data.weather,
+      text: travel.data.travel_text
+    });
 
     const journals = await axios.get("http://localhost:9826/journals/travel/"+travelId);
 
