@@ -3,6 +3,8 @@ package com.travelhub.controller;
 import com.travelhub.entity.Travel;
 import com.travelhub.entity.User;
 import com.travelhub.service.TravelService;
+import com.travelhub.util.JwtUtil;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +21,8 @@ public class TravelController {
 
     @Autowired // 자동으로 연결해준다는 의미 안해주면 데이터 동기화가 안됨
     private TravelService travelService;
+    @Autowired
+    private JwtUtil jwtUtil; // JwtUtil 주입 추가
 
     // 여행 검색 - 해시태그로 검색
     @GetMapping("/search/hashtag")
@@ -35,11 +39,19 @@ public class TravelController {
     }
 
     // 특정 여행 가져오기
-    @GetMapping("/{travelId}")
-    public ResponseEntity<Travel> getTravel(@PathVariable Long travelId) {
-        Optional<Travel> travel = travelService.getTravel(travelId);
-        return travel.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
-                     .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    @PostMapping("/{travelId}")
+    public ResponseEntity<Travel> getTravel(@PathVariable Long travelId,@RequestBody String token) {
+        String userId = jwtUtil.extractUserId(token.split("token000111222")[1]); // ID 정보 추출+ userId        
+        Optional<Travel> travelOptional = travelService.getTravel(travelId);
+        if(travelOptional.isEmpty()){
+            new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }else{
+            Travel travel = travelOptional.get();
+            if(travel.getUserId().getUserId() == Long.parseLong(userId)){
+                return new ResponseEntity<>(travel,HttpStatus.OK);
+            }
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     // 여행 입력
