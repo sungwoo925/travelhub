@@ -25,7 +25,7 @@ public class Travel {
     @Column(nullable = false, length = 30)
     private String travelTitle;
 
-    @Column(length = 40)
+    @Column(length = 400)
     private String hashtag;
 
     @Column(nullable = false)
