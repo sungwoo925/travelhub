@@ -22,7 +22,7 @@ public class LikesService {
 
     public void addLike(Likes like) {
         // 이미 좋아요가 존재하는지 확인
-        Likes existingLike = likesRepository.findByUserIdAndTravelId(like.getUserId(), like.getTravelId());
+        List<Likes> existingLike = likesRepository.findByUserId(like.getUserId()); // 수정: travelId를 int로 사용
         
         if (existingLike != null) {
             // 이미 좋아요가 존재하면 아무 작업도 하지 않거나, 필요에 따라 처리
@@ -39,20 +39,30 @@ public class LikesService {
         travelRepository.save(travel);
     }
 
-    public void removeLike(int likeId) {
-        Likes like = likesRepository.findById(likeId).orElseThrow(() -> new RuntimeException("Like not found"));
-        
-        Travel travel = like.getTravelId();
-        travel.setLikeCount(travel.getLikeCount() - 1);
-        likesRepository.delete(like);  // Likes 엔티티 삭제
-        travelRepository.save(travel);  // Travel 엔티티 업데이트
-    }
 
     public List<Integer> getLikesByUser(User user) {
         return likesRepository.findByUserId(user)
                               .stream()
                               .map(like -> like.getTravelId().getTravelId())
                               .collect(Collectors.toList());
+    }
+
+    public void removeLikeByTravelId(Travel travel, User user) { // 매개변수 이름 수정
+        // 해당 여행에 대한 사용자의 좋아요를 찾음
+        List<Likes> likes = likesRepository.findByUserId(user); // 수정: 사용자 객체로 검색
+        if (likes.isEmpty()) { // 수정: 리스트가 비어있는지 확인
+            throw new RuntimeException("Like not found for the given travelId");
+        } 
+        
+        Likes like = likes.stream().filter(l -> l.getTravelId().getTravelId() == travel.getTravelId()).findFirst().orElse(null); // 수정: like 객체를 찾기
+        if (like == null) { // 수정: null 체크
+            throw new RuntimeException("Like not found for the given travelId");
+        }
+
+        Travel travelEntity = like.getTravelId(); // 수정: travel 가져오기
+        travelEntity.setLikeCount(travelEntity.getLikeCount() - 1); // 좋아요 수 감소
+        likesRepository.delete(like);  // Likes 엔티티 삭제
+        travelRepository.save(travelEntity);  // Travel 엔티티 업데이트
     }
 
     
