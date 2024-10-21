@@ -42,7 +42,7 @@ function App() {
     <Router>
       <div>
         <Routes>
-          <Route
+        <Route
             path="/"
             element={
               <div className="app">
@@ -118,6 +118,7 @@ function App() {
             }
           />
           <Route path="/studio" element={<Studio />} />
+          <Route path="/studio/:travelId" element={<Studio />} />
           <Route
             path="/mypage"
             element={

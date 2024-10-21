@@ -20,11 +20,19 @@ function Home() {
   const fetchData = async () => {
     try {
       const response = await axios.get("http://localhost:9826/travels");
-      console.log(response.data[0]); // 데이터 구조 확인
-      setData(response.data);
+      const realdata = response.data;
+      realdata.map(async(data,index)=>{
+        const journals = await axios.get("http://localhost:9826/journals/travel/"+data.travelId);
+        realdata[index].links = journals.data.map((data)=> data.photo_link.replace(/\\/g, '/').replace("./travelhub_back/src/main/resources/static","http://localhost:9826")); 
+        if(journals.data.length===0){
+          realdata[index].links = [];
+        }
+      });
+      setData(realdata);
+      setLoading(!loading);
     } catch (error) {
       setError(error);
-      console.log(error);
+      // console.log(error);
     } finally {
       setLoading(false);
     }
@@ -58,14 +66,13 @@ function Home() {
   };
 
   const toggleLike  = async (travelId) => {
-    console.log(travelId)
+    // console.log(travelId)
     try {
         const response = await axios.post("http://localhost:9826/likes", {
-            userId: 16,
+            userId: 11,
             travelId: travelId
         });
-
-
+        console.log(response);
         fetchData(); // 좋아요 후 데이터 새로고침
     } catch (error) {
         console.error("Error toggling like:", error);
@@ -117,7 +124,7 @@ function Home() {
               <div className="travel-summary">{item.summary}</div>
               <button onClick={() => toggleLike(item)}>좋아요</button>
               <div>{item.like_count}</div>
-              <Cube />
+              <Cube travel={item} />
               <Link to={"/record/"+item.travelId}>
               <button className="edit-button">수정</button>
               </Link>
@@ -141,7 +148,7 @@ function Home() {
               </div>
               <button onClick={() => toggleLike(item.travelId)}>좋아요</button> {/* 좋아요 버튼 추가 */}
               <span>{item.like_count}</span> {/* 좋아요 수가 0 이상일 때만 표시 */}
-              <Cube />
+              <Cube travel={item} />
               <Link to={"/record/"+item.travelId}>
               <button className="edit-button">수정</button>
               </Link>
