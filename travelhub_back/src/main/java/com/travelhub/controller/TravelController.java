@@ -54,6 +54,20 @@ public class TravelController {
         return new ResponseEntity<>(new Travel(),HttpStatus.OK);
     }
 
+    @GetMapping("/{travelId}")
+    public ResponseEntity<Travel> getTravel(@PathVariable Long travelId) {
+        Optional<Travel> travelOptional = travelService.getTravel(travelId);
+        if(travelOptional.isEmpty()){
+            new ResponseEntity<>(new Travel(),HttpStatus.OK);
+        }else{
+            Travel travel = travelOptional.get();
+            if(travel.getTravelShareOption()){
+                return new ResponseEntity<>(travel,HttpStatus.OK);
+            }
+        }
+        return new ResponseEntity<>(new Travel(),HttpStatus.OK);
+    }
+
     // 여행 입력
     @PostMapping
     public ResponseEntity<String> createTravel(@RequestBody Travel travel) {

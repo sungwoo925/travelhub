@@ -5,6 +5,8 @@ import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader'; // OBJLoader �
 import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader'; // MTLLoader 추가
 import { FontLoader } from 'three/examples/jsm/loaders/FontLoader';
 import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry';
+import axios from 'axios';
+import { useParams } from 'react-router-dom';
 
 const directionValues = {
   NorthNorth: 0,
@@ -37,7 +39,7 @@ function moving_common(){
 
 }
 
-function addImagePlane(scene, imagePath, position, width, objectName, rotation, font,direction) {
+function addImagePlane(scene, imagePath, position, width, objectName, rotation, font,direction,text) {
   if(imagePath){}else{return}
   const textureLoader = new THREE.TextureLoader();
   textureLoader.load(imagePath, function(texture) {
@@ -65,7 +67,7 @@ function addImagePlane(scene, imagePath, position, width, objectName, rotation, 
     pointLight.castShadow = true; // 그림자 생성
     scene.add(pointLight); // 조명을 scene에 추가
 
-    const textGeometry = new TextGeometry('요정도?\nasdasdasdsa\n이게 dS', {
+    const textGeometry = new TextGeometry(text, {
       font: font,
       size: 0.2,
       height: 0,
@@ -155,10 +157,12 @@ function addBackgroundPlane(scene, imagePath, position, rotation) {
 }
 
 const Studio = () => {
+  const { travelId } = useParams();
   const containerRef = useRef();
   const cameraRef = useRef();
   const [mapJson, SetMapJson] = useState(null);
   const [font, setFont] = useState();
+  const [data, setData] = useState([]);
 
   if (!mapJson) {
     fetch(process.env.PUBLIC_URL + '/mapinfo.json')
@@ -169,12 +173,26 @@ const Studio = () => {
   const [isCameraMoved, setIsCameraMoved] = useState(false); // 카메라 이동 상태 관리
 
   const loader = new FontLoader();
-  loader.load('/noto_sans_kr.typeface.json', setFont);
+
+  useEffect(()=>{
+    loader.load('/noto_sans_kr.typeface.json', setFont);
+
+    const getJournals = async () => {
+      if(travelId){
+        const journals = await axios.get("http://localhost:9826/journals/travel/"+travelId);
+        console.log((journals.data[0].photo_link));
+        setData(journals.data);
+      }
+    }
+    getJournals();
+    
+  },[]);
+  // console.log(data);
 
   const handleCameraPositionToggle = () => {
     setIsCameraMoved(prev => !prev); // 상태 토글
   };
-
+  
   // function addDecoration(scene, position, scale) {
   //   const geometry = new THREE.SphereGeometry(1, 32, 32); // 구 형태의 장식
   //   const material = new THREE.MeshBasicMaterial({ color: 0xff0000 }); // 빨간색 재질
@@ -315,6 +333,8 @@ const Studio = () => {
     floor.position.x = 0;
     // scene.add(floor);
 
+    // const travel = axios.get("http://localhost:9826/travels/"+travelId);
+
     if (mapJson) {
       for (const mapDataNum in mapJson.defualt) {
         const frame = mapJson.defualt[mapDataNum];
@@ -328,16 +348,20 @@ const Studio = () => {
         }else if(frame.direction==="West"){
           imagecoord = new THREE.Vector3(frame.coordinates[0]-4, frame.coordinates[1], frame.coordinates[2]+2);
         }
-        addImagePlane(
-          scene,
-          frame.imagePath, // 각 프레임에 대한 이미지 경로를 사용합니다.
-          imagecoord,
-          frame.width,
-          frame.name,
-          new THREE.Vector3(frame.rotation[0], frame.rotation[1], frame.rotation[2]),
-          font,
-          frame.direction
-        );
+        console.log(data);
+        if(data && mapDataNum < data.length){
+          addImagePlane(
+            scene,
+            data[mapDataNum].photo_link.replace(/\\/g, '/').replace("./travelhub_back/src/main/resources/static","http://localhost:9826"), // 각 프레임에 대한 이미지 경로를 사용합니다.
+            imagecoord,
+            frame.width,
+            frame.name,
+            new THREE.Vector3(frame.rotation[0], frame.rotation[1], frame.rotation[2]),
+            font,
+            frame.direction,
+            data[mapDataNum].journal_text
+          );
+        }
       }
     }
 
@@ -372,18 +396,18 @@ const Studio = () => {
       
       movingCircle += delta;
       if(movingCircle < 0){
-        movingCircle=mapJson.defualt.length-0.001;
+        movingCircle=data.length-0.001;//mapJson.defualt.length
         camera.position.x = 0;
         camera.position.z = 0;
         camera.rotation.y = 0;
         delta = 0;
       }
-      if(movingCircle > mapJson.defualt.length){
+      if(movingCircle > data.length){//mapJson.defualt.length
         movingCircle=0;
       }
       movingFlow += delta;
       const floor = Math.floor(movingCircle);
-      const next_floor = (floor+1)%mapJson.defualt.length;
+      const next_floor = (floor+1)%data.length;
 
       camera.position.x = move_cal(mapJson.defualt[floor].coordinates[0],mapJson.defualt[next_floor].coordinates[0],movingCircle-floor);
       camera.position.y = move_cal(mapJson.defualt[floor].coordinates[1],mapJson.defualt[next_floor].coordinates[1],movingCircle-floor);
@@ -476,7 +500,7 @@ const Studio = () => {
     };
 
     return () => cleanup();
-  }, [mapJson, isCameraMoved]); // isCameraMoved를 의존성 배열에 추가
+  }, [mapJson, isCameraMoved, data]); // isCameraMoved를 의존성 배열에 추가
 
   return (
     <div ref={containerRef} style={{ width: '100%', height: '100%', overflow: 'hidden', position: 'fixed'}}>
