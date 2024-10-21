@@ -23,12 +23,12 @@ public class LikesService {
     public void addLike(Likes like) {
         // 이미 좋아요가 존재하는지 확인
         List<Likes> existingLike = likesRepository.findByUserId(like.getUserId()); // 수정: travelId를 int로 사용
-        
-        if (existingLike != null) {
-            // 이미 좋아요가 존재하면 아무 작업도 하지 않거나, 필요에 따라 처리
-            return; // 또는 기존 좋아요 수를 증가시키는 로직 추가
+
+        for (int i = 0; i < existingLike.size(); i++) {
+            if(like.getTravelId().getTravelId()==existingLike.get(i).getTravelId().getTravelId())
+                return;
         }
-        
+
         // 새로운 좋아요 추가
         likesRepository.save(like);
         

@@ -19,6 +19,16 @@ function Home() {
 
   const fetchData = async () => {
     try {
+      const userIdres = await axios.post(
+        "http://localhost:9826/auth/checkToken",
+        {
+          headers: {
+            Authorization: `Bearer ${jwtToken}`,
+          },
+          token: `token000111222${jwtToken}token000111222`,
+        }
+      );
+      const userId = userIdres.data.split("Token is valid. User ID: ")[1];
       const response = await axios.get("http://localhost:9826/travels");
       const realdata = response.data;
       realdata.map(async(data,index)=>{
@@ -28,8 +38,16 @@ function Home() {
           realdata[index].links = [];
         }
       });
+      const likesInfo = await axios.get("http://localhost:9826/likes/user/"+userId);      
+      realdata.map((data,index)=>{
+        realdata[index].Ilike = likesInfo.data.includes(data.travelId);
+        realdata[index].userId_real = userId;
+
+      });
       setData(realdata);
-      setLoading(!loading);
+      console.log(realdata);
+      
+
     } catch (error) {
       setError(error);
       // console.log(error);
@@ -65,15 +83,61 @@ function Home() {
     return dateString.split("T")[0]; // T 이전의 날짜 부분만 반환
   };
 
-  const toggleLike  = async (travelId) => {
+  const toggleLike  = async (travelId,index) => {
+    const userIdres = await axios.post(
+      "http://localhost:9826/auth/checkToken",
+      {
+        headers: {
+          Authorization: `Bearer ${jwtToken}`,
+        },
+        token: `token000111222${jwtToken}token000111222`,
+      }
+    );
+    const userId = userIdres.data.split("Token is valid. User ID: ")[1];
     // console.log(travelId)
     try {
         const response = await axios.post("http://localhost:9826/likes", {
-            userId: 11,
+            userId: userId,
             travelId: travelId
         });
         console.log(response);
-        fetchData(); // 좋아요 후 데이터 새로고침
+        
+        setData(prevDatas => {
+            const updatedDatas = [...prevDatas]; // 기존 배열 복사
+            updatedDatas[index].like_count = response.data.like_count; // 특정 인덱스의 값 수정
+            updatedDatas[index].Ilike = !updatedDatas[index].Ilike; 
+            return updatedDatas; // 수정된 배열 반환
+        });
+    } catch (error) {
+        console.error("Error toggling like:", error);
+    }
+  };
+
+  const unLike  = async (travelId,index) => {
+    const userIdres = await axios.post(
+      "http://localhost:9826/auth/checkToken",
+      {
+        headers: {
+          Authorization: `Bearer ${jwtToken}`,
+        },
+        token: `token000111222${jwtToken}token000111222`,
+      }
+    );
+    const userId = userIdres.data.split("Token is valid. User ID: ")[1];
+    // console.log(travelId)
+    try {
+        const response = await axios.post("http://localhost:9826/likes/delete", {
+            userId: userId,
+            travelId: travelId
+        });
+        console.log(response);
+        
+        setData(prevDatas => {
+            const updatedDatas = [...prevDatas]; // 기존 배열 복사
+            updatedDatas[index].like_count = response.data.like_count; // 특정 인덱스의 값 수정
+            updatedDatas[index].Ilike = !updatedDatas[index].Ilike; 
+            return updatedDatas; // 수정된 배열 반환
+        });
     } catch (error) {
         console.error("Error toggling like:", error);
     }
@@ -122,11 +186,13 @@ function Home() {
                   : "날짜 정보 없음"}
               </div>
               <div className="travel-summary">{item.summary}</div>
-              <button onClick={() => toggleLike(item)}>좋아요</button>
+              {item.Ilike ? 
+              <button onClick={() => unLike(item.travelId,index)}>좋아요취소</button>:
+              <button onClick={() => toggleLike(item.travelId,index)}>좋아요</button>}
               <div>{item.like_count}</div>
               <Cube travel={item} />
               <Link to={"/record/"+item.travelId}>
-              <button className="edit-button">수정</button>
+              {parseInt(item.userId_real)===item.user_id.userId? <button className="edit-button">수정</button>:""}
               </Link>
             </div>
           ))}
@@ -146,11 +212,13 @@ function Home() {
                     )}`
                   : "날짜 정보 없음"}
               </div>
-              <button onClick={() => toggleLike(item.travelId)}>좋아요</button> {/* 좋아요 버튼 추가 */}
+              {item.Ilike ? 
+              <button onClick={() => unLike(item.travelId,index)}>좋아요취소</button>:
+              <button onClick={() => toggleLike(item.travelId,index)}>좋아요</button>}              
               <span>{item.like_count}</span> {/* 좋아요 수가 0 이상일 때만 표시 */}
               <Cube travel={item} />
               <Link to={"/record/"+item.travelId}>
-              <button className="edit-button">수정</button>
+              {parseInt(item.userId_real)===item.user_id.userId? <button className="edit-button">수정</button>:""}
               </Link>
             </div>
           ))}
