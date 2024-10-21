@@ -5,7 +5,6 @@ import Cookies from 'js-cookie'; // 쿠키 사용을 위한 js-cookie 추가
 import './Mypage.css';
 
 const Mypage = () => {
-    const { userInfo } = useContext(AuthContext); // userInfo 가져오기
     const [userData, setUserData] = useState(null); // 사용자 데이터 상태 추가
     const [loading, setLoading] = useState(true); // 로딩 상태 추가
     const [error, setError] = useState(null); // 에러 상태 추가
@@ -13,16 +12,19 @@ const Mypage = () => {
     useEffect(() => {
         const fetchUserData = async () => {
             const jwtToken = Cookies.get('jwtToken'); // 쿠키에서 JWT 토큰 가져오기
-            console.log("JWT Token:", jwtToken); // JWT 토큰 확인
-            console.log("userInfo:", userInfo); // userInfo 확인
-            if (userInfo && userInfo.userId) { // userInfo와 userId가 존재하는지 확인
+            if (jwtToken) { 
                 try {
-                    const response = await axios.get(`http://localhost:9826/api/users/${userInfo.userId}`, {
+                    const userIdres = await axios.post(
+                    "http://localhost:9826/auth/checkToken",
+                    {
                         headers: {
-                            Authorization: `Bearer ${jwtToken}` // JWT 토큰을 헤더에 추가
-                        }
-                    });
-                    console.log("API 응답:", response.data); // API 응답 확인
+                        Authorization: `Bearer ${jwtToken}`,
+                        },
+                        token: `token000111222${jwtToken}token000111222`,
+                    }
+                    );
+                    const userId = userIdres.data.split("Token is valid. User ID: ")[1];
+                    const response = await axios.get(`http://localhost:9826/api/users/${userId}`);
                     setUserData(response.data);
                 } catch (error) {
                     console.error("API 요청 에러:", error); // 에러 메시지 출력
@@ -31,12 +33,12 @@ const Mypage = () => {
                     setLoading(false);
                 }
             } else {
-                setLoading(false); // userInfo가 없으면 로딩 종료
+                setLoading(false); 
             }
         };
 
         fetchUserData();
-    }, [userInfo]); // userInfo가 변경될 때마다 실행
+    }, []);
 
     if (loading) {
         return <div>Loading...</div>;
