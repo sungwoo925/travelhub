@@ -41,10 +41,9 @@ public class AuthController {
         String response = "{\"isAvailable\": " + isAvailable + "}";
         return ResponseEntity.ok(response);
     }
-
+    
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody User user) {
-        System.out.println(user.getUserPassword());
         user.setUserPassword(passwordEncoder.encode(user.getUserPassword()));
         userRepository.save(user);
         return ResponseEntity.ok("User registered successfully");
