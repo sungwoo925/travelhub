@@ -67,10 +67,6 @@
 .cube-container {
   margin: 24.9px; /* 큐브 간격 조정 */
   padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  background-color: #f9f9f9;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   position: relative; /* 수정 버튼 위치 조정을 위한 relative 설정 */
   max-width: 400px; /* 최대 너비 설정 */
   height: 400px; /* 고정 높이 설정 */
@@ -141,4 +137,90 @@ input:checked + .slider:before {
 
 .pagination button:hover {
   background-color: #1976d2; /* 호버 시 색상 변경 */
+}
+
+/* 카드의 전체 컨테이너 */
+.card {
+  background-color: #e0f7fa; /* 청량한 하늘색 배경 */
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* 부드러운 그림자 */
+  padding: 20px;
+  max-width: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  transition: transform 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px); /* 살짝 떠오르는 효과 */
+}
+
+.cube {
+  height: 30vh; /* 세로로 30프로 늘린 크기 */
+}
+
+/* 카드 제목 */
+.title {
+  font-size: 18px;
+  color: #00796b; /* 어두운 청록색 */
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+/* 여행 기간 텍스트 */
+.travel-period {
+  font-size: 14px;
+  color: #004d40;
+  margin-bottom: 20px;
+}
+
+/* 좋아요 섹션 */
+.like-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 좋아요 버튼 */
+.like-button {
+  background-color: #ffffff;
+  border: 2px solid #00bcd4;
+  color: #00bcd4;
+  border-radius: 12px;
+  padding: 8px 12px;
+  font-size: 14px;
+  cursor: pointer;
+  margin-right: 8px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.like-button:hover {
+  background-color: #00bcd4;
+  color: #ffffff;
+}
+
+/* 좋아요 개수 */
+.like-count {
+  font-size: 14px;
+  color: #00796b;
+}
+
+/* 수정 버튼 */
+.edit-button {
+  background-color: #ffffff;
+  border: 2px solid #00796b;
+  color: #00796b;
+  border-radius: 12px;
+  padding: 8px 12px;
+  font-size: 14px;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.edit-button:hover {
+  background-color: #00796b;
+  color: #ffffff;
 }
