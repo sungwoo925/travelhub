@@ -191,6 +191,7 @@ input:checked + .slider:before {
   border-radius: 12px;
   padding: 8px 12px;
   font-size: 14px;
+  font-weight: bold; /* 글씨를 굵게 설정 */
   cursor: pointer;
   margin-right: 8px;
   transition: background-color 0.3s ease, color 0.3s ease;
@@ -201,10 +202,29 @@ input:checked + .slider:before {
   color: #ffffff;
 }
 
+.unlike-button {
+  background-color: #6be4ff;
+  border: 2px solid #00bcd4;
+  color: #ffffff;
+  border-radius: 12px;
+  padding: 8px 12px;
+  font-size: 14px;
+  font-weight: bold; /* 글씨를 굵게 설정 */
+  cursor: pointer;
+  margin-right: 8px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.unlike-button:hover {
+  background-color: #ff7749;
+  color: #ffffff;
+}
+
 /* 좋아요 개수 */
 .like-count {
-  font-size: 14px;
+  font-size: 16px;
   color: #00796b;
+  font-weight: bold; /* 글씨를 굵게 설정 */
 }
 
 /* 수정 버튼 */
@@ -224,3 +244,4 @@ input:checked + .slider:before {
   background-color: #00796b;
   color: #ffffff;
 }
+

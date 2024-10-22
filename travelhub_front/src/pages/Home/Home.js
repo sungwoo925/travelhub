@@ -187,7 +187,7 @@ function Home() {
               </div>
               <div className="travel-summary">{item.summary}</div>
               {item.Ilike ? 
-              <button onClick={() => unLike(item.travelId,index)}>좋아요취소</button>:
+              <button onClick={() => unLike(item.travelId,index)}>좋아요</button>:
               <button onClick={() => toggleLike(item.travelId,index)}>좋아요</button>}
               <div>{item.like_count}</div>
               <Cube travel={item} />
@@ -207,13 +207,13 @@ function Home() {
                 <p className="travel-period">{item.travel_start_date && item.travel_end_date ? `${formatDate(item.travel_start_date)} ~ ${formatDate(item.travel_end_date)}`: "날짜 정보 없음"}</p>
                 <div className="like-section">
                     {item.Ilike ? 
-                  <button className="like-button" onClick={() => unLike(item.travelId,index)}>좋아요취소</button>:
+                  <button className="unlike-button" onClick={() => unLike(item.travelId,index)}>❤️ 좋아요</button>:
                   <button className="like-button" onClick={() => toggleLike(item.travelId,index)}>❤️ 좋아요</button>}
                   <span className="like-count">{item.like_count}</span>
                 </div>
-                <Link to={"/record/"+item.travelId}>
-                {parseInt(item.userId_real)===item.user_id.userId? <button className="edit-button">수정</button>:""}
-                </Link>              
+              <Link to={"/record/"+item.travelId}>
+              {parseInt(item.userId_real)===item.user_id.userId? <button className="edit-button">수정</button>:""}
+              </Link>
               </div>
             </div>
           ))}
