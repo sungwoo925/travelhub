@@ -43,7 +43,17 @@ const Mypage = () => {
     if (loading) {
         return <div>Loading...</div>;
     }
-
+    
+    const formatPhoneNumber = (phoneNumber) => {
+        if (!phoneNumber) return '정보 없음'; // 전화번호가 없을 경우 처리
+        const cleaned = phoneNumber.replace(/\D/g, ''); // 숫자만 남기기
+        const match = cleaned.match(/^(\d{3})(\d{4})(\d{4})$/); // 010, 0000, 0000 형식으로 매칭
+        if (match) {
+            return `${match[1]}-${match[2]}-${match[3]}`; // 포맷팅된 전화번호 반환
+        }
+        return phoneNumber; // 포맷팅 실패 시 원래 전화번호 반환
+    };
+    
     return (
         <div className="mypage-container">
             <h1 className="mypage-title">마이페이지</h1>
@@ -52,10 +62,10 @@ const Mypage = () => {
                 <ul className="mypage-info-list">
                     <li className="mypage-info-item">이름: {userData.user_name}</li> {/* user_name 표시 */}
                     <li className="mypage-info-item">이메일: {userData.user_email}</li> {/* user_email 표시 */}
-                    <li className="mypage-info-item">전화번호: {userData.user_phone_num}</li> {/* user_phone_num 표시 */}
+                    <li className="mypage-info-item">전화번호: {formatPhoneNumber(userData.user_phone_num)}</li> {/* 전화번호 포맷팅 */}
                     <li className="mypage-info-item">생일: {userData.birthday}</li> {/* birthday 표시 */}
-                    <li className="mypage-info-item">성별: {userData.sex}</li> {/* sex 표시 */}
-                </ul>
+                    <li className="mypage-info-item">성별: {userData.sex === 'M' ? '남자' : userData.sex === 'F' ? '여자' : '정보 없음'}</li> {/* 성별 표시 */}
+                    </ul>
             ) : (
                 <p>사용자 정보가 없습니다.</p>
             )}

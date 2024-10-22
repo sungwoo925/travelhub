@@ -187,8 +187,8 @@ function Home() {
               </div>
               <div className="travel-summary">{item.summary}</div>
               {item.Ilike ? 
-              <button className="select-button-like" onClick={() => unLike(item.travelId,index)}>좋아요</button>:
-              <button className="button-like"onClick={() => toggleLike(item.travelId,index)}>좋아요</button>}
+              <button onClick={() => unLike(item.travelId,index)}>좋아요</button>:
+              <button onClick={() => toggleLike(item.travelId,index)}>좋아요</button>}
               <div>{item.like_count}</div>
               <Cube travel={item} />
               <Link to={"/record/"+item.travelId}>
@@ -201,25 +201,20 @@ function Home() {
         <div className="grid-view">
           {currentItems.map((item, index) => (
             <div key={index} className="cube-container">
-              <span>
-                {index + 1 + indexOfFirstItem}.{" "}
-                {item.travel_title || "제목 없음"}
-              </span>
-              <div className="travel-dates">
-                {item.travel_start_date && item.travel_end_date
-                  ? `${formatDate(item.travel_start_date)} ~ ${formatDate(
-                      item.travel_end_date
-                    )}`
-                  : "날짜 정보 없음"}
-              </div>
-              {item.Ilike ? 
-              <button onClick={() => unLike(item.travelId,index)}>좋아요취소</button>:
-              <button onClick={() => toggleLike(item.travelId,index)}>좋아요</button>}              
-              <span>{item.like_count}</span> {/* 좋아요 수가 0 이상일 때만 표시 */}
-              <Cube travel={item} />
+              <div className="card">
+                <Cube travel={item} />
+                <h2 className="title">{item.travel_title || "제목 없음"}</h2>
+                <p className="travel-period">{item.travel_start_date && item.travel_end_date ? `${formatDate(item.travel_start_date)} ~ ${formatDate(item.travel_end_date)}`: "날짜 정보 없음"}</p>
+                <div className="like-section">
+                    {item.Ilike ? 
+                  <button className="unlike-button" onClick={() => unLike(item.travelId,index)}>❤️ 좋아요</button>:
+                  <button className="like-button" onClick={() => toggleLike(item.travelId,index)}>❤️ 좋아요</button>}
+                  <span className="like-count">{item.like_count}</span>
+                </div>
               <Link to={"/record/"+item.travelId}>
               {parseInt(item.userId_real)===item.user_id.userId? <button className="edit-button">수정</button>:""}
               </Link>
+              </div>
             </div>
           ))}
         </div>
