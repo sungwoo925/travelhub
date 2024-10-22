@@ -23,6 +23,7 @@
 /travelhub_front/npm-debug.log*
 /travelhub_front/yarn-debug.log*
 /travelhub_front/yarn-error.log*
+/travelhub_front/.env
 
 
 

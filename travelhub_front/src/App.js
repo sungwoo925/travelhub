@@ -15,6 +15,7 @@ import Background from "./components/Background/Background";
 import Cookies from "js-cookie";
 import axios from "axios";
 import RecordFix from "./pages/Record/RecordFix";
+const apiUrl = process.env.REACT_APP_API_URL;
 
 function App() {
   const { login } = useContext(AuthContext);
@@ -23,7 +24,7 @@ function App() {
     const jwtToken = Cookies.get("jwtToken");
     if (jwtToken) {
       axios
-        .post("http://localhost:9826/auth/checkToken", {
+        .post("http://"+apiUrl+":9826/auth/checkToken", {
           headers: {
             Authorization: `Bearer ${jwtToken}`,
           },

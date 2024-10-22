@@ -5,6 +5,8 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { Link } from "react-router-dom";
 
+const apiUrl = process.env.REACT_APP_API_URL;
+
 function Home() {
   const [data, setData] = useState([]); // 초기 데이터 배열을 빈 배열로 설정
   const [currentPage, setCurrentPage] = useState(1);
@@ -20,7 +22,7 @@ function Home() {
   const fetchData = async () => {
     try {
       const userIdres = await axios.post(
-        "http://localhost:9826/auth/checkToken",
+        "http://" + apiUrl + ":9826/auth/checkToken",
         {
           headers: {
             Authorization: `Bearer ${jwtToken}`,
@@ -29,16 +31,16 @@ function Home() {
         }
       );
       const userId = userIdres.data.split("Token is valid. User ID: ")[1];
-      const response = await axios.get("http://localhost:9826/travels");
+      const response = await axios.get("http://" + apiUrl + ":9826/travels");
       const realdata = response.data;
       realdata.map(async(data,index)=>{
-        const journals = await axios.get("http://localhost:9826/journals/travel/"+data.travelId);
-        realdata[index].links = journals.data.map((data)=> data.photo_link.replace(/\\/g, '/').replace("./travelhub_back/src/main/resources/static","http://localhost:9826")); 
+        const journals = await axios.get("http://" + apiUrl + ":9826/journals/travel/"+data.travelId);
+        realdata[index].links = journals.data.map((data)=> data.photo_link.replace(/\\/g, '/').replace("./travelhub_back/src/main/resources/static","http://" + apiUrl + ":9826")); 
         if(journals.data.length===0){
           realdata[index].links = [];
         }
       });
-      const likesInfo = await axios.get("http://localhost:9826/likes/user/"+userId);      
+      const likesInfo = await axios.get("http://" + apiUrl + ":9826/likes/user/"+userId);      
       realdata.map((data,index)=>{
         realdata[index].Ilike = likesInfo.data.includes(data.travelId);
         realdata[index].userId_real = userId;
@@ -85,7 +87,7 @@ function Home() {
 
   const toggleLike  = async (travelId,index) => {
     const userIdres = await axios.post(
-      "http://localhost:9826/auth/checkToken",
+      "http://" + apiUrl + ":9826/auth/checkToken",
       {
         headers: {
           Authorization: `Bearer ${jwtToken}`,
@@ -96,7 +98,7 @@ function Home() {
     const userId = userIdres.data.split("Token is valid. User ID: ")[1];
     // console.log(travelId)
     try {
-        const response = await axios.post("http://localhost:9826/likes", {
+        const response = await axios.post("http://" + apiUrl + ":9826/likes", {
             userId: userId,
             travelId: travelId
         });
@@ -115,7 +117,7 @@ function Home() {
 
   const unLike  = async (travelId,index) => {
     const userIdres = await axios.post(
-      "http://localhost:9826/auth/checkToken",
+      "http://" + apiUrl + ":9826/auth/checkToken",
       {
         headers: {
           Authorization: `Bearer ${jwtToken}`,
@@ -126,7 +128,7 @@ function Home() {
     const userId = userIdres.data.split("Token is valid. User ID: ")[1];
     // console.log(travelId)
     try {
-        const response = await axios.post("http://localhost:9826/likes/delete", {
+        const response = await axios.post("http://" + apiUrl + ":9826/likes/delete", {
             userId: userId,
             travelId: travelId
         });
