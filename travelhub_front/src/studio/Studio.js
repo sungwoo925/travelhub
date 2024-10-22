@@ -7,6 +7,7 @@ import { FontLoader } from 'three/examples/jsm/loaders/FontLoader';
 import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+const apiUrl = process.env.REACT_APP_API_URL;
 
 const directionValues = {
   NorthNorth: 0,
@@ -179,7 +180,7 @@ const Studio = () => {
 
     const getJournals = async () => {
       if(travelId){
-        const journals = await axios.get("http://localhost:9826/journals/travel/"+travelId);
+        const journals = await axios.get("http://"+apiUrl+":9826/journals/travel/"+travelId);
         console.log((journals.data[0].photo_link));
         setData(journals.data);
       }
@@ -352,7 +353,7 @@ const Studio = () => {
         if(data && mapDataNum < data.length){
           addImagePlane(
             scene,
-            data[mapDataNum].photo_link.replace(/\\/g, '/').replace("./travelhub_back/src/main/resources/static","http://localhost:9826"), // 각 프레임에 대한 이미지 경로를 사용합니다.
+            data[mapDataNum].photo_link.replace(/\\/g, '/').replace("./travelhub_back/src/main/resources/static","http://"+apiUrl+":9826"), // 각 프레임에 대한 이미지 경로를 사용합니다.
             imagecoord,
             frame.width,
             frame.name,

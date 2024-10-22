@@ -3,6 +3,7 @@ import { AuthContext } from '../../context/AuthContext'; // AuthContext 가져�
 import axios from 'axios'; // axios 추가
 import Cookies from 'js-cookie'; // 쿠키 사용을 위한 js-cookie 추가
 import './Mypage.css';
+const apiUrl = process.env.REACT_APP_API_URL;
 
 const Mypage = () => {
     const [userData, setUserData] = useState(null); // 사용자 데이터 상태 추가
@@ -15,7 +16,7 @@ const Mypage = () => {
             if (jwtToken) { 
                 try {
                     const userIdres = await axios.post(
-                    "http://localhost:9826/auth/checkToken",
+                    "http://"+apiUrl+":9826/auth/checkToken",
                     {
                         headers: {
                         Authorization: `Bearer ${jwtToken}`,
@@ -24,7 +25,7 @@ const Mypage = () => {
                     }
                     );
                     const userId = userIdres.data.split("Token is valid. User ID: ")[1];
-                    const response = await axios.get(`http://localhost:9826/api/users/${userId}`);
+                    const response = await axios.get(`http://${apiUrl}:9826/api/users/${userId}`);
                     setUserData(response.data);
                 } catch (error) {
                     console.error("API 요청 에러:", error); // 에러 메시지 출력

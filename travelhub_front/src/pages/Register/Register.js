@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./Register.css";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios"; // axios를 사용하여 서버와 통신
+const apiUrl = process.env.REACT_APP_API_URL;
 
 function Register() {
   const navigate = useNavigate();
@@ -29,7 +30,7 @@ function Register() {
   const handleUsernameCheck = async () => {
     try {
       const response = await axios.post(
-        `http://localhost:9826/auth/checkUsername/${userData.user_email}`
+        `http://${apiUrl}:9826/auth/checkUsername/${userData.user_email}`
       );
       console.log(response);
       if (response.data.isAvailable) {
@@ -64,7 +65,7 @@ function Register() {
     }
     try {
       const response = await axios.post(
-        "http://localhost:9826/auth/register",
+        "http://"+apiUrl+":9826/auth/register",
         userData
       );
       if (response.status === 200) {

@@ -5,6 +5,8 @@ import axios from "axios";
 import { AuthContext } from "../../context/AuthContext";
 import Cookies from "js-cookie";
 
+const apiUrl = process.env.REACT_APP_API_URL;
+
 function Login() {
   const [useremail, setUseremail] = useState("");
   const [password, setPassword] = useState("");
@@ -72,7 +74,7 @@ function Login() {
     try {
       console.log(useremail);
       console.log(password);
-      const response = await axios.post("http://localhost:9826/auth/login", {
+      const response = await axios.post("http://"+apiUrl+":9826/auth/login", {
         user_email: useremail,
         user_password: password,
       });
