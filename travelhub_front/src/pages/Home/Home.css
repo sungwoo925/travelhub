@@ -142,3 +142,19 @@ input:checked + .slider:before {
 .pagination button:hover {
   background-color: #1976d2; /* 호버 시 색상 변경 */
 }
+
+.select-button-like {
+  background-color: rgb(0, 8, 255); /* 기본 배경색을 회색으로 설정 */
+  color: white; /* 기본 글자색 */
+  cursor: pointer; /* 커서 모양 변경 */
+  transition: background-color 0.3s, color 0.3s; /* 배경색과 글자색 변화에 애니메이션 추가 */
+}
+
+
+.select-button-like:hover {
+  background-color: red; /* 마우스 오버 시 글자색을 빨간색으로 변경 */
+}
+
+.button-like {
+  background-color: #878686;
+}

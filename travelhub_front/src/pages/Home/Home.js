@@ -187,8 +187,8 @@ function Home() {
               </div>
               <div className="travel-summary">{item.summary}</div>
               {item.Ilike ? 
-              <button onClick={() => unLike(item.travelId,index)}>좋아요취소</button>:
-              <button onClick={() => toggleLike(item.travelId,index)}>좋아요</button>}
+              <button className="select-button-like" onClick={() => unLike(item.travelId,index)}>좋아요</button>:
+              <button className="button-like"onClick={() => toggleLike(item.travelId,index)}>좋아요</button>}
               <div>{item.like_count}</div>
               <Cube travel={item} />
               <Link to={"/record/"+item.travelId}>
@@ -213,8 +213,8 @@ function Home() {
                   : "날짜 정보 없음"}
               </div>
               {item.Ilike ? 
-              <button onClick={() => unLike(item.travelId,index)}>좋아요취소</button>:
-              <button onClick={() => toggleLike(item.travelId,index)}>좋아요</button>}              
+              <button className="select-button-like" onClick={() => unLike(item.travelId,index)}>좋아요</button>:
+              <button className="button-like" onClick={() => toggleLike(item.travelId,index)}>좋아요</button>}              
               <span>{item.like_count}</span> {/* 좋아요 수가 0 이상일 때만 표시 */}
               <Cube travel={item} />
               <Link to={"/record/"+item.travelId}>
