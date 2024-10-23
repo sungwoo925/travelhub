@@ -54,7 +54,7 @@ function Cube({travel}) {
   const materials = textures.map((texture) => new THREE.MeshBasicMaterial({ map: texture }));
 
   return (
-    <Link className="cube" to={'/studio/'+travel.travelId}>
+    <Link className="cube"  to={'/studio/'+travel.travelId}>
       <Canvas style={{ width: '100%' }}> 
         {/* <ambientLight />
         <pointLight position={[0, 0, 0]} /> */}

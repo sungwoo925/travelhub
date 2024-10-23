@@ -51,7 +51,7 @@ public class JournalController {
 
     @PostMapping("/uploadImage/{travelId}/{userId}")
     public ResponseEntity<String> uploadImage(@PathVariable Long travelId, @PathVariable Long userId, @RequestParam("file") MultipartFile file) {
-        String directoryPath = String.format("./travelhub_back/src/main/resources/static/images/%d/%d", travelId, userId);
+        String directoryPath = String.format("./static/images/%d/%d", travelId, userId);
         File directory = new File(directoryPath);
         Journal savedJournal ;
 
