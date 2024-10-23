@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 const apiUrl = process.env.REACT_APP_API_URL;
 
 function Home() {
+  const [originalData, setOriginalData] = useState([]); // 원본 데이터를 저장할 상태 추가
   const [data, setData] = useState([]); // 초기 데이터 배열을 빈 배열로 설정
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
@@ -16,6 +17,7 @@ function Home() {
   const [error, setError] = useState(null);
   const [sortOption, setSortOption] = useState("최신순"); // 정렬 옵션
   const [myTravelOnly, setMyTravelOnly] = useState(false); // 나의 여행 필터
+  const [userId, setUserId] = useState(null); // userId 상태 추가
 
   const jwtToken = Cookies.get("jwtToken");
 
@@ -31,8 +33,11 @@ function Home() {
         }
       );
       const userId = userIdres.data.split("Token is valid. User ID: ")[1];
+      setUserId(userId); // userId 상태 업데이트
       const response = await axios.get("http://" + apiUrl + ":9826/travels");
       const realdata = response.data;
+      setOriginalData(realdata);
+
       realdata.map(async(data,index)=>{
         const journals = await axios.get("http://" + apiUrl + ":9826/journals/travel/"+data.travelId);
         realdata[index].links = journals.data.map((data)=> data.photo_link.replace(/\\/g, '/').replace("./travelhub_back/src/main/resources/static","http://" + apiUrl + ":9826")); 
@@ -61,6 +66,15 @@ function Home() {
   useEffect(() => {
     fetchData();
   }, []);
+
+  useEffect(() => {
+    if (myTravelOnly && userId) {
+      const filteredData = originalData.filter(item => String(userId) === String(item.user_id.userId));
+      setData(filteredData);
+    } else {
+      setData(originalData);
+    }
+  }, [myTravelOnly, userId, originalData]);
 
   const handleSortChange = (option) => {
     setSortOption(option);
@@ -151,15 +165,11 @@ function Home() {
         <button onClick={() => handleSortChange("최신순")}>최신순</button>
         <button onClick={() => handleSortChange("조회순")}>조회순</button>
         <button onClick={() => handleSortChange("좋아요순")}>좋아요순</button>
-        <div>
-          <span>나의 여행만 보기</span>
-          <label className="switch">
-            <input
-              type="checkbox"
-              checked={myTravelOnly}
-              onChange={toggleMyTravel}
-            />
-            <span className="slider"></span>
+        <div className="toggle-container">
+          <div className="toggle-label">나의 여행만 보기</div>
+          <input type="checkbox" id="toggle" hidden checked={myTravelOnly} onChange={toggleMyTravel}/>
+          <label htmlFor="toggle" class="toggleSwitch">
+            <span class="toggleButton"></span>
           </label>
         </div>
         <button
