@@ -204,41 +204,80 @@ function RecordFix() {
     });
   };
 
-  const handleImageChange = (e) => {
-    const files = Array.from(e.target.files);
-    if (images.length + files.length > 14) {
-      // 최대 14개 체크
-      const confirmAddMore = window.confirm(
-        "최대 14개의 이미지만 추가할 수 있습니다. 추가하시겠습니까?"
-      ); // 확인 대화상자 추가
-      if (!confirmAddMore) {
-        return; // 추가하지 않으면 종료
-      }
-    }
-    const newImages = []; // 새로운 이미지 배열 초기화
+  function compressImage(file, quality = 0.7) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
 
-    files.forEach((file) => {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        let imageData = {
-          src: reader.result,
-          journal_location_name: "",
-          journal_date: "",
-          weather: "",
-          journal_text: "",
-          image_id: 0,
+        reader.onload = (event) => {
+            const img = new Image();
+            img.src = event.target.result;
+
+            img.onload = () => {
+                // Create canvas element
+                const canvas = document.createElement("canvas");
+                const ctx = canvas.getContext("2d");
+
+                // Set canvas size to image size
+                canvas.width = img.width;
+                canvas.height = img.height;
+
+                // Draw image on canvas
+                ctx.drawImage(img, 0, 0);
+
+                // Convert canvas to blob with specified quality
+                canvas.toBlob((blob) => {
+                    resolve(blob);
+                }, 'image/jpeg', quality);
+            };
+
+            img.onerror = (err) => {
+                reject(err);
+            };
         };
-        newImages.push(imageData); // 새로운 이미지 배열에 추가
 
-        
+        reader.onerror = (err) => {
+            reject(err);
+        };
 
-        // FormData 객체 생성
-        const formData = new FormData();
-        formData.append("file", file); // file 필드에 파일 추가
-        formData.append("data", JSON.stringify(imageData)); // 추가 데이터를 JSON 문자열로 변환하여 추가
+        reader.readAsDataURL(file); // Read the file as data URL
+    });
+}
 
-        // 백엔드로 파일 전송
-        axios
+const handleImageChange = (e) => {
+  const files = Array.from(e.target.files);
+  if (images.length + files.length > 14) {
+    // 최대 14개 체크
+    const confirmAddMore = window.confirm(
+      "최대 14개의 이미지만 추가할 수 있습니다. 추가하시겠습니까?"
+    ); // 확인 대화상자 추가
+    if (!confirmAddMore) {
+      return; // 추가하지 않으면 종료
+    }
+  }
+  const newImages = []; // 새로운 이미지 배열 초기화
+
+  files.forEach((file) => {
+    const reader = new FileReader();
+    reader.onloadend = async() => {
+      let imageData = {
+        src: reader.result,
+        journal_location_name: "",
+        journal_date: "",
+        weather: "",
+        journal_text: "",
+        image_id: 0,
+      };
+      newImages.push(imageData); // 새로운 이미지 배열에 추가
+
+       // 이미지 압축
+      const compressedBlob = await compressImage(file);
+
+      const formData = new FormData();
+
+      // FormData 생성
+      formData.append("file", compressedBlob, file.name); 
+
+      axios
           .post(
             "http://"+apiUrl+":9826/journals/uploadImage/" +
               recordData.travelId +
