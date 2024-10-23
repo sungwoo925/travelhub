@@ -40,7 +40,7 @@ function Home() {
 
       realdata.map(async(data,index)=>{
         const journals = await axios.get("http://" + apiUrl + ":9826/journals/travel/"+data.travelId);
-        realdata[index].links = journals.data.map((data)=> data.photo_link.replace(/\\/g, '/').replace("./travelhub_back/src/main/resources/static","http://" + apiUrl + ":9826")); 
+        realdata[index].links = journals.data.map((data)=> data.photo_link.replace(/\\/g, '/').replace("./static","http://" + apiUrl + ":9826")); 
         if(journals.data.length===0){
           realdata[index].links = [];
         }

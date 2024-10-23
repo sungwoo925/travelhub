@@ -353,7 +353,7 @@ const Studio = () => {
         if(data && mapDataNum < data.length){
           addImagePlane(
             scene,
-            data[mapDataNum].photo_link.replace(/\\/g, '/').replace("./travelhub_back/src/main/resources/static","http://"+apiUrl+":9826"), // 각 프레임에 대한 이미지 경로를 사용합니다.
+            data[mapDataNum].photo_link.replace(/\\/g, '/').replace("./static","http://"+apiUrl+":9826"), // 각 프레임에 대한 이미지 경로를 사용합니다.
             imagecoord,
             frame.width,
             frame.name,
