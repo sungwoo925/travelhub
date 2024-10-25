@@ -1,13 +1,19 @@
 # Backend Dockerfile
-# 1. OpenJDK 17을 베이스로 사용
-FROM openjdk:17-jdk-alpine
 
-# 2. 빌드된 JAR 파일을 컨테이너로 복사
-ARG JAR_FILE=target/*.jar
-COPY myapp.jar app.jar
+# 1단계: Maven을 사용하여 애플리케이션 빌드
+FROM maven:3.8.6-openjdk-17 AS build
+WORKDIR /app
+COPY pom.xml .
+COPY src ./src
+RUN mvn clean package -DskipTests
+
+# 2단계: JAR 파일을 포함한 최종 이미지
+FROM openjdk:17-jdk-alpine
+WORKDIR /app
+COPY --from=build /app/target/*.jar app.jar
 
 # 3. 포트 노출
 EXPOSE 9826
 
-# 4. Spring Boot 실행
-ENTRYPOINT ["java", "-jar", "/app.jar"]
+# 4. Spring Boot 애플리케이션 실행
+ENTRYPOINT ["java", "-jar", "/app/app.jar"]
