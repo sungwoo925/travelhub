@@ -52,7 +52,7 @@ function Record() {
   const startRecord = async () => {
     console.log("Record Start");
     const userIdres = await axios.post(
-      "http://"+apiUrl+":9826/auth/checkToken",
+      "http://"+apiUrl+"/auth/checkToken",
       {
         headers: {
           Authorization: `Bearer ${jwtToken}`,
@@ -61,7 +61,7 @@ function Record() {
       }
     );
     const userId = userIdres.data.split("Token is valid. User ID: ")[1];
-    const travel = await axios.post("http://"+apiUrl+":9826/travels", {
+    const travel = await axios.post("http://"+apiUrl+"/travels", {
       user_id: {
         userId: userId,
       },
@@ -80,12 +80,12 @@ function Record() {
     });
     setRecordData({ ...recordData, travelId: travel.data, userId: userId });
 
-    const journals = await axios.get("http://"+apiUrl+":9826/journals/travel/"+travel.data);
+    const journals = await axios.get("http://"+apiUrl+"/journals/travel/"+travel.data);
 
     let images = [];
     journals.data.forEach(function(image){
       images.push({
-        src : "http://"+apiUrl+":9826/"+image.photo_link.replace(/\\/g, '/').split("ic/")[1],
+        src : "http://"+apiUrl+"/"+image.photo_link.replace(/\\/g, '/').split("ic/")[1],
         image_id : image.journalId,
         journal_date : image.journal_date,
         journal_text : image.journal_text,
@@ -99,7 +99,7 @@ function Record() {
   };
 
   const deleteImage = async (journalId) => {
-    const deletedImage = await axios.delete("http://"+apiUrl+":9826/journals/"+journalId);
+    const deletedImage = await axios.delete("http://"+apiUrl+"/journals/"+journalId);
     console.log(deletedImage)
     if(deletedImage.data === "success"){
       return true;
@@ -124,7 +124,7 @@ function Record() {
     console.log("Searching for:", searchQuery);
     try {
       const response = await axios.get(
-        "http://"+apiUrl+":9826/maps/" + searchQuery
+        "http://"+apiUrl+"/maps/" + searchQuery
       );
       console.log(response.data);
       setData(response.data);
@@ -168,7 +168,7 @@ function Record() {
     const location = recordData.location.split(" latitude:");
     const locationName = location[0];
     const locationInfo = location[1].split(" longitude:");
-    axios.put("http://"+apiUrl+":9826/travels/" + recordData.travelId, {
+    axios.put("http://"+apiUrl+"/travels/" + recordData.travelId, {
       user_id: {
         userId: recordData.userId,
       },
@@ -186,7 +186,7 @@ function Record() {
       summary: "",
     });
     images.forEach((image, index) => {
-      axios.put("http://"+apiUrl+":9826/journals/" + image.image_id, {
+      axios.put("http://"+apiUrl+"/journals/" + image.image_id, {
         journal_date: image.journal_date,
         journal_text: image.journal_text,
         journal_location_name: image.journal_location_name,
@@ -273,7 +273,7 @@ function Record() {
 
         axios
           .post(
-            "http://"+apiUrl+":9826/journals/uploadImage/" +
+            "http://"+apiUrl+"/journals/uploadImage/" +
               recordData.travelId +
               "/" +
               recordData.userId,
