@@ -28,7 +28,7 @@
 
 
 #spring
-/travelhub_back/src/main/resources/application.properties
+#/travelhub_back/src/main/resources/application.properties
 /travelhub_back/src/main/resources/static/images/
 /travelhub_back/HELP.md
 /travelhub_back/target/
