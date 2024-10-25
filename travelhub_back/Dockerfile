@@ -1,7 +1,7 @@
 # Backend Dockerfile
 
 # 1단계: Maven을 사용하여 애플리케이션 빌드
-FROM maven:3.8.6-openjdk-17 AS build
+FROM maven:3.8.6-eclipse-temurin-17 AS build
 WORKDIR /app
 COPY pom.xml .
 COPY src ./src
@@ -13,7 +13,7 @@ WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar
 
 # 3. 포트 노출
-EXPOSE 9826
+EXPOSE 8080
 
 # 4. Spring Boot 애플리케이션 실행
 ENTRYPOINT ["java", "-jar", "/app/app.jar"]
