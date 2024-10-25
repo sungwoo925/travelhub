@@ -1,5 +1,4 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom'; 
 
 const Background = () => {
   const backgroundImage = process.env.PUBLIC_URL + '/images/background1.jpg';
