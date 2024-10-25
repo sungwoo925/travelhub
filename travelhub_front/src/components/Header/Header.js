@@ -5,6 +5,8 @@ import { AuthContext } from "../../context/AuthContext";
 import "./Header.css";
 import Cookies from "js-cookie";
 
+const apiUrl = process.env.REACT_APP_API_URL;
+
 const Header = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
@@ -17,7 +19,7 @@ const Header = () => {
   const handleSearch = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:9826/api/users/${searchTerm}`
+        `http://${apiUrl}:9826/api/users/${searchTerm}`
       );
       console.log(response.data);
       setSearchResults(response.data);
