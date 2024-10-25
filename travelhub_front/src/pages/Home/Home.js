@@ -15,7 +15,7 @@ function Home() {
   const [viewMode, setViewMode] = useState("grid"); // 기본값을 'grid' 로 설정
   // const [loading, setLoading] = useState(true);
   // const [error, setError] = useState(null);
-  const [sortOption, setSortOption] = useState("최신순"); // 정렬 옵션
+  // const [sortOption, setSortOption] = useState("최신순"); // 정렬 옵션
   const [myTravelOnly, setMyTravelOnly] = useState(false); // 나의 여행 필터
   const [userId, setUserId] = useState(null); // userId 상태 추가
 
@@ -52,10 +52,10 @@ function Home() {
       });
 
       const likesInfo = (userId? (await axios.get("http://" + apiUrl + ":9826/likes/user/"+userId)): -1);
+      // eslint-disable-next-line
       realdata.map((data,index)=>{
         realdata[index].Ilike = likesInfo.data.includes(data.travelId);
         realdata[index].userId_real = userId;
-
       });
       setData(realdata);
       console.log(realdata);
@@ -71,6 +71,7 @@ function Home() {
 
   useEffect(() => {
     fetchData();
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
@@ -83,7 +84,7 @@ function Home() {
   }, [myTravelOnly, userId, originalData]);
 
   const handleSortChange = (option) => {
-    setSortOption(option);
+    // setSortOption(option);
   };
 
   const toggleMyTravel = () => {

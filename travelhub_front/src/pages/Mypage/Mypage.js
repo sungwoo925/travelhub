@@ -1,5 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { AuthContext } from '../../context/AuthContext'; // AuthContext 가져오기
+import React, {  useEffect, useState } from 'react';
 import axios from 'axios'; // axios 추가
 import Cookies from 'js-cookie'; // 쿠키 사용을 위한 js-cookie 추가
 import './Mypage.css';

@@ -1,7 +1,6 @@
-import React, { useContext, useEffect, useState, useRef } from "react";
-import { AuthContext } from "../../context/AuthContext";
+import React, {  useEffect, useState, useRef } from "react";
 import "./Record.css";
-import Journal from "../../components/Journal/Journal";
+// import Journal from "../../components/Journal/Journal";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useParams } from "react-router-dom";
@@ -9,10 +8,9 @@ const apiUrl = process.env.REACT_APP_API_URL;
 
 function RecordFix() {
   const { travelId } = useParams();
-  const { isAuthenticated } = useContext(AuthContext);
 
   const [isChecked, setChecked] = useState(false);
-  const [journals, setJournals] = useState([]);
+  // const [journals, setJournals] = useState([]);
   const [images, setImages] = useState([]);
   const [recordData, setRecordData] = useState({
     travelId: 0,
@@ -33,8 +31,8 @@ function RecordFix() {
   const [showModal, setShowModal] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  // const [loading, setLoading] = useState(true);
+  // const [error, setError] = useState(null);
   const dragItem = useRef(); // 드래그할 아이템의 인덱스
   const dragOverItem = useRef(); // 드랍할 위치의 아이템의 인덱스
   const [draggingIndex, setDraggingIndex] = useState(null); // 드래그 중인 아이템의 인덱스
@@ -52,6 +50,7 @@ function RecordFix() {
       alert("로그인 후 이용 가능합니다."); // 알림 메시지 추가
       window.location.href = "/login";
     }
+    // eslint-disable-next-line
   }, []);
 
   const startRecord = async () => {
@@ -135,11 +134,11 @@ function RecordFix() {
       console.log(response.data);
       setData(response.data);
     } catch (error) {
-      setError(error);
+      // setError(error);
       console.log(error);
     } finally {
-      setLoading(false);
-      console.log(data);
+      // setLoading(false);
+      // console.log(data);
     }
   };
 
@@ -162,9 +161,9 @@ function RecordFix() {
     setChecked(!isChecked);
   };
 
-  const addJournals = () => {
-    setJournals((prevJournals) => [...prevJournals, {}]);
-  };
+  // const addJournals = () => {
+  //   setJournals((prevJournals) => [...prevJournals, {}]);
+  // };
 
   const savetravel = () => {
     if (recordData.location === "") {
@@ -646,9 +645,6 @@ const handleImageChange = (e) => {
             ))}
           </div>
         </div>
-        {journals.map((journal, index) => (
-          <Journal key={index} />
-        ))}
         {/* <button className="add-journal" onClick={addJournals}>+</button> */}
       </div>
       <div className="right-pane">
