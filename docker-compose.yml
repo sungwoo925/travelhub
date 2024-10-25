@@ -8,7 +8,7 @@ services:
     ports:
       - "9826:9826"
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/mydb
+      - SPRING_DATASOURCE_URL=jdbc:mysql://138.2.55.84:24831/travelhub
     depends_on:
       - db
 
