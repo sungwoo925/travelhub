@@ -183,7 +183,7 @@ const Studio = () => {
       }
     }
     getJournals(travelId);
-    
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   },[travelId]);
   // console.log(data);
 
@@ -498,6 +498,7 @@ const Studio = () => {
     };
 
     return () => cleanup();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mapJson, isCameraMoved, data]); // isCameraMoved를 의존성 배열에 추가
 
   return (

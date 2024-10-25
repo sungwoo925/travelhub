@@ -9,6 +9,7 @@ const Footer = () => {
   if (location.pathname === "/login" || location.pathname === "/register") {
     className = "footer-login";
   } else {
+    // eslint-disable-next-line
     className = "footer-default";
   }
 
@@ -18,6 +19,7 @@ const Footer = () => {
         <img
           className="footer-logo"
           src="./images/footer-logo-removebg-preview.png"
+          alt=""
         ></img>
 
         <div className="info-area">
