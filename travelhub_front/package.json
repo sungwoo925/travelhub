@@ -2,6 +2,7 @@
   "name": "my-react-app",
   "version": "0.1.0",
   "private": true,
+  "homepage": "/",
   "dependencies": {
     "@mediapipe/tasks-vision": "^0.10.10",
     "@react-three/drei": "^9.99.3",
