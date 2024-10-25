@@ -55,7 +55,7 @@ function Cube({travel}) {
 
   return (
     <Link className="cube"  to={'/studio/'+travel.travelId}>
-      <Canvas style={{ width: '100%', height: '100%' }}> 
+      <Canvas style={{ width: '100%' }}> 
         {/* <ambientLight />
         <pointLight position={[0, 0, 0]} /> */}
         <Box

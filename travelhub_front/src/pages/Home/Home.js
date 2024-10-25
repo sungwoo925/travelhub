@@ -221,9 +221,7 @@ function Home() {
           {currentItems.map((item, index) => (
             <div key={index} className="cube-container">
               <div className="card">
-                <h2 className="user-name">{item.user_id.user_name+"님의 여행" || "제목 없음"}</h2>
                 <Cube travel={item} />
-                <h2 className="location-name">{item.travel_location_name || "제목 없음"}</h2>
                 <h2 className="title">{item.travel_title || "제목 없음"}</h2>
                 <p className="travel-period">{item.travel_start_date && item.travel_end_date ? `${formatDate(item.travel_start_date)} ~ ${formatDate(item.travel_end_date)}`: "날짜 정보 없음"}</p>
                 <div className="like-section">

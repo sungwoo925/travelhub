@@ -158,7 +158,7 @@ input:checked + .slider:before {
 }
 
 .cube {
-  height: 190px; /* 세로로 30프로 늘린 크기 */
+  height: 30vh; /* 세로로 30프로 늘린 크기 */
 }
 
 /* 카드 제목 */
@@ -298,13 +298,7 @@ input:checked + .slider:before {
   color: #000000; /* 글자 색상 */
   padding: 10px 15px; /* 안쪽 여백 */
   border-radius: 5px; /* 모서리 둥글게 */
+
+  
 }
 
-.location-name,.user-name {
-  font-size: 14px;
-  color: #528fd8; /* 어두운 청록색 */
-}
-
-.location-name, .title, .travel-period, .user-name {
-  margin: 4px /* 위아래 간격을 4px로 설정 */
-}
