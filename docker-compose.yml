@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  backend:
+    build:
+      context: ./travelhub_back  # 백엔드 폴더 경로
+      dockerfile: Dockerfile
+    ports:
+      - "9826:9826"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/mydb
+    depends_on:
+      - db
+
+  frontend:
+    build:
+      context: ./travelhub_front  # 프론트엔드 폴더 경로
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+  db:
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: mydb
+      MYSQL_USER: user
+      MYSQL_PASSWORD: user_password
+    ports:
+      - "3306:3306"
