@@ -25,7 +25,7 @@ function Home() {
     try {
       if(jwtToken){
         const userIdres = await axios.post(
-          "http://" + apiUrl + ":9826/auth/checkToken",
+          "https://" + apiUrl + "/auth/checkToken",
           {
             headers: {
               Authorization: `Bearer ${jwtToken}`,
@@ -39,19 +39,19 @@ function Home() {
         setUserId(null); // userId 상태 업데이트
       }
 
-      const response = await axios.get("http://" + apiUrl + ":9826/travels");
+      const response = await axios.get("https://" + apiUrl + "/travels");
       const realdata = response.data;
       setOriginalData(realdata);
 
       realdata.map(async(data,index)=>{
-        const journals = await axios.get("http://" + apiUrl + ":9826/journals/travel/"+data.travelId);
-        realdata[index].links = journals.data.map((data)=> data.photo_link.replace(/\\/g, '/').replace("./static","http://" + apiUrl + ":9826")); 
+        const journals = await axios.get("https://" + apiUrl + "/journals/travel/"+data.travelId);
+        realdata[index].links = journals.data.map((data)=> data.photo_link.replace(/\\/g, '/').replace("./static","https://" + apiUrl + "")); 
         if(journals.data.length===0){
           realdata[index].links = [];
         }
       });
 
-      const likesInfo = (userId? (await axios.get("http://" + apiUrl + ":9826/likes/user/"+userId)): -1);
+      const likesInfo = (userId? (await axios.get("https://" + apiUrl + "/likes/user/"+userId)): -1);
       // eslint-disable-next-line
       realdata.map((data,index)=>{
         realdata[index].Ilike = likesInfo.data.includes(data.travelId);
@@ -108,7 +108,7 @@ function Home() {
 
   const toggleLike  = async (travelId,index) => {
     const userIdres = await axios.post(
-      "http://" + apiUrl + ":9826/auth/checkToken",
+      "https://" + apiUrl + "/auth/checkToken",
       {
         headers: {
           Authorization: `Bearer ${jwtToken}`,
@@ -119,7 +119,7 @@ function Home() {
     const userId = userIdres.data.split("Token is valid. User ID: ")[1];
     // console.log(travelId)
     try {
-        const response = await axios.post("http://" + apiUrl + ":9826/likes", {
+        const response = await axios.post("https://" + apiUrl + "/likes", {
             userId: userId,
             travelId: travelId
         });
@@ -138,7 +138,7 @@ function Home() {
 
   const unLike  = async (travelId,index) => {
     const userIdres = await axios.post(
-      "http://" + apiUrl + ":9826/auth/checkToken",
+      "https://" + apiUrl + "/auth/checkToken",
       {
         headers: {
           Authorization: `Bearer ${jwtToken}`,
@@ -149,7 +149,7 @@ function Home() {
     const userId = userIdres.data.split("Token is valid. User ID: ")[1];
     // console.log(travelId)
     try {
-        const response = await axios.post("http://" + apiUrl + ":9826/likes/delete", {
+        const response = await axios.post("https://" + apiUrl + "/likes/delete", {
             userId: userId,
             travelId: travelId
         });
