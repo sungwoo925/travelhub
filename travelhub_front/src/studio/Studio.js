@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import './Studio.css';
-import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader'; // OBJLoader 추가
-import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader'; // MTLLoader 추가
+// import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader'; // OBJLoader 추가
+// import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader'; // MTLLoader 추가
 import { FontLoader } from 'three/examples/jsm/loaders/FontLoader';
 import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry';
 import axios from 'axios';
@@ -36,9 +36,6 @@ function move_cal(start_p,end_p,deg){//카메라 움직임 도와주는 함수 �
   return start_p + ((end_p-start_p) * deg);
 }
 
-function moving_common(){
-
-}
 
 function addImagePlane(scene, imagePath, position, width, objectName, rotation, font,direction,text) {
   if(imagePath){}else{return}
@@ -142,20 +139,20 @@ function addFrame(scene, width, height, position, rotation) {
   });
 }
 
-function addBackgroundPlane(scene, imagePath, position, rotation) {
-  const textureLoader = new THREE.TextureLoader();
-  const marbleTexture = textureLoader.load(imagePath);
-  marbleTexture.wrapS = THREE.RepeatWrapping;
-  marbleTexture.wrapT = THREE.RepeatWrapping;
-  marbleTexture.repeat.set(20, 20); // 텍스처 반복 설정
+// function addBackgroundPlane(scene, imagePath, position, rotation) {
+//   const textureLoader = new THREE.TextureLoader();
+//   const marbleTexture = textureLoader.load(imagePath);
+//   marbleTexture.wrapS = THREE.RepeatWrapping;
+//   marbleTexture.wrapT = THREE.RepeatWrapping;
+//   marbleTexture.repeat.set(20, 20); // 텍스처 반복 설정
 
-  const floorGeometry = new THREE.PlaneGeometry(100, 100);
-  const floorMaterial = new THREE.MeshPhongMaterial({ map: marbleTexture, side: THREE.DoubleSide });
-  const floor = new THREE.Mesh(floorGeometry, floorMaterial);
-  floor.position.copy(position); // 전달된 위치로 배경을 이동시킵니다.
-  floor.rotation.set(rotation.x, rotation.y, rotation.z); // 전달된 각도로 배경을 회전시킵니다.
-  scene.add(floor);
-}
+//   const floorGeometry = new THREE.PlaneGeometry(100, 100);
+//   const floorMaterial = new THREE.MeshPhongMaterial({ map: marbleTexture, side: THREE.DoubleSide });
+//   const floor = new THREE.Mesh(floorGeometry, floorMaterial);
+//   floor.position.copy(position); // 전달된 위치로 배경을 이동시킵니다.
+//   floor.rotation.set(rotation.x, rotation.y, rotation.z); // 전달된 각도로 배경을 회전시킵니다.
+//   scene.add(floor);
+// }
 
 const Studio = () => {
   const { travelId } = useParams();
@@ -185,9 +182,9 @@ const Studio = () => {
         setData(journals.data);
       }
     }
-    getJournals();
+    getJournals(travelId);
     
-  },[]);
+  },[travelId]);
   // console.log(data);
 
   const handleCameraPositionToggle = () => {
@@ -202,13 +199,13 @@ const Studio = () => {
   //   decoration.scale.set(scale.x, scale.y, scale.z); // 크기 조정
   //   scene.add(decoration);
   // }
-  function addExhibitionFrame(scene, position, scale) {
-    const geometry = new THREE.BoxGeometry(scale.x, scale.y, scale.z); // 큐브 형태의 장식
-    const material = new THREE.MeshBasicMaterial({ color: 0x8B4513 }); // 갈색 재질 (나무 느낌)
-    const frame = new THREE.Mesh(geometry, material);
-    frame.position.copy(position);
-    scene.add(frame);
-  }
+  // function addExhibitionFrame(scene, position, scale) {
+  //   const geometry = new THREE.BoxGeometry(scale.x, scale.y, scale.z); // 큐브 형태의 장식
+  //   const material = new THREE.MeshBasicMaterial({ color: 0x8B4513 }); // 갈색 재질 (나무 느낌)
+  //   const frame = new THREE.Mesh(geometry, material);
+  //   frame.position.copy(position);
+  //   scene.add(frame);
+  // }
 
   useEffect(() => {
     // Scene
@@ -277,22 +274,22 @@ const Studio = () => {
     // scene.fog = new THREE.Fog(0xFFFFFF, 1, 50);
     // 배경
     if (mapJson && mapJson.backgrounds && mapJson.backgrounds.length >= 6) {
-      const positions = [
-        new THREE.Vector3(0, 0, -50), // Front
-        new THREE.Vector3(0, 0, 50),  // Back
-        new THREE.Vector3(-50, 0, 0), // Left
-        new THREE.Vector3(50, 0, 0),  // Right
-        new THREE.Vector3(0, 50, 0),  // Top
-        new THREE.Vector3(0, -50, 0)  // Bottom
-      ];
-      const rotations = [
-        new THREE.Vector3(0, 0, 0), // Front
-        new THREE.Vector3(0, Math.PI, 0), // Back
-        new THREE.Vector3(0, Math.PI / 2, 0), // Left
-        new THREE.Vector3(0, -Math.PI / 2, 0), // Right
-        new THREE.Vector3(-Math.PI / 2, 0, 0), // Top
-        new THREE.Vector3(Math.PI / 2, 0, 0) // Bottom
-      ];
+      // const positions = [
+      //   new THREE.Vector3(0, 0, -50), // Front
+      //   new THREE.Vector3(0, 0, 50),  // Back
+      //   new THREE.Vector3(-50, 0, 0), // Left
+      //   new THREE.Vector3(50, 0, 0),  // Right
+      //   new THREE.Vector3(0, 50, 0),  // Top
+      //   new THREE.Vector3(0, -50, 0)  // Bottom
+      // ];
+      // const rotations = [
+      //   new THREE.Vector3(0, 0, 0), // Front
+      //   new THREE.Vector3(0, Math.PI, 0), // Back
+      //   new THREE.Vector3(0, Math.PI / 2, 0), // Left
+      //   new THREE.Vector3(0, -Math.PI / 2, 0), // Right
+      //   new THREE.Vector3(-Math.PI / 2, 0, 0), // Top
+      //   new THREE.Vector3(Math.PI / 2, 0, 0) // Bottom
+      // ];
 
       for (let i = 0; i < 6; i++) {
         // addBackgroundPlane(scene, mapJson.backgrounds[i], positions[i], rotations[i]);
@@ -434,42 +431,42 @@ const Studio = () => {
       renderer.render(scene, camera);
     };
 
-    function addModel(scene, modelPath, mtlPath, position, scale, texturePath) {
-      const mtlLoader = new MTLLoader();
-      mtlLoader.load(mtlPath, (materials) => {
-        materials.preload(); // 재질 미리 로드
-        const objLoader = new OBJLoader();
-        objLoader.setMaterials(materials); // 재질 설정
-        objLoader.load(modelPath, (object) => {
-          object.position.copy(position); // 위치 설정
-          object.scale.set(scale.x, scale.y, scale.z); // 모델 크기 조정
+    // function addModel(scene, modelPath, mtlPath, position, scale, texturePath) {
+    //   const mtlLoader = new MTLLoader();
+    //   mtlLoader.load(mtlPath, (materials) => {
+    //     materials.preload(); // 재질 미리 로드
+    //     const objLoader = new OBJLoader();
+    //     objLoader.setMaterials(materials); // 재질 설정
+    //     objLoader.load(modelPath, (object) => {
+    //       object.position.copy(position); // 위치 설정
+    //       object.scale.set(scale.x, scale.y, scale.z); // 모델 크기 조정
     
-          // 텍스처 적용
-          if (texturePath) {
-            const textureLoader = new THREE.TextureLoader();
-            textureLoader.load(texturePath, (texture) => {
-              object.traverse((child) => {
-                if (child.isMesh) {
-                  child.material.map = texture; // 텍스처를 재질에 적용
-                  child.material.needsUpdate = true; // 재질 업데이트
-                }
-              }, undefined, (error) => {
-                console.error('텍스처 로드 중 오류 발생:', error);
-              });
-            }, undefined, (error) => {
-              console.error('텍스처 로드 중 오류 발생:', error);
-            });
-          }
+    //       // 텍스처 적용
+    //       if (texturePath) {
+    //         const textureLoader = new THREE.TextureLoader();
+    //         textureLoader.load(texturePath, (texture) => {
+    //           object.traverse((child) => {
+    //             if (child.isMesh) {
+    //               child.material.map = texture; // 텍스처를 재질에 적용
+    //               child.material.needsUpdate = true; // 재질 업데이트
+    //             }
+    //           }, undefined, (error) => {
+    //             console.error('텍스처 로드 중 오류 발생:', error);
+    //           });
+    //         }, undefined, (error) => {
+    //           console.error('텍스처 로드 중 오류 발생:', error);
+    //         });
+    //       }
     
-          scene.add(object); // 장면에 추가
-          console.log('모델이 성공적으로 로드되었습니다:', object);
-        }, undefined, (error) => {
-          console.error('모델 로드 중 오류 발생:', error);
-        });
-      }, undefined, (error) => {
-        console.error('MTL 파일 로드 중 오류 발생:', error);
-      });
-    }
+    //       scene.add(object); // 장면에 추가
+    //       console.log('모델이 성공적으로 로드되었습니다:', object);
+    //     }, undefined, (error) => {
+    //       console.error('모델 로드 중 오류 발생:', error);
+    //     });
+    //   }, undefined, (error) => {
+    //     console.error('MTL 파일 로드 중 오류 발생:', error);
+    //   });
+    // }
 
     // addModel(scene, './OBJ_file/Chair_and_Table.obj', new THREE.Vector3(0, 0, 0)); // 모델 추가
     // Listen for wheel events for zooming

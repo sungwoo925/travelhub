@@ -11,7 +11,6 @@ import Record from "./pages/Record/Record";
 import Studio from "./studio/Studio";
 import Mypage from "./pages/Mypage/Mypage";
 import "./App.css";
-import Background from "./components/Background/Background";
 import Cookies from "js-cookie";
 import axios from "axios";
 import RecordFix from "./pages/Record/RecordFix";
@@ -37,7 +36,7 @@ function App() {
           login(false);
         });
     }
-  }, []);
+  });
 
   return (
     <Router>
@@ -112,8 +111,6 @@ function App() {
                     <Register />
                   </div>
                 </div>
-
-                {/* <Background /> */}
                 <Footer />
               </div>
             }

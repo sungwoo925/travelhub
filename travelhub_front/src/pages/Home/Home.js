@@ -13,8 +13,8 @@ function Home() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
   const [viewMode, setViewMode] = useState("grid"); // 기본값을 'grid' 로 설정
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  // const [loading, setLoading] = useState(true);
+  // const [error, setError] = useState(null);
   const [sortOption, setSortOption] = useState("최신순"); // 정렬 옵션
   const [myTravelOnly, setMyTravelOnly] = useState(false); // 나의 여행 필터
   const [userId, setUserId] = useState(null); // userId 상태 추가
@@ -23,17 +23,22 @@ function Home() {
 
   const fetchData = async () => {
     try {
-      const userIdres = await axios.post(
-        "http://" + apiUrl + ":9826/auth/checkToken",
-        {
-          headers: {
-            Authorization: `Bearer ${jwtToken}`,
-          },
-          token: `token000111222${jwtToken}token000111222`,
-        }
-      );
-      const userId = userIdres.data.split("Token is valid. User ID: ")[1];
-      setUserId(userId); // userId 상태 업데이트
+      if(jwtToken){
+        const userIdres = await axios.post(
+          "http://" + apiUrl + ":9826/auth/checkToken",
+          {
+            headers: {
+              Authorization: `Bearer ${jwtToken}`,
+            },
+            token: `token000111222${jwtToken}token000111222`,
+          }
+        );
+        const userId = userIdres.data.split("Token is valid. User ID: ")[1];
+        setUserId(userId); // userId 상태 업데이트
+      }else{
+        setUserId(null); // userId 상태 업데이트
+      }
+
       const response = await axios.get("http://" + apiUrl + ":9826/travels");
       const realdata = response.data;
       setOriginalData(realdata);
@@ -45,7 +50,8 @@ function Home() {
           realdata[index].links = [];
         }
       });
-      const likesInfo = await axios.get("http://" + apiUrl + ":9826/likes/user/"+userId);      
+
+      const likesInfo = (userId? (await axios.get("http://" + apiUrl + ":9826/likes/user/"+userId)): -1);
       realdata.map((data,index)=>{
         realdata[index].Ilike = likesInfo.data.includes(data.travelId);
         realdata[index].userId_real = userId;
@@ -56,10 +62,10 @@ function Home() {
       
 
     } catch (error) {
-      setError(error);
+      // setError(error);
       // console.log(error);
     } finally {
-      setLoading(false);
+      // setLoading(false);
     }
   };
 
@@ -168,8 +174,8 @@ function Home() {
         <div className="toggle-container">
           <div className="toggle-label">나의 여행만 보기</div>
           <input type="checkbox" id="toggle" hidden checked={myTravelOnly} onChange={toggleMyTravel}/>
-          <label htmlFor="toggle" class="toggleSwitch">
-            <span class="toggleButton"></span>
+          <label htmlFor="toggle" className="toggleSwitch">
+            <span className="toggleButton"></span>
           </label>
         </div>
         <button
@@ -218,9 +224,9 @@ function Home() {
                 <h2 className="title">{item.travel_title || "제목 없음"}</h2>
                 <p className="travel-period">{item.travel_start_date && item.travel_end_date ? `${formatDate(item.travel_start_date)} ~ ${formatDate(item.travel_end_date)}`: "날짜 정보 없음"}</p>
                 <div className="like-section">
-                    {item.Ilike ? 
+                    {userId?(item.Ilike ? 
                   <button className="unlike-button" onClick={() => unLike(item.travelId,index)}>❤️ 좋아요</button>:
-                  <button className="like-button" onClick={() => toggleLike(item.travelId,index)}>❤️ 좋아요</button>}
+                  <button className="like-button" onClick={() => toggleLike(item.travelId,index)}>❤️ 좋아요</button>):<div>좋아요 수 :   </div>}
                   <span className="like-count">{item.like_count}</span>
                 </div>
               <Link to={"/record/"+item.travelId}>
