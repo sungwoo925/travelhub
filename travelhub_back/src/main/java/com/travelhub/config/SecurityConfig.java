@@ -18,10 +18,12 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .cors().and() // CORS 활성화
-            .csrf().disable() // CSRF 비활성화
-            .authorizeRequests()
-            .anyRequest().authenticated(); // 인증이 필요한 요청 설정
+            .cors().and()
+            .csrf().disable()
+            .authorizeHttpRequests((requests) -> requests
+                .requestMatchers("/**").permitAll() // /public 경로는 인증 없이 허용
+                .anyRequest().authenticated() // 다른 모든 요청은 인증 필요
+            );
 
         return http.build();
     }
