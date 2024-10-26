@@ -79,4 +79,8 @@ public class TravelService {
     public List<Travel> getAllTravels() {
         return travelRepository.findAll();
     }
+
+    public List<Travel> getTravelWithShareOption() {
+        return travelRepository.findByTravelShareOption(true);
+    }
 }
