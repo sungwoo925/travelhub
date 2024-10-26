@@ -74,7 +74,7 @@ function Login() {
     try {
       console.log(useremail);
       console.log(password);
-      const response = await axios.post("http://"+apiUrl+"/auth/login", {
+      const response = await axios.post(apiUrl+"/auth/login", {
         user_email: useremail,
         user_password: password,
       });

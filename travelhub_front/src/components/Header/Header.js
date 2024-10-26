@@ -19,7 +19,7 @@ const Header = () => {
   const handleSearch = async () => {
     try {
       const response = await axios.get(
-        `http://${apiUrl}/api/users/${searchTerm}`
+        `${apiUrl}/api/users/${searchTerm}`
       );
       console.log(response.data);
       setSearchResults(response.data);

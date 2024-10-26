@@ -7,5 +7,5 @@ import com.travelhub.entity.Travel;
 import java.util.List;
 
 public interface JournalRepository extends JpaRepository<Journal, Long> {
-    List<Journal> findByTravelId(Travel travelId); // travelId로 Journal 찾기
+    List<Journal> findByTravelId(Integer travelId); // travelId로 Journal 찾기
 }

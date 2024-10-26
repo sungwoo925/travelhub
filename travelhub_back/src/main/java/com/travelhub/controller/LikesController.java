@@ -34,7 +34,7 @@ public class LikesController {
     public ResponseEntity<Travel> addLike(@RequestBody LikesDTO likesDTO) {
         try {
             
-            Optional<User> user = userService.getUserById((long) likesDTO.getUserId());
+            Optional<User> user = userService.getUserById((Integer) likesDTO.getUserId());
             Travel travel = travelRepository.findById((long) likesDTO.getTravelId())
                 .orElseThrow(() -> new NoSuchElementException("Travel not found")); // Travel 존재 여부 확인
             Likes like = new Likes(user.get(), travel);
@@ -51,7 +51,7 @@ public class LikesController {
     @PostMapping("/delete") // travelId를 PathVariable로 변경
     public ResponseEntity<Travel> removeLikeByTravelId(@RequestBody LikesDTO likesDTO) { // userId를 쿼리 파라미터로 받음
         try {
-            Optional<User> user = userService.getUserById((long) likesDTO.getUserId());  
+            Optional<User> user = userService.getUserById((Integer) likesDTO.getUserId());  
             Travel travel = travelRepository.findById((long) likesDTO.getTravelId()) // travelId로 Travel 객체를 조회
                 .orElseThrow(() -> new NoSuchElementException("Travel not found")); // Travel 존재 여부 확인
             likesService.removeLikeByTravelId(travel, user.get()); // Travel 객체와 user를 사용하여 삭제

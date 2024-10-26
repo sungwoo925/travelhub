@@ -11,11 +11,11 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public Optional<User> getUserById(Long userId) {
+    public Optional<User> getUserById(Integer userId) {
         return userRepository.findById(userId);
     }
 
-    public Optional<User> updateUser(Long userId, User userDetails) {
+    public Optional<User> updateUser(Integer userId, User userDetails) {
         return userRepository.findById(userId).map(user -> {
             user.setUserName(userDetails.getUserName());
             user.setUserPassword(userDetails.getUserPassword()); // 비밀번호는 암호화 필요

@@ -10,8 +10,8 @@ import java.util.Optional;
 public interface TravelRepository extends JpaRepository<Travel, Long> {
     List<Travel> findByHashtagContaining(String hashtag);
     List<Travel> findByTravelTitleContaining(String travelTitle);
-    List<Travel> findByUserIdAndTravelLocationLatitude(User userId, Double travelLocationLatitude);
+    List<Travel> findByUserIdAndTravelLocationLatitude(Integer userId, Double travelLocationLatitude);
     List<Travel> findByTravelShareOption(Boolean travelShareOption);
 
-    Optional<Travel> findById(Long id);
+    Optional<Travel> findByTravelId(Integer id);
 }

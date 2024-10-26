@@ -50,7 +50,7 @@ public class JournalController {
     private TravelService travelService;
 
     @PostMapping("/uploadImage/{travelId}/{userId}")
-    public ResponseEntity<String> uploadImage(@PathVariable Long travelId, @PathVariable Long userId, @RequestParam("file") MultipartFile file) {
+    public ResponseEntity<String> uploadImage(@PathVariable int travelId, @PathVariable Long userId, @RequestParam("file") MultipartFile file) {
         String directoryPath = String.format("./static/images/%d/%d", travelId, userId);
         File directory = new File(directoryPath);
         Journal savedJournal ;
@@ -73,11 +73,9 @@ public class JournalController {
         //수정중
        try {
         // Travel 객체를 ID로 조회
-        Travel travel = travelService.findById(travelId); // travelService를 통해 Travel 객체 조회
-
             // 이미지 파일을 저장한 후 저널 생성
             Journal journal = new Journal(
-                travel, // Travel 객체
+                travelId, // Travel 객체
                 "저널 텍스트 예시", // journalText
                 LocalDate.now(), // journalDate
                 "위치 이름 예시", // journalLocationName
@@ -196,15 +194,7 @@ public class JournalController {
     }
 
     @GetMapping("/travel/{travelId}")
-    public List<Journal> getJournalsByTravelId(@PathVariable Long travelId) {
-        Optional<Travel> traveloOptional = travelService.getTravel(travelId);
-        if (traveloOptional.isPresent()) {
-            Travel travel = traveloOptional.get(); // 값이 존재할 경우 가져오기
-            // travelReal을 사용하여 추가 처리
-            return journalService.getJournalsByTravelId(travel);
-        } else {
-            // travel이 존재하지 않을 경우 처리
-            return new ArrayList<>();
-        }
+    public List<Journal> getJournalsByTravelId(@PathVariable Integer travelId) {
+        return journalService.getJournalsByTravelId(travelId);
     }
 }

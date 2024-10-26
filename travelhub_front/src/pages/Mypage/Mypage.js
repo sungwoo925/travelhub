@@ -15,7 +15,7 @@ const Mypage = () => {
             if (jwtToken) { 
                 try {
                     const userIdres = await axios.post(
-                    "http://"+apiUrl+"/auth/checkToken",
+                    apiUrl+"/auth/checkToken",
                     {
                         headers: {
                         Authorization: `Bearer ${jwtToken}`,
@@ -24,7 +24,7 @@ const Mypage = () => {
                     }
                     );
                     const userId = userIdres.data.split("Token is valid. User ID: ")[1];
-                    const response = await axios.get(`http://${apiUrl}/api/users/${userId}`);
+                    const response = await axios.get(`${apiUrl}/api/users/${userId}`);
                     setUserData(response.data);
                 } catch (error) {
                     console.error("API 요청 에러:", error); // 에러 메시지 출력
