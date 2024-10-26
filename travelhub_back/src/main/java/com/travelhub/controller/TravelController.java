@@ -112,13 +112,8 @@ public class TravelController {
     // 모든 여행 정보 가져오기 (travelShareOption이 1인 경우만)
     @GetMapping 
     public ResponseEntity<List<Travel>> getAllTravels() {
-        List<Travel> travels = travelService.getAllTravels();
-        
-        // travelShareOption이 1인 경우만 필터링
-        List<Travel> filteredTravels = travels.stream()
-            .filter(travel -> travel.getTravelShareOption() == true) // travelShareOption이 1인 경우
-            .collect(Collectors.toList());
+        List<Travel> travels = travelService.getTravelWithShareOption();
 
-        return new ResponseEntity<>(filteredTravels, HttpStatus.OK);
+        return new ResponseEntity<>(travels, HttpStatus.OK);
     }
 }
