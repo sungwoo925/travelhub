@@ -20,10 +20,11 @@ public class Travel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int travelId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    @JsonBackReference
-    private User userId;
+    // @ManyToOne(fetch = FetchType.LAZY)
+    // @JoinColumn(name = "user_id", nullable = false)
+    // @JsonBackReference
+    @Column(nullable = false)
+    private int userId;
 
     @Column(nullable = false, length = 30)
     private String travelTitle;
@@ -66,7 +67,7 @@ public class Travel {
     // 요청 데이터를 바로 설정하는 생성자
     @JsonCreator
     public Travel(
-        @JsonProperty("user_id") User userId,
+        @JsonProperty("user_id") int userId,
         @JsonProperty("travel_title") String travelTitle,
         @JsonProperty("hashtag") String hashtag,
         @JsonProperty("travel_start_date") LocalDateTime travelStartDate,
@@ -103,11 +104,11 @@ public class Travel {
         this.travelId = travelId;
     }
 
-    public User getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
-    public void setUserId(User userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 

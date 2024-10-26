@@ -177,7 +177,7 @@ const Studio = () => {
 
     const getJournals = async () => {
       if(travelId){
-        const journals = await axios.get("http://"+apiUrl+"/journals/travel/"+travelId);
+        const journals = await axios.get(apiUrl+"/journals/travel/"+travelId);
         console.log((journals.data[0].photo_link));
         setData(journals.data);
       }
@@ -350,7 +350,7 @@ const Studio = () => {
         if(data && mapDataNum < data.length){
           addImagePlane(
             scene,
-            data[mapDataNum].photo_link.replace(/\\/g, '/').replace("./static","https://"+apiUrl+""), // 각 프레임에 대한 이미지 경로를 사용합니다.
+            data[mapDataNum].photo_link.replace(/\\/g, '/').replace("./static",apiUrl), // 각 프레임에 대한 이미지 경로를 사용합니다.
             imagecoord,
             frame.width,
             frame.name,

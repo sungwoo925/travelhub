@@ -17,9 +17,9 @@ public class Journal {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int journalId;
 
-    @ManyToOne
-    @JoinColumn(name = "travel_id", nullable = false)
-    private Travel travelId;
+    // @ManyToOne
+    // @JoinColumn(name = "travel_id", nullable = false)
+    private Integer travelId;
 
     @Column(length = 400)
     private String journalText;
@@ -52,7 +52,7 @@ public class Journal {
     // 요청 데이터를 바로 설정하는 생성자
     @JsonCreator
     public Journal(
-        @JsonProperty("travel_id") Travel travelId,
+        @JsonProperty("travel_id") int travelId,
         @JsonProperty("journal_text") String journalText,
         @JsonProperty("journal_date") LocalDate journalDate,
         @JsonProperty("journal_location_name") String journalLocationName,
@@ -87,11 +87,11 @@ public class Journal {
         this.journalId = journalId;
     }
 
-    public Travel getTravelId() {
+    public int getTravelId() {
         return travelId;
     }
 
-    public void setTravelId(Travel travelId) {
+    public void setTravelId(int travelId) {
         this.travelId = travelId;
     }
 

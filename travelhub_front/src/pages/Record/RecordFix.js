@@ -57,7 +57,7 @@ function RecordFix() {
     console.log("Record Start");
     const jwtToken = Cookies.get("jwtToken");
     const userIdres = await axios.post(
-      "http://"+apiUrl+"/auth/checkToken",
+      apiUrl+"/auth/checkToken",
       {
         headers: {
           Authorization: `Bearer ${jwtToken}`,
@@ -67,7 +67,7 @@ function RecordFix() {
     );
     const userId = userIdres.data.split("Token is valid. User ID: ")[1];
     console.log(travelId);
-    const travel = await axios.post("http://"+apiUrl+"/travels/"+travelId,{
+    const travel = await axios.post(apiUrl+"/travels/"+travelId,{
         token: `token000111222${jwtToken}token000111222`
     });
     if(travel.data.travelId===0){
@@ -85,12 +85,12 @@ function RecordFix() {
       text: travel.data.travel_text
     });
 
-    const journals = await axios.get("http://"+apiUrl+"/journals/travel/"+travelId);
+    const journals = await axios.get(apiUrl+"/journals/travel/"+travelId);
 
     let images = [];
     journals.data.forEach(function(image){
       images.push({
-        src : "http://"+apiUrl+"/"+image.photo_link.replace(/\\/g, '/').split("ic/")[1],
+        src : apiUrl+"/"+image.photo_link.replace(/\\/g, '/').split("ic/")[1],
         image_id : image.journalId,
         journal_date : image.journal_date,
         journal_text : image.journal_text,
@@ -104,7 +104,7 @@ function RecordFix() {
   };
 
   const deleteImage = async (journalId) => {
-    const deletedImage = await axios.delete("http://"+apiUrl+"/journals/"+journalId);
+    const deletedImage = await axios.delete(apiUrl+"/journals/"+journalId);
     console.log(deletedImage)
     if(deletedImage.data === "success"){
       return true;
@@ -129,7 +129,7 @@ function RecordFix() {
     console.log("Searching for:", searchQuery);
     try {
       const response = await axios.get(
-        "http://"+apiUrl+"/maps/" + searchQuery
+        apiUrl+"/maps/" + searchQuery
       );
       console.log(response.data);
       setData(response.data);
@@ -173,10 +173,8 @@ function RecordFix() {
     const location = recordData.location.split(" latitude:");
     const locationName = location[0];
     const locationInfo = location[1].split(" longitude:");
-    axios.put("http://"+apiUrl+"/travels/" + recordData.travelId, {
-      user_id: {
-        userId: recordData.userId,
-      },
+    axios.put(apiUrl+"/travels/" + recordData.travelId, {
+      user_id: recordData.userId,
       travel_title: recordData.title,
       hashtag: hashtags.join(),
       travel_start_date: "2023-07-01T00:00:00",
@@ -191,7 +189,7 @@ function RecordFix() {
       summary: "",
     });
     images.forEach((image, index) => {
-      axios.put("http://"+apiUrl+"/journals/" + image.image_id, {
+      axios.put(apiUrl+"/journals/" + image.image_id, {
         journal_date: image.journal_date,
         journal_text: image.journal_text,
         journal_location_name: image.journal_location_name,
@@ -278,7 +276,7 @@ const handleImageChange = (e) => {
 
       axios
           .post(
-            "http://"+apiUrl+"/journals/uploadImage/" +
+            apiUrl+"/journals/uploadImage/" +
               recordData.travelId +
               "/" +
               recordData.userId,

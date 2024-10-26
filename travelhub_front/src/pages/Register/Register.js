@@ -30,7 +30,7 @@ function Register() {
   const handleUsernameCheck = async () => {
     try {
       const response = await axios.post(
-        `https://${apiUrl}/auth/checkUsername/${userData.user_email}`
+        `${apiUrl}/auth/checkUsername/${userData.user_email}`
       );
       console.log(response);
       if (response.data.isAvailable) {
@@ -65,7 +65,7 @@ function Register() {
     }
     try {
       const response = await axios.post(
-        "https://"+apiUrl+"/auth/register",
+        apiUrl+"/auth/register",
         userData
       );
       if (response.status === 200) {

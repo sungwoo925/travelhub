@@ -27,20 +27,20 @@ public class TravelService {
         return travelRepository.findByTravelTitleContaining(title);
     }
 
-    public List<Travel> searchByUserIdAndLocation(User userId, Double travelLocationLatitude) {
+    public List<Travel> searchByUserIdAndLocation(Integer userId, Double travelLocationLatitude) {
         return travelRepository.findByUserIdAndTravelLocationLatitude(userId, travelLocationLatitude);
     }
 
-    public Optional<Travel> getTravel(Long travelId) {
-        return travelRepository.findById(travelId);
+    public Optional<Travel> getTravel(Integer travelId) {
+        return travelRepository.findByTravelId(travelId);
     }
 
     public Travel createTravel(Travel travel) {
         return travelRepository.save(travel);
     }
 
-    public Optional<Travel> updateTravel(Long travelId, Travel travelDetails) {
-        return travelRepository.findById(travelId).map(travel -> {
+    public Optional<Travel> updateTravel(int travelId, Travel travelDetails) {
+        return travelRepository.findByTravelId(travelId).map(travel -> {
             travel.setTravelTitle(travelDetails.getTravelTitle());
             travel.setHashtag(travelDetails.getHashtag());
             travel.setTravelStartDate(travelDetails.getTravelStartDate());
@@ -57,22 +57,22 @@ public class TravelService {
         });
     }
 
-    public Optional<Travel> updateTravelShareOption(Long travelId, String shareOption) {
-        return travelRepository.findById(travelId).map(travel -> {
+    public Optional<Travel> updateTravelShareOption(int travelId, String shareOption) {
+        return travelRepository.findByTravelId(travelId).map(travel -> {
             travel.setTravelShareOption(Boolean.parseBoolean(shareOption));
             return travelRepository.save(travel);
         });
     }
 
-    public boolean deleteTravel(Long travelId) {
-        return travelRepository.findById(travelId).map(travel -> {
+    public boolean deleteTravel(Integer travelId) {
+        return travelRepository.findByTravelId(travelId).map(travel -> {
             travelRepository.delete(travel);
             return true;
         }).orElse(false);
     }
 
-    public Travel findById(Long travelId) {
-        return travelRepository.findById(travelId)
+    public Travel findById(Integer travelId) {
+        return travelRepository.findByTravelId(travelId)
                 .orElse(new Travel()); 
     }
 

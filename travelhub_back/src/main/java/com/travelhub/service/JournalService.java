@@ -67,7 +67,7 @@ public class JournalService {
         }
     }
 
-    public List<Journal> getJournalsByTravelId(Travel travel) {
+    public List<Journal> getJournalsByTravelId(Integer travel) {
         return journalRepository.findByTravelId(travel);
     }    
 

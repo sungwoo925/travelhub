@@ -18,14 +18,14 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/{userId}")
-    public ResponseEntity<User> getUser(@PathVariable Long userId) {
+    public ResponseEntity<User> getUser(@PathVariable Integer userId) {
         return userService.getUserById(userId)
                 .map(user -> new ResponseEntity<>(user, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PutMapping("/{userId}")
-    public ResponseEntity<User> updateUser(@PathVariable Long userId, @RequestBody User userDetails) {
+    public ResponseEntity<User> updateUser(@PathVariable Integer userId, @RequestBody User userDetails) {
         return userService.updateUser(userId, userDetails)
                 .map(user -> new ResponseEntity<>(user, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));

@@ -23,7 +23,7 @@ function App() {
     const jwtToken = Cookies.get("jwtToken");
     if (jwtToken) {
       axios
-        .post("http://"+apiUrl+"/auth/checkToken", {
+        .post(apiUrl+"/auth/checkToken", {
           headers: {
             Authorization: `Bearer ${jwtToken}`,
           },

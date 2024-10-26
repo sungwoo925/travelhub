@@ -23,9 +23,10 @@ function Home() {
 
   const fetchData = async () => {
     try {
+      let userId;
       if(jwtToken){
         const userIdres = await axios.post(
-          "https://" + apiUrl + "/auth/checkToken",
+          apiUrl + "/auth/checkToken",
           {
             headers: {
               Authorization: `Bearer ${jwtToken}`,
@@ -33,34 +34,34 @@ function Home() {
             token: `token000111222${jwtToken}token000111222`,
           }
         );
-        const userId = userIdres.data.split("Token is valid. User ID: ")[1];
+        userId = userIdres.data.split("Token is valid. User ID: ")[1];
         setUserId(userId); // userId 상태 업데이트
       }else{
         setUserId(null); // userId 상태 업데이트
       }
 
-      const response = await axios.get("https://" + apiUrl + "/travels");
+      const response = await axios.get(apiUrl + "/travels");
       const realdata = response.data;
+      
       setOriginalData(realdata);
 
       realdata.map(async(data,index)=>{
-        const journals = await axios.get("https://" + apiUrl + "/journals/travel/"+data.travelId);
-        realdata[index].links = journals.data.map((data)=> data.photo_link.replace(/\\/g, '/').replace("./static","https://" + apiUrl + "")); 
+        const journals = await axios.get(apiUrl + "/journals/travel/"+data.travelId);
+        
+        realdata[index].links = journals.data.map((data)=> data.photo_link.replace(/\\/g, '/').replace("./static",apiUrl + "")); 
         if(journals.data.length===0){
           realdata[index].links = [];
         }
       });
 
-      const likesInfo = (userId? (await axios.get("https://" + apiUrl + "/likes/user/"+userId)): -1);
+      const likesInfo = (userId? (await axios.get(apiUrl + "/likes/user/"+userId)): -1);
+       
       // eslint-disable-next-line
       realdata.map((data,index)=>{
         realdata[index].Ilike = likesInfo.data.includes(data.travelId);
         realdata[index].userId_real = userId;
       });
       setData(realdata);
-      console.log(realdata);
-      
-
     } catch (error) {
       // setError(error);
       // console.log(error);
@@ -76,7 +77,7 @@ function Home() {
 
   useEffect(() => {
     if (myTravelOnly && userId) {
-      const filteredData = originalData.filter(item => String(userId) === String(item.user_id.userId));
+      const filteredData = originalData.filter(item => String(userId) === String(item.userId));
       setData(filteredData);
     } else {
       setData(originalData);
@@ -108,7 +109,7 @@ function Home() {
 
   const toggleLike  = async (travelId,index) => {
     const userIdres = await axios.post(
-      "https://" + apiUrl + "/auth/checkToken",
+      apiUrl + "/auth/checkToken",
       {
         headers: {
           Authorization: `Bearer ${jwtToken}`,
@@ -119,7 +120,7 @@ function Home() {
     const userId = userIdres.data.split("Token is valid. User ID: ")[1];
     // console.log(travelId)
     try {
-        const response = await axios.post("https://" + apiUrl + "/likes", {
+        const response = await axios.post(apiUrl + "/likes", {
             userId: userId,
             travelId: travelId
         });
@@ -138,7 +139,7 @@ function Home() {
 
   const unLike  = async (travelId,index) => {
     const userIdres = await axios.post(
-      "https://" + apiUrl + "/auth/checkToken",
+      apiUrl + "/auth/checkToken",
       {
         headers: {
           Authorization: `Bearer ${jwtToken}`,
@@ -149,11 +150,11 @@ function Home() {
     const userId = userIdres.data.split("Token is valid. User ID: ")[1];
     // console.log(travelId)
     try {
-        const response = await axios.post("https://" + apiUrl + "/likes/delete", {
+        const response = await axios.post(apiUrl + "/likes/delete", {
             userId: userId,
             travelId: travelId
         });
-        console.log(response);
+        console.log(response);  
         
         setData(prevDatas => {
             const updatedDatas = [...prevDatas]; // 기존 배열 복사
@@ -211,7 +212,7 @@ function Home() {
               <div>{item.like_count}</div>
               <Cube travel={item} />
               <Link to={"/record/"+item.travelId}>
-              {parseInt(item.userId_real)===item.user_id.userId? <button className="edit-button">수정</button>:""}
+              {parseInt(item.userId_real)===item.user_id? <button className="edit-button">수정</button>:""}
               </Link>
             </div>
           ))}
@@ -233,7 +234,7 @@ function Home() {
                   <span className="like-count">{item.like_count}</span>
                 </div>
               <Link to={"/record/"+item.travelId}>
-              {parseInt(item.userId_real)===item.user_id.userId? <button className="edit-button">수정</button>:""}
+              {parseInt(item.userId_real)===item.user_id? <button className="edit-button">수정</button>:""}
               </Link>
               </div>
             </div>
