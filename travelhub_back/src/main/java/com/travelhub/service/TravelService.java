@@ -1,8 +1,11 @@
 package com.travelhub.service;
 
+import com.travelhub.dto.TravelDTO;
 import com.travelhub.entity.Travel;
 import com.travelhub.entity.User;
 import com.travelhub.repository.TravelRepository;
+import com.travelhub.repository.UserRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +18,11 @@ public class TravelService {
 
     @Autowired
     private TravelRepository travelRepository;
+    private final UserRepository userRepository;
+
+    public TravelService(TravelRepository travelRepository, UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     public List<Travel> searchByHashtag(List<String> hashtags) {
         return hashtags.stream()
@@ -80,7 +88,19 @@ public class TravelService {
         return travelRepository.findAll();
     }
 
-    public List<Travel> getTravelWithShareOption() {
-        return travelRepository.findByTravelShareOption(true);
+    public List<TravelDTO> getTravelWithShareOption() {
+        List<Travel> travels = travelRepository.findByTravelShareOption(true);
+
+        return travels.stream().map(travel -> {
+            TravelDTO travelDTO = new TravelDTO(travel);
+
+            // userId로 User 정보 조회하여 userName을 설정
+            userRepository.findByUserId(travel.getUserId()).ifPresent(user -> {
+                travelDTO.setUsername(user.getUserName());
+            });
+
+            return travelDTO;
+        }).collect(Collectors.toList());
+    
     }
 }

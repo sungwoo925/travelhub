@@ -1,5 +1,6 @@
 package com.travelhub.controller;
 
+import com.travelhub.dto.TravelDTO;
 import com.travelhub.entity.Travel;
 import com.travelhub.entity.User;
 import com.travelhub.service.TravelService;
@@ -118,8 +119,8 @@ public class TravelController {
 
     // 모든 여행 정보 가져오기 (travelShareOption이 1인 경우만)
     @GetMapping 
-    public ResponseEntity<List<Travel>> getAllTravels() {
-        List<Travel> travels = travelService.getTravelWithShareOption();
+    public ResponseEntity<List<TravelDTO>> getAllTravels() {
+        List<TravelDTO> travels = travelService.getTravelWithShareOption();
 
         return new ResponseEntity<>(travels, HttpStatus.OK);
     }
