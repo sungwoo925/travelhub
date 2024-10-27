@@ -26,6 +26,11 @@ function RecordFix() {
     "#해시태그2",
     "#해시태그3",
   ]);
+
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const handleStartDateChange = (e) => setStartDate(e.target.value);
+  const handleEndDateChange = (e) => setEndDate(e.target.value);
   const [newHashtag, setNewHashtag] = useState("");
   const [showInput, setShowInput] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -177,8 +182,8 @@ function RecordFix() {
       user_id: recordData.userId,
       travel_title: recordData.title,
       hashtag: hashtags.join(),
-      travel_start_date: "2023-07-01T00:00:00",
-      travel_end_date: "2023-07-10T00:00:00",
+      travel_start_date: startDate,
+      travel_end_date: endDate,
       travel_share_option: isChecked,
       travel_location_name: locationName,
       travel_location_latitude: locationInfo[0],
@@ -495,6 +500,16 @@ const handleImageChange = (e) => {
                 ? "장소 찾기"
                 : recordData.location.split(" latitude")[0]}
             </button>
+            <input
+              type="datetime-local"
+              value={startDate}
+              onChange={handleStartDateChange}
+            />
+            <input
+              type="datetime-local"
+              value={endDate}
+              onChange={handleEndDateChange}
+            />
             {showModal && (
               <div className="modal-content">
                 <input
