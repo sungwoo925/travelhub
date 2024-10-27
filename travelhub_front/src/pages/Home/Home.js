@@ -39,7 +39,6 @@ function Home() {
 
       const response = await axios.get(apiUrl + "/travels");
       const realdata = response.data;
-      console.log(realdata);
 
       setOriginalData(realdata);
 
@@ -131,7 +130,7 @@ function Home() {
 
       setData((prevDatas) => {
         const updatedDatas = [...prevDatas]; // 기존 배열 복사
-        updatedDatas[index].like_count = response.data.like_count; // 특정 인덱스의 값 수정
+        updatedDatas[index].likeCount = response.data.likeCount; // 특정 인덱스의 값 수정
         updatedDatas[index].Ilike = !updatedDatas[index].Ilike;
         return updatedDatas; // 수정된 배열 반환
       });
@@ -158,7 +157,7 @@ function Home() {
 
       setData((prevDatas) => {
         const updatedDatas = [...prevDatas]; // 기존 배열 복사
-        updatedDatas[index].like_count = response.data.like_count; // 특정 인덱스의 값 수정
+        updatedDatas[index].likeCount = response.data.likeCount; // 특정 인덱스의 값 수정
         updatedDatas[index].Ilike = !updatedDatas[index].Ilike;
         return updatedDatas; // 수정된 배열 반환
       });
@@ -199,15 +198,15 @@ function Home() {
             <div key={index} className="list-item">
               <span className="item-number">
                 {index + 1 + indexOfFirstItem}.{" "}
-                {item.travel_title || "제목 없음"}
+                {item.travelTitle || "제목 없음"}
               </span>
               <div className="item-title">
-                {item.travel_title || "제목 없음"}
+                {item.travelTitle || "제목 없음"}
               </div>
               <div className="travel-dates">
-                {item.travel_start_date && item.travel_end_date
-                  ? `${formatDate(item.travel_start_date)} ~ ${formatDate(
-                      item.travel_end_date
+                {item.travelStart_date && item.travelEndDate
+                  ? `${formatDate(item.travelStartDate)} ~ ${formatDate(
+                      item.travelEndDate
                     )}`
                   : "날짜 정보 없음"}
               </div>
@@ -221,10 +220,10 @@ function Home() {
                   좋아요
                 </button>
               )}
-              <div>{item.like_count}</div>
+              <div>{item.likeCount}</div>
               <Cube travel={item} />
               <Link to={"/record/" + item.travelId}>
-                {parseInt(item.userId_real) === item.user_id ? (
+                {parseInt(item.userId_real) === item.userId ? (
                   <button className="edit-button">수정</button>
                 ) : (
                   ""
@@ -241,13 +240,13 @@ function Home() {
                 <h2 className="user-name">{item.username || "제목 없음"}</h2>
                 <Cube travel={item} />
                 <h2 className="location-name">
-                  {item.travel_location_name || "제목 없음"}
+                  {item.travelLocationName || "제목 없음"}
                 </h2>
-                <h2 className="title">{item.travel_title || "제목 없음"}</h2>
+                <h2 className="title">{item.travelTitle || "제목 없음"}</h2>
                 <p className="travel-period">
-                  {item.travel_start_date && item.travel_end_date
-                    ? `${formatDate(item.travel_start_date)} ~ ${formatDate(
-                        item.travel_end_date
+                  {item.travelStartDate && item.travelEndDate
+                    ? `${formatDate(item.travelStartDate)} ~ ${formatDate(
+                        item.travelEndDate
                       )}`
                     : "날짜 정보 없음"}
                 </p>
@@ -271,10 +270,10 @@ function Home() {
                   ) : (
                     <div>좋아요 수 : </div>
                   )}
-                  <span className="like-count">{item.like_count}</span>
+                  <span className="like-count">{item.likeCount}</span>
                 </div>
                 <Link to={"/record/" + item.travelId}>
-                  {parseInt(item.userId_real) === item.user_id ? (
+                  {parseInt(item.userId_real) === item.userId ? (
                     <button className="edit-button">수정</button>
                   ) : (
                     ""
