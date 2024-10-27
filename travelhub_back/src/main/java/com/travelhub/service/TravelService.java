@@ -9,6 +9,7 @@ import com.travelhub.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -91,13 +92,19 @@ public class TravelService {
     public List<TravelDTO> getTravelWithShareOption() {
         List<Travel> travels = travelRepository.findByTravelShareOption(true);
 
+        HashMap<Integer, String> idNameMap = new HashMap<>();
         return travels.stream().map(travel -> {
             TravelDTO travelDTO = new TravelDTO(travel);
-
-            // userId로 User 정보 조회하여 userName을 설정
-            userRepository.findByUserId(travel.getUserId()).ifPresent(user -> {
-                travelDTO.setUsername(user.getUserName());
-            });
+            int userId = travelDTO.getUserId();
+            if (idNameMap.get(userId) != null) {
+                travelDTO.setUsername(idNameMap.get(userId));
+            } else {
+                // userId로 User 정보 조회하여 userName을 설정
+                userRepository.findByUserId(travel.getUserId()).ifPresent(user -> {
+                    travelDTO.setUsername(user.getUserName());
+                });
+            }
+            
 
             return travelDTO;
         }).collect(Collectors.toList());
