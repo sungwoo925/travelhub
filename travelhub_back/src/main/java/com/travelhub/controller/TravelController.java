@@ -124,4 +124,10 @@ public class TravelController {
 
         return new ResponseEntity<>(travels, HttpStatus.OK);
     }
+
+    @GetMapping("/noname")
+    public ResponseEntity<List<Travel>> getAllTravelsNoName() {
+        List<Travel> travels = travelService.getTravelWithShareOptionNoName();
+        return new ResponseEntity<>(travels, HttpStatus.OK);
+    }
 }

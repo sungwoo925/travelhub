@@ -110,4 +110,9 @@ public class TravelService {
         }).collect(Collectors.toList());
     
     }
+
+    public List<Travel> getTravelWithShareOptionNoName() {
+        List<Travel> travels = travelRepository.findByTravelShareOption(true);
+        return travels;
+    }
 }
