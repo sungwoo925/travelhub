@@ -9,7 +9,7 @@ const apiUrl = process.env.REACT_APP_API_URL;
 
 const Header = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [searchResults, setSearchResults] = useState([]);
+  const [allTravel, setAllTravel] = useState([]);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const { isAuthenticated, setIsAuthenticated, setUserInfo } =
@@ -17,16 +17,7 @@ const Header = () => {
   const navigate = useNavigate();
 
   const handleSearch = async () => {
-    try {
-      const response = await axios.get(
-        `${apiUrl}/api/users/${searchTerm}`
-      );
-      console.log(response.data);
-      setSearchResults(response.data);
-    } catch (error) {
-      console.error("Error fetching search results:", error);
-    }
-    console.log(searchResults);
+    
   };
 
   const toggleSidebar = () => {
@@ -49,12 +40,30 @@ const Header = () => {
   };
 
   useEffect(() => {
+    try {
+      const dataset = async()=>{
+        const response = await axios.get(apiUrl+"/travels/noname");
+        setAllTravel(response.data);
+      }
+      dataset ();
+    } catch (error) {
+      console.error("Error fetching search results:", error);
+    }
     window.addEventListener("resize", handleResize);
     return () => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
 
+  const filteredTravels = allTravel.filter(travel => {
+      const { hashtag, travel_title, travel_location_name } = travel;
+      const lowerCaseSearchTerm = searchTerm.toLowerCase();
+      return (
+        hashtag.toLowerCase().includes(lowerCaseSearchTerm) ||
+        travel_title.toLowerCase().includes(lowerCaseSearchTerm) ||
+        travel_location_name.toLowerCase().includes(lowerCaseSearchTerm)
+      );
+  });
   return (
     <div>
       <nav className="hd">
@@ -167,6 +176,25 @@ const Header = () => {
               회원가입
             </Link>
           </>
+        )}
+      </div>
+      <div className="travel-results">
+      {searchTerm === '' ? ( // 검색어가 비어있을 때 아무것도 표시하지 않음
+            null
+        ) : (
+          filteredTravels.length > 0 ? ( // 결과가 있을 때만 표시
+              filteredTravels.map(travel => (
+                <Link to={"/studio/"+travel.travelId}key={travel.travelId}>
+                <div className="travel-card" >
+                    <h2>{travel.travel_title}</h2>
+                    <p>위치: {travel.travel_location_name}</p>
+                    <p>해시태그: {travel.hashtag}</p>
+                </div>
+              </Link>
+              ))
+          ) : (
+              searchTerm && <p>검색 결과가 없습니다.</p> // 검색어가 있을 때 결과가 없으면 메시지 표시
+          )
         )}
       </div>
     </div>
