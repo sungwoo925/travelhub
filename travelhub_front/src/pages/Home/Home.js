@@ -11,7 +11,7 @@ function Home() {
   const [originalData, setOriginalData] = useState([]); // 원본 데이터를 저장할 상태 추가
   const [data, setData] = useState([]); // 초기 데이터 배열을 빈 배열로 설정
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
+  const itemsPerPage = 9;
   const [viewMode, setViewMode] = useState("grid"); // 기본값을 'grid' 로 설정
   // const [loading, setLoading] = useState(true);
   // const [error, setError] = useState(null);
