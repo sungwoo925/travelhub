@@ -161,6 +161,7 @@ const Studio = () => {
   const [mapJson, SetMapJson] = useState(null);
   const [font, setFont] = useState();
   const [data, setData] = useState([]);
+  const [xPoint, setXPoint] = useState(100);
 
   if (!mapJson) {
     fetch(process.env.PUBLIC_URL + '/mapinfo.json')
@@ -207,6 +208,7 @@ const Studio = () => {
   //   scene.add(frame);
   // }
 
+  let percent=0;
   useEffect(() => {
     // Scene
     const scene = new THREE.Scene();
@@ -273,30 +275,30 @@ const Studio = () => {
     // 안개    
     // scene.fog = new THREE.Fog(0xFFFFFF, 1, 50);
     // 배경
-    if (mapJson && mapJson.backgrounds && mapJson.backgrounds.length >= 6) {
-      // const positions = [
-      //   new THREE.Vector3(0, 0, -50), // Front
-      //   new THREE.Vector3(0, 0, 50),  // Back
-      //   new THREE.Vector3(-50, 0, 0), // Left
-      //   new THREE.Vector3(50, 0, 0),  // Right
-      //   new THREE.Vector3(0, 50, 0),  // Top
-      //   new THREE.Vector3(0, -50, 0)  // Bottom
-      // ];
-      // const rotations = [
-      //   new THREE.Vector3(0, 0, 0), // Front
-      //   new THREE.Vector3(0, Math.PI, 0), // Back
-      //   new THREE.Vector3(0, Math.PI / 2, 0), // Left
-      //   new THREE.Vector3(0, -Math.PI / 2, 0), // Right
-      //   new THREE.Vector3(-Math.PI / 2, 0, 0), // Top
-      //   new THREE.Vector3(Math.PI / 2, 0, 0) // Bottom
-      // ];
+    // if (mapJson && mapJson.backgrounds && mapJson.backgrounds.length >= 6) {
+    //   const positions = [
+    //     new THREE.Vector3(0, 0, -50), // Front
+    //     new THREE.Vector3(0, 0, 50),  // Back
+    //     new THREE.Vector3(-50, 0, 0), // Left
+    //     new THREE.Vector3(50, 0, 0),  // Right
+    //     new THREE.Vector3(0, 50, 0),  // Top
+    //     new THREE.Vector3(0, -50, 0)  // Bottom
+    //   ];
+    //   const rotations = [
+    //     new THREE.Vector3(0, 0, 0), // Front
+    //     new THREE.Vector3(0, Math.PI, 0), // Back
+    //     new THREE.Vector3(0, Math.PI / 2, 0), // Left
+    //     new THREE.Vector3(0, -Math.PI / 2, 0), // Right
+    //     new THREE.Vector3(-Math.PI / 2, 0, 0), // Top
+    //     new THREE.Vector3(Math.PI / 2, 0, 0) // Bottom
+    //   ];
 
-      for (let i = 0; i < 6; i++) {
-        // addBackgroundPlane(scene, mapJson.backgrounds[i], positions[i], rotations[i]);
-        // const framePosition = new THREE.Vector3(positions[i].x, positions[i].y + 1, positions[i].z); // 배경 위쪽에 위치
-        // addExhibitionFrame(scene, framePosition, new THREE.Vector3(2, 1, 0.1)); // 프레임 크기 설정
-      }
-    }
+    //   for (let i = 0; i < 6; i++) {
+    //     addBackgroundPlane(scene, mapJson.backgrounds[i], positions[i], rotations[i]);
+    //     const framePosition = new THREE.Vector3(positions[i].x, positions[i].y + 1, positions[i].z); // 배경 위쪽에 위치
+    //     addExhibitionFrame(scene, framePosition, new THREE.Vector3(2, 1, 0.1)); // 프레임 크기 설정
+    //   }
+    // }
     //별 구현
     const starCount = 1500; // 별의 개수
     const starGeometry = new THREE.BufferGeometry();
@@ -394,7 +396,8 @@ const Studio = () => {
       
       movingCircle += delta;
       if(movingCircle < 0){
-        movingCircle=data.length-0.001;//mapJson.defualt.length
+        movingCircle=0;//mapJson.defualt.length
+        // movingCircle=data.length-0.001;//mapJson.defualt.length
         camera.position.x = 0;
         camera.position.z = 0;
         camera.rotation.y = 0;
@@ -406,6 +409,7 @@ const Studio = () => {
       movingFlow += delta;
       const floor = Math.floor(movingCircle);
       const next_floor = (floor+1)%data.length;
+      setXPoint(movingCircle/data.length*100);
 
       camera.position.x = move_cal(mapJson.defualt[floor].coordinates[0],mapJson.defualt[next_floor].coordinates[0],movingCircle-floor);
       camera.position.y = move_cal(mapJson.defualt[floor].coordinates[1],mapJson.defualt[next_floor].coordinates[1],movingCircle-floor);
@@ -501,10 +505,22 @@ const Studio = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mapJson, isCameraMoved, data]); // isCameraMoved를 의존성 배열에 추가
 
+  const circleStyle = {
+    width: '40px',
+    height: '40px',
+    // backgroundColor: 'red',
+    // borderRadius: '50%',
+    position: 'absolute',
+    right: '30px', // 오른쪽으로부터 150px 떨어진 위치
+    top: `${xPoint}vh`, // x_point에 따라 위아래 위치 설정
+    transition: 'top 0.3s ease', // 부드럽게 이동
+  };
+
   return (
     <div ref={containerRef} style={{ width: '100%', height: '100%', overflow: 'hidden', position: 'fixed'}}>
       <button style={{position:'fixed'}}onClick={handleCameraPositionToggle}>카메라 위치 토글</button> {/* 버튼 추가 */}
       <div className='sidebar-studio'></div>
+      <img src={'/images/fly.png'} style={circleStyle}/>
     </div>
   );
 };
