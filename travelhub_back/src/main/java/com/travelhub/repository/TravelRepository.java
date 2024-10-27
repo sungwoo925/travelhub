@@ -1,6 +1,9 @@
 package com.travelhub.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
 import com.travelhub.entity.Travel;
 import com.travelhub.entity.User;
 
@@ -14,4 +17,6 @@ public interface TravelRepository extends JpaRepository<Travel, Long> {
     List<Travel> findByTravelShareOption(Boolean travelShareOption);
 
     Optional<Travel> findByTravelId(Integer id);
+
+    
 }

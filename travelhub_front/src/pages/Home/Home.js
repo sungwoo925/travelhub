@@ -24,40 +24,44 @@ function Home() {
   const fetchData = async () => {
     try {
       let userId;
-      if(jwtToken){
-        const userIdres = await axios.post(
-          apiUrl + "/auth/checkToken",
-          {
-            headers: {
-              Authorization: `Bearer ${jwtToken}`,
-            },
-            token: `token000111222${jwtToken}token000111222`,
-          }
-        );
+      if (jwtToken) {
+        const userIdres = await axios.post(apiUrl + "/auth/checkToken", {
+          headers: {
+            Authorization: `Bearer ${jwtToken}`,
+          },
+          token: `token000111222${jwtToken}token000111222`,
+        });
         userId = userIdres.data.split("Token is valid. User ID: ")[1];
         setUserId(userId); // userId 상태 업데이트
-      }else{
+      } else {
         setUserId(null); // userId 상태 업데이트
       }
 
       const response = await axios.get(apiUrl + "/travels");
       const realdata = response.data;
-      
+      console.log(realdata);
+
       setOriginalData(realdata);
 
-      realdata.map(async(data,index)=>{
-        const journals = await axios.get(apiUrl + "/journals/travel/"+data.travelId);
-        
-        realdata[index].links = journals.data.map((data)=> data.photo_link.replace(/\\/g, '/').replace("./static",apiUrl + "")); 
-        if(journals.data.length===0){
+      realdata.map(async (data, index) => {
+        const journals = await axios.get(
+          apiUrl + "/journals/travel/" + data.travelId
+        );
+
+        realdata[index].links = journals.data.map((data) =>
+          data.photo_link.replace(/\\/g, "/").replace("./static", apiUrl + "")
+        );
+        if (journals.data.length === 0) {
           realdata[index].links = [];
         }
       });
 
-      const likesInfo = (userId? (await axios.get(apiUrl + "/likes/user/"+userId)): -1);
-       
+      const likesInfo = userId
+        ? await axios.get(apiUrl + "/likes/user/" + userId)
+        : -1;
+
       // eslint-disable-next-line
-      realdata.map((data,index)=>{
+      realdata.map((data, index) => {
         realdata[index].Ilike = likesInfo.data.includes(data.travelId);
         realdata[index].userId_real = userId;
       });
@@ -77,7 +81,9 @@ function Home() {
 
   useEffect(() => {
     if (myTravelOnly && userId) {
-      const filteredData = originalData.filter(item => String(userId) === String(item.userId));
+      const filteredData = originalData.filter(
+        (item) => String(userId) === String(item.userId)
+      );
       setData(filteredData);
     } else {
       setData(originalData);
@@ -107,63 +113,57 @@ function Home() {
     return dateString.split("T")[0]; // T 이전의 날짜 부분만 반환
   };
 
-  const toggleLike  = async (travelId,index) => {
-    const userIdres = await axios.post(
-      apiUrl + "/auth/checkToken",
-      {
-        headers: {
-          Authorization: `Bearer ${jwtToken}`,
-        },
-        token: `token000111222${jwtToken}token000111222`,
-      }
-    );
+  const toggleLike = async (travelId, index) => {
+    const userIdres = await axios.post(apiUrl + "/auth/checkToken", {
+      headers: {
+        Authorization: `Bearer ${jwtToken}`,
+      },
+      token: `token000111222${jwtToken}token000111222`,
+    });
     const userId = userIdres.data.split("Token is valid. User ID: ")[1];
     // console.log(travelId)
     try {
-        const response = await axios.post(apiUrl + "/likes", {
-            userId: userId,
-            travelId: travelId
-        });
-        console.log(response);
-        
-        setData(prevDatas => {
-            const updatedDatas = [...prevDatas]; // 기존 배열 복사
-            updatedDatas[index].like_count = response.data.like_count; // 특정 인덱스의 값 수정
-            updatedDatas[index].Ilike = !updatedDatas[index].Ilike; 
-            return updatedDatas; // 수정된 배열 반환
-        });
+      const response = await axios.post(apiUrl + "/likes", {
+        userId: userId,
+        travelId: travelId,
+      });
+      console.log(response);
+
+      setData((prevDatas) => {
+        const updatedDatas = [...prevDatas]; // 기존 배열 복사
+        updatedDatas[index].like_count = response.data.like_count; // 특정 인덱스의 값 수정
+        updatedDatas[index].Ilike = !updatedDatas[index].Ilike;
+        return updatedDatas; // 수정된 배열 반환
+      });
     } catch (error) {
-        console.error("Error toggling like:", error);
+      console.error("Error toggling like:", error);
     }
   };
 
-  const unLike  = async (travelId,index) => {
-    const userIdres = await axios.post(
-      apiUrl + "/auth/checkToken",
-      {
-        headers: {
-          Authorization: `Bearer ${jwtToken}`,
-        },
-        token: `token000111222${jwtToken}token000111222`,
-      }
-    );
+  const unLike = async (travelId, index) => {
+    const userIdres = await axios.post(apiUrl + "/auth/checkToken", {
+      headers: {
+        Authorization: `Bearer ${jwtToken}`,
+      },
+      token: `token000111222${jwtToken}token000111222`,
+    });
     const userId = userIdres.data.split("Token is valid. User ID: ")[1];
     // console.log(travelId)
     try {
-        const response = await axios.post(apiUrl + "/likes/delete", {
-            userId: userId,
-            travelId: travelId
-        });
-        console.log(response);  
-        
-        setData(prevDatas => {
-            const updatedDatas = [...prevDatas]; // 기존 배열 복사
-            updatedDatas[index].like_count = response.data.like_count; // 특정 인덱스의 값 수정
-            updatedDatas[index].Ilike = !updatedDatas[index].Ilike; 
-            return updatedDatas; // 수정된 배열 반환
-        });
+      const response = await axios.post(apiUrl + "/likes/delete", {
+        userId: userId,
+        travelId: travelId,
+      });
+      console.log(response);
+
+      setData((prevDatas) => {
+        const updatedDatas = [...prevDatas]; // 기존 배열 복사
+        updatedDatas[index].like_count = response.data.like_count; // 특정 인덱스의 값 수정
+        updatedDatas[index].Ilike = !updatedDatas[index].Ilike;
+        return updatedDatas; // 수정된 배열 반환
+      });
     } catch (error) {
-        console.error("Error toggling like:", error);
+      console.error("Error toggling like:", error);
     }
   };
 
@@ -175,7 +175,13 @@ function Home() {
         <button onClick={() => handleSortChange("좋아요순")}>좋아요순</button>
         <div className="toggle-container">
           <div className="toggle-label">나의 여행만 보기</div>
-          <input type="checkbox" id="toggle" hidden checked={myTravelOnly} onChange={toggleMyTravel}/>
+          <input
+            type="checkbox"
+            id="toggle"
+            hidden
+            checked={myTravelOnly}
+            onChange={toggleMyTravel}
+          />
           <label htmlFor="toggle" className="toggleSwitch">
             <span className="toggleButton"></span>
           </label>
@@ -206,13 +212,23 @@ function Home() {
                   : "날짜 정보 없음"}
               </div>
               <div className="travel-summary">{item.summary}</div>
-              {item.Ilike ? 
-              <button onClick={() => unLike(item.travelId,index)}>좋아요</button>:
-              <button onClick={() => toggleLike(item.travelId,index)}>좋아요</button>}
+              {item.Ilike ? (
+                <button onClick={() => unLike(item.travelId, index)}>
+                  좋아요
+                </button>
+              ) : (
+                <button onClick={() => toggleLike(item.travelId, index)}>
+                  좋아요
+                </button>
+              )}
               <div>{item.like_count}</div>
               <Cube travel={item} />
-              <Link to={"/record/"+item.travelId}>
-              {parseInt(item.userId_real)===item.user_id? <button className="edit-button">수정</button>:""}
+              <Link to={"/record/" + item.travelId}>
+                {parseInt(item.userId_real) === item.user_id ? (
+                  <button className="edit-button">수정</button>
+                ) : (
+                  ""
+                )}
               </Link>
             </div>
           ))}
@@ -222,20 +238,48 @@ function Home() {
           {currentItems.map((item, index) => (
             <div key={index} className="cube-container">
               <div className="card">
-                <h2 className="user-name">{item.user_id.user_name+"님의 여행" || "제목 없음"}</h2>
+                <h2 className="user-name">{item.username || "제목 없음"}</h2>
                 <Cube travel={item} />
-                <h2 className="location-name">{item.travel_location_name || "제목 없음"}</h2>
+                <h2 className="location-name">
+                  {item.travel_location_name || "제목 없음"}
+                </h2>
                 <h2 className="title">{item.travel_title || "제목 없음"}</h2>
-                <p className="travel-period">{item.travel_start_date && item.travel_end_date ? `${formatDate(item.travel_start_date)} ~ ${formatDate(item.travel_end_date)}`: "날짜 정보 없음"}</p>
+                <p className="travel-period">
+                  {item.travel_start_date && item.travel_end_date
+                    ? `${formatDate(item.travel_start_date)} ~ ${formatDate(
+                        item.travel_end_date
+                      )}`
+                    : "날짜 정보 없음"}
+                </p>
                 <div className="like-section">
-                    {userId?(item.Ilike ? 
-                  <button className="unlike-button" onClick={() => unLike(item.travelId,index)}>❤️ 좋아요</button>:
-                  <button className="like-button" onClick={() => toggleLike(item.travelId,index)}>❤️ 좋아요</button>):<div>좋아요 수 :   </div>}
+                  {userId ? (
+                    item.Ilike ? (
+                      <button
+                        className="unlike-button"
+                        onClick={() => unLike(item.travelId, index)}
+                      >
+                        ❤️ 좋아요
+                      </button>
+                    ) : (
+                      <button
+                        className="like-button"
+                        onClick={() => toggleLike(item.travelId, index)}
+                      >
+                        ❤️ 좋아요
+                      </button>
+                    )
+                  ) : (
+                    <div>좋아요 수 : </div>
+                  )}
                   <span className="like-count">{item.like_count}</span>
                 </div>
-              <Link to={"/record/"+item.travelId}>
-              {parseInt(item.userId_real)===item.user_id? <button className="edit-button">수정</button>:""}
-              </Link>
+                <Link to={"/record/" + item.travelId}>
+                  {parseInt(item.userId_real) === item.user_id ? (
+                    <button className="edit-button">수정</button>
+                  ) : (
+                    ""
+                  )}
+                </Link>
               </div>
             </div>
           ))}
