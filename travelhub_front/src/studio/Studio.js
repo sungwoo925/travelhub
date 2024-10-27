@@ -208,7 +208,6 @@ const Studio = () => {
   //   scene.add(frame);
   // }
 
-  let percent=0;
   useEffect(() => {
     // Scene
     const scene = new THREE.Scene();
@@ -520,7 +519,7 @@ const Studio = () => {
     <div ref={containerRef} style={{ width: '100%', height: '100%', overflow: 'hidden', position: 'fixed'}}>
       <button style={{position:'fixed'}}onClick={handleCameraPositionToggle}>카메라 위치 토글</button> {/* 버튼 추가 */}
       <div className='sidebar-studio'></div>
-      <img src={'/images/fly.png'} style={circleStyle}/>
+      <img src={'/images/fly.png'} style={circleStyle} alt=''/>
     </div>
   );
 };
