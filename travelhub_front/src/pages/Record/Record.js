@@ -13,6 +13,8 @@ function Record() {
     userId: 0,
     title: "",
     location: "",
+    startDate: "",
+    endDate: "",
     date: "",
     weather: "",
     text: "",
@@ -171,13 +173,14 @@ function Record() {
     }
     const location = recordData.location.split(" latitude:");
     const locationName = location[0];
-    const locationInfo = location[1].split(" longitude:");
+    const locationInfo = location[1].split(" longitude:");    
+    
     axios.put(apiUrl+"/travels/" + recordData.travelId, {
       user_id: recordData.userId,
       travel_title: recordData.title,
       hashtag: hashtags.join(),
-      travel_start_date: startDate,
-      travel_end_date: endDate,
+      travel_start_date: startDate+"T00:00:00",
+      travel_end_date: endDate+"T00:00:00",
       travel_share_option: isChecked,
       travel_location_name: locationName,
       travel_location_latitude: locationInfo[0],
