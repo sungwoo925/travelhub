@@ -161,7 +161,7 @@ const Studio = () => {
   const [mapJson, SetMapJson] = useState(null);
   const [font, setFont] = useState();
   const [data, setData] = useState([]);
-  const [xPoint, setXPoint] = useState(100);
+  const [xPoint, setXPoint] = useState(0);
 
   if (!mapJson) {
     fetch(process.env.PUBLIC_URL + '/mapinfo.json')
@@ -174,10 +174,10 @@ const Studio = () => {
   const loader = new FontLoader();
 
   useEffect(()=>{
-    loader.load('/noto_sans_kr.typeface.json', setFont);
 
     const getJournals = async () => {
       if(travelId){
+        await loader.load('/noto_sans_kr.typeface.json', setFont);
         const journals = await axios.get(apiUrl+"/journals/travel/"+travelId);
         console.log((journals.data[0].photo_link));
         setData(journals.data);
