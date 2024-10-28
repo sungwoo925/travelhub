@@ -284,9 +284,6 @@ function Home() {
           ))}
         </div>
       )}
-      <div className="button-container">
-        <button onClick={fetchData}>test</button>
-      </div>
       <div className="pagination">
         {Array.from({ length: totalPages }, (_, i) => (
           <button key={i + 1} onClick={() => handlePageChange(i + 1)}>
