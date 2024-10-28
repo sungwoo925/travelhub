@@ -9,7 +9,7 @@ const apiUrl = process.env.REACT_APP_API_URL;
 function RecordFix() {
   const { travelId } = useParams();
 
-  const [isChecked, setChecked] = useState(false);
+  const [isChecked, setChecked] = useState(true);
   // const [journals, setJournals] = useState([]);
   const [images, setImages] = useState([]);
   const [recordData, setRecordData] = useState({
@@ -175,10 +175,13 @@ function RecordFix() {
       alert("location정보 미입력");
       return "location err";
     }
+    
     const location = recordData.location.split(" latitude:");
     const locationName = location[0];
     const locationInfo = location[1].split(" longitude:");
-    axios.put(apiUrl+"/travels/" + recordData.travelId, {
+  
+    // 여행 정보 업데이트 요청
+    const travelRequest = axios.put(apiUrl + "/travels/" + recordData.travelId, {
       user_id: recordData.userId,
       travel_title: recordData.title,
       hashtag: hashtags.join(),
@@ -193,8 +196,10 @@ function RecordFix() {
       view_count: 0,
       summary: "",
     });
-    images.forEach((image, index) => {
-      axios.put(apiUrl+"/journals/" + image.image_id, {
+  
+    // 이미지 정보 업데이트 요청들
+    const journalRequests = images.map((image, index) =>
+      axios.put(apiUrl + "/journals/" + image.image_id, {
         journal_date: image.journal_date,
         journal_text: image.journal_text,
         journal_location_name: image.journal_location_name,
@@ -202,8 +207,19 @@ function RecordFix() {
         journal_location_longitude: image.journal_location_longitude,
         weather: image.weather,
         sequence_info: index,
+      })
+    );
+  
+    // 모든 요청 완료 후 홈으로 이동
+    axios
+      .all([travelRequest, ...journalRequests])
+      .then(() => {
+        window.location.href = "/"; // 홈으로 이동
+      })
+      .catch((error) => {
+        console.error("저장 실패:", error);
+        alert("저장 중 오류가 발생했습니다.");
       });
-    });
   };
 
   function compressImage(file, quality = 0.7) {
