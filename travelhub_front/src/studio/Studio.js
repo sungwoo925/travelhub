@@ -395,7 +395,7 @@ const Studio = () => {
       
       movingCircle += delta;
       if(movingCircle < 0){
-        movingCircle=0;//mapJson.defualt.length
+        movingCircle=0.001;//mapJson.defualt.length
         // movingCircle=data.length-0.001;//mapJson.defualt.length
         camera.position.x = 0;
         camera.position.z = 0;
