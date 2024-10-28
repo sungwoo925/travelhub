@@ -13,7 +13,7 @@ function Home() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 9;
   const [viewMode, setViewMode] = useState("grid"); // 기본값을 'grid' 로 설정
-  // const [loading, setLoading] = useState(true);
+  const [refe, setRefe] = useState(0);
   // const [error, setError] = useState(null);
   // const [sortOption, setSortOption] = useState("최신순"); // 정렬 옵션
   const [myTravelOnly, setMyTravelOnly] = useState(false); // 나의 여행 필터
@@ -71,6 +71,9 @@ function Home() {
     } finally {
       // setLoading(false);
     }
+    setTimeout(() => {
+      setRefe(refe+1);
+    }, 200);
   };
 
   useEffect(() => {
