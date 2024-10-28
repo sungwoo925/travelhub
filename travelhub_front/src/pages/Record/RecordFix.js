@@ -9,7 +9,7 @@ const apiUrl = process.env.REACT_APP_API_URL;
 function RecordFix() {
   const { travelId } = useParams();
 
-  const [isChecked, setChecked] = useState(false);
+  const [isChecked, setChecked] = useState(true);
   // const [journals, setJournals] = useState([]);
   const [images, setImages] = useState([]);
   const [recordData, setRecordData] = useState({
