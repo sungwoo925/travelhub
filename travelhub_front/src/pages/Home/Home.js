@@ -94,6 +94,14 @@ function Home() {
 
   const handleSortChange = (option) => {
     // setSortOption(option);
+    if(option==="최신순"){
+      setOriginalData(originalData.sort((a, b) => b.travelId - a.travelId));
+    }else{
+      setOriginalData(originalData.sort((a, b) => b.likeCount - a.likeCount));
+    }
+    setTimeout(() => {
+      setRefe(refe+1);
+    }, 200);
   };
 
   const toggleMyTravel = () => {
@@ -173,7 +181,7 @@ function Home() {
     <div className="container home-container">
       <div className="sort-options">
         <button onClick={() => handleSortChange("최신순")}>최신순</button>
-        <button onClick={() => handleSortChange("조회순")}>조회순</button>
+        {/* <button onClick={() => handleSortChange("조회순")}>조회순</button> */}
         <button onClick={() => handleSortChange("좋아요순")}>좋아요순</button>
         <div className="toggle-container">
           <div className="toggle-label">나의 여행만 보기</div>

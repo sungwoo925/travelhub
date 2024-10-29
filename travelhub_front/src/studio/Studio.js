@@ -163,6 +163,9 @@ const Studio = () => {
   const [data, setData] = useState([]);
   const [xPoint, setXPoint] = useState(0);
 
+  let movingCircle = 0;
+  let movingFlow = 0;
+
   if (!mapJson) {
     fetch(process.env.PUBLIC_URL + '/mapinfo.json')
       .then(response => response.json())
@@ -192,6 +195,9 @@ const Studio = () => {
     setIsCameraMoved(prev => !prev); // 상태 토글
   };
   
+
+  
+
   // function addDecoration(scene, position, scale) {
   //   const geometry = new THREE.SphereGeometry(1, 32, 32); // 구 형태의 장식
   //   const material = new THREE.MeshBasicMaterial({ color: 0xff0000 }); // 빨간색 재질
@@ -207,7 +213,7 @@ const Studio = () => {
   //   frame.position.copy(position);
   //   scene.add(frame);
   // }
-
+  let animationFrameId;
   useEffect(() => {
     // Scene
     const scene = new THREE.Scene();
@@ -258,13 +264,6 @@ const Studio = () => {
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     camera.position.y = 2;
     cameraRef.current = camera;
-    if (isCameraMoved) {
-      
-      camera.position.set(5, 6.5, 6.5); // 이동된 카메라 위치
-      camera.quaternion.setFromEuler(new THREE.Euler(-0.3, Math.PI / 2 / 90 * 45, 0.3))
-    } else {
-
-    }
 
     // Renderer
     const renderer = new THREE.WebGLRenderer();
@@ -363,7 +362,9 @@ const Studio = () => {
         }
       }
     }
-
+    setTimeout(() => {
+      setXPoint(xPoint+0.001);
+    }, 200);
     // Add tile lines
     // const gridHelper = new THREE.GridHelper(100, 4, 0x000000, 0x000000);
     // gridHelper.rotation.x = Math.PI / 2;
@@ -388,50 +389,10 @@ const Studio = () => {
     // Listen for window resize events
     // window.addEventListener('resize', handleResize);
 
-    let movingCircle = 0;
-    let movingFlow = 0;
+
     const handleWheel = (event) => { // 마우스 휠 event control 마우스휠
       let delta = event.deltaY * 0.001;
-      
-      movingCircle += delta;
-      if(movingCircle < 0){
-        movingCircle=0.001;//mapJson.defualt.length
-        // movingCircle=data.length-0.001;//mapJson.defualt.length
-        camera.position.x = 0;
-        camera.position.z = 0;
-        camera.rotation.y = 0;
-        delta = 0;
-      }
-      if(movingCircle > data.length){//mapJson.defualt.length
-        movingCircle=0;
-      }
-      movingFlow += delta;
-      const floor = Math.floor(movingCircle);
-      const next_floor = (floor+1)%data.length;
-      setXPoint(movingCircle/data.length*100);
-
-      camera.position.x = move_cal(mapJson.defualt[floor].coordinates[0],mapJson.defualt[next_floor].coordinates[0],movingCircle-floor);
-      camera.position.y = move_cal(mapJson.defualt[floor].coordinates[1],mapJson.defualt[next_floor].coordinates[1],movingCircle-floor);
-      camera.position.z = move_cal(mapJson.defualt[floor].coordinates[2],mapJson.defualt[next_floor].coordinates[2],movingCircle-floor);
-      camera.rotation.y = camera.rotation.y-delta*Math.PI*directionValues[mapJson.defualt[floor].direction+mapJson.defualt[next_floor].direction];
-      if(directionValues[mapJson.defualt[floor].direction+mapJson.defualt[next_floor].direction] === 0){
-        camera.rotation.y = directionValues[mapJson.defualt[floor].direction];
-      }
-      if (movingCircle < 0) {
-        camera.position.x = 0;
-        camera.position.z = 0;
-        camera.rotation.y = 0;
-        movingCircle = 0;
-        if (movingFlow > 40) {
-          movingFlow = movingFlow - movingFlow % 42 + 42 * (Math.round(Number(movingFlow % 42)) !== 0);
-        }
-      }
-
-      // console.log(camera.position.x);
-      // console.log(camera.position.z);
-      // console.log(movingCircle);
-      // console.log(movingFlow);
-      renderer.render(scene, camera);
+      cameramove(delta);
     };
 
     // function addModel(scene, modelPath, mtlPath, position, scale, texturePath) {
@@ -475,6 +436,49 @@ const Studio = () => {
     // Listen for wheel events for zooming
     containerRef.current.addEventListener('wheel', handleWheel);
 
+    const cameramove = (delta)  =>{
+      // eslint-disable-next-line
+      movingCircle += delta;
+        if(movingCircle < 0){
+          movingCircle=0.001;//mapJson.defualt.length
+          // movingCircle=data.length-0.001;//mapJson.defualt.length
+          camera.position.x = 0;
+          camera.position.z = 0;
+          camera.rotation.y = 0;
+          delta = 0;
+        }
+        if(movingCircle > data.length){//mapJson.defualt.length
+          movingCircle=0;
+        }
+        // eslint-disable-next-line
+        movingFlow += delta;
+        const floor = Math.floor(movingCircle);
+        const next_floor = (floor+1)%data.length;
+        setXPoint(movingCircle/data.length*100);
+  
+        camera.position.x = move_cal(mapJson.defualt[floor].coordinates[0],mapJson.defualt[next_floor].coordinates[0],movingCircle-floor);
+        camera.position.y = move_cal(mapJson.defualt[floor].coordinates[1],mapJson.defualt[next_floor].coordinates[1],movingCircle-floor);
+        camera.position.z = move_cal(mapJson.defualt[floor].coordinates[2],mapJson.defualt[next_floor].coordinates[2],movingCircle-floor);
+        camera.rotation.y = camera.rotation.y-delta*Math.PI*directionValues[mapJson.defualt[floor].direction+mapJson.defualt[next_floor].direction];
+        if(directionValues[mapJson.defualt[floor].direction+mapJson.defualt[next_floor].direction] === 0){
+          camera.rotation.y = directionValues[mapJson.defualt[floor].direction];
+        }
+        if (movingCircle < 0) {
+          camera.position.x = 0;
+          camera.position.z = 0;
+          camera.rotation.y = 0;
+          movingCircle = 0;
+          if (movingFlow > 40) {
+            movingFlow = movingFlow - movingFlow % 42 + 42 * (Math.round(Number(movingFlow % 42)) !== 0);
+          }
+        }
+  
+        // console.log(camera.position.x);
+        // console.log(camera.position.z);
+        // console.log(movingCircle);
+        // console.log(movingFlow);
+        renderer.render(scene, camera);
+    }
     // Animation 효과 
     const animate = () => {
       requestAnimationFrame(animate);
@@ -499,8 +503,19 @@ const Studio = () => {
         containerRef.current.removeEventListener('wheel', handleWheel);
       }
     };
+    const animateMovingCircle = () => {
+      cameramove(0.006);
+      // eslint-disable-next-line
+      animationFrameId = requestAnimationFrame(animateMovingCircle);
+    };
 
-    return () => cleanup();
+    if (isCameraMoved) {
+      animationFrameId = requestAnimationFrame(animateMovingCircle);
+    } else {
+      cancelAnimationFrame(animationFrameId);
+    }
+
+    return () => {cleanup();cancelAnimationFrame(animationFrameId);}
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mapJson, isCameraMoved, data]); // isCameraMoved를 의존성 배열에 추가
 
@@ -517,7 +532,7 @@ const Studio = () => {
 
   return (
     <div ref={containerRef} style={{ width: '100%', height: '100%', overflow: 'hidden', position: 'fixed'}}>
-      <button style={{position:'fixed'}}onClick={handleCameraPositionToggle}>카메라 위치 토글</button> {/* 버튼 추가 */}
+      {isCameraMoved? <button style={{position:'fixed'}}onClick={handleCameraPositionToggle}>멈춤</button>:<button style={{position:'fixed'}}onClick={handleCameraPositionToggle}>자동재생</button> }
       <div className='sidebar-studio'></div>
       <img src={'/images/fly.png'} style={circleStyle} alt=''/>
     </div>
