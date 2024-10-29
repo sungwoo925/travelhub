@@ -516,16 +516,21 @@ const handleImageChange = (e) => {
                 ? "장소 찾기"
                 : recordData.location.split(" latitude")[0]}
             </button>
-            <input
-              type="datetime-local"
-              value={startDate}
-              onChange={handleStartDateChange}
-            />
-            <input
-              type="datetime-local"
-              value={endDate}
-              onChange={handleEndDateChange}
-            />
+            <div className="date-inputs">
+              <input
+                type="date"
+                className="styled-date"
+                value={startDate}
+                onChange={handleStartDateChange}
+              />
+              <span className="date-separator"> ~ </span>
+              <input
+                type="date"
+                className="styled-date"
+                value={endDate}
+                onChange={handleEndDateChange}
+              />
+            </div>
             {showModal && (
               <div className="modal-content">
                 <input
