@@ -218,7 +218,7 @@ function Record() {
       });
   };
 
-  function compressImage(file, quality = 0.4) {
+  function compressImage(file, quality = 0.9) {
       return new Promise((resolve, reject) => {
           const reader = new FileReader();
 
