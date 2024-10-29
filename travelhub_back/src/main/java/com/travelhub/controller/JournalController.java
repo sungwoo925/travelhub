@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -44,14 +45,19 @@ import jakarta.persistence.EntityNotFoundException;
 public class JournalController {
 
     @Autowired
+    private Environment env;
+
+    @Autowired
     private JournalService journalService;
 
     @Autowired
     private TravelService travelService;
 
+    String imagedir = env.getProperty("dir.image");
     @PostMapping("/uploadImage/{travelId}/{userId}")
     public ResponseEntity<String> uploadImage(@PathVariable int travelId, @PathVariable Long userId, @RequestParam("file") MultipartFile file) {
-        String directoryPath = String.format("./static/images/%d/%d", travelId, userId);
+
+        String directoryPath = String.format(imagedir+"%d/%d", travelId, userId);
         File directory = new File(directoryPath);
         Journal savedJournal ;
 
