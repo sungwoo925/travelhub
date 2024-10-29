@@ -1,8 +1,6 @@
 package com.travelhub.controller;
 
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -18,9 +16,8 @@ import java.nio.file.Paths;
 
 @RestController
 public class ImageController {
-    @Autowired
-    private Environment env;
-    private final String baseDirectory =  env.getProperty("dir.image");// 외부 파일이 위치한 기본 디렉토리
+
+    private final String baseDirectory = "./static/images/"; // 외부 파일이 위치한 기본 디렉토리
 
     @GetMapping("/images/{prop1}/{prop2}/{prop3}")
     public ResponseEntity<Resource> getImage(
