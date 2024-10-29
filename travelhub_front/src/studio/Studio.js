@@ -438,6 +438,7 @@ const Studio = () => {
     const cameramove = (delta)  =>{
       // eslint-disable-next-line
       if(!isNaN(movingCircle)){
+        // eslint-disable-next-line
         movingCircle += delta;
           if(movingCircle < 0){
             movingCircle=0.001;//mapJson.defualt.length
