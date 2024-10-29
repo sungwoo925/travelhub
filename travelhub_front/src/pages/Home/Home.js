@@ -73,7 +73,7 @@ function Home() {
     }
     setTimeout(() => {
       setRefe(refe+1);
-    }, 200);
+    }, 2000);
   };
 
   useEffect(() => {

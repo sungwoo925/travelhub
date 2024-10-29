@@ -364,7 +364,7 @@ const Studio = () => {
     }
     setTimeout(() => {
       setXPoint(xPoint+0.001);
-    }, 200);
+    }, 2000);
     // Add tile lines
     // const gridHelper = new THREE.GridHelper(100, 4, 0x000000, 0x000000);
     // gridHelper.rotation.x = Math.PI / 2;
