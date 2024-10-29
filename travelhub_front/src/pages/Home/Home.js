@@ -141,7 +141,7 @@ function Home() {
 
       setData((prevDatas) => {
         const updatedDatas = [...prevDatas]; // 기존 배열 복사
-        updatedDatas[index].likeCount = response.data.likeCount; // 특정 인덱스의 값 수정
+        updatedDatas[index].likeCount = response.data.like_count; // 특정 인덱스의 값 수정
         updatedDatas[index].Ilike = !updatedDatas[index].Ilike;
         return updatedDatas; // 수정된 배열 반환
       });
@@ -168,7 +168,7 @@ function Home() {
 
       setData((prevDatas) => {
         const updatedDatas = [...prevDatas]; // 기존 배열 복사
-        updatedDatas[index].likeCount = response.data.likeCount; // 특정 인덱스의 값 수정
+        updatedDatas[index].likeCount = response.data.like_count; // 특정 인덱스의 값 수정
         updatedDatas[index].Ilike = !updatedDatas[index].Ilike;
         return updatedDatas; // 수정된 배열 반환
       });
