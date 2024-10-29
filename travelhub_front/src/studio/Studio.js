@@ -162,6 +162,7 @@ const Studio = () => {
   const [font, setFont] = useState();
   const [data, setData] = useState([]);
   const [xPoint, setXPoint] = useState(0);
+  const [cope, setCope] = useState(1);
 
   let movingCircle = 0;
   let movingFlow = 0;
@@ -182,7 +183,6 @@ const Studio = () => {
       if(travelId){
         await loader.load('/noto_sans_kr.typeface.json', setFont);
         const journals = await axios.get(apiUrl+"/journals/travel/"+travelId);
-        console.log((journals.data[0].photo_link));
         setData(journals.data);
       }
     }
@@ -346,7 +346,6 @@ const Studio = () => {
         }else if(frame.direction==="West"){
           imagecoord = new THREE.Vector3(frame.coordinates[0]-4, frame.coordinates[1], frame.coordinates[2]+2);
         }
-        console.log(data);
         if(data && mapDataNum < data.length){
           addImagePlane(
             scene,
@@ -364,7 +363,7 @@ const Studio = () => {
     }
     setTimeout(() => {
       setXPoint(xPoint+0.001);
-    }, 2000);
+    }, 5000);
     // Add tile lines
     // const gridHelper = new THREE.GridHelper(100, 4, 0x000000, 0x000000);
     // gridHelper.rotation.x = Math.PI / 2;
@@ -438,46 +437,50 @@ const Studio = () => {
 
     const cameramove = (delta)  =>{
       // eslint-disable-next-line
-      movingCircle += delta;
-        if(movingCircle < 0){
-          movingCircle=0.001;//mapJson.defualt.length
-          // movingCircle=data.length-0.001;//mapJson.defualt.length
-          camera.position.x = 0;
-          camera.position.z = 0;
-          camera.rotation.y = 0;
-          delta = 0;
-        }
-        if(movingCircle > data.length){//mapJson.defualt.length
+      if(!isNaN(movingCircle)){
+        movingCircle += delta;
+          if(movingCircle < 0){
+            movingCircle=0.001;//mapJson.defualt.length
+            // movingCircle=data.length-0.001;//mapJson.defualt.length
+            camera.position.x = 0;
+            camera.position.z = 0;
+            camera.rotation.y = 0;
+            delta = 0;
+          }
+          if(movingCircle > data.length){//mapJson.defualt.length
+            movingCircle=0;
+          }
+          // eslint-disable-next-line
+          movingFlow += delta;
+          const floor = Math.floor(movingCircle);
+          const next_floor = (floor+1)%data.length;
+          setXPoint(movingCircle/data.length*100);
+          
+          camera.position.x = move_cal(mapJson.defualt[floor].coordinates[0],mapJson.defualt[next_floor].coordinates[0],movingCircle-floor);
+          camera.position.y = move_cal(mapJson.defualt[floor].coordinates[1],mapJson.defualt[next_floor].coordinates[1],movingCircle-floor);
+          camera.position.z = move_cal(mapJson.defualt[floor].coordinates[2],mapJson.defualt[next_floor].coordinates[2],movingCircle-floor);
+          camera.rotation.y = camera.rotation.y-delta*Math.PI*directionValues[mapJson.defualt[floor].direction+mapJson.defualt[next_floor].direction];
+          if(directionValues[mapJson.defualt[floor].direction+mapJson.defualt[next_floor].direction] === 0){
+            camera.rotation.y = directionValues[mapJson.defualt[floor].direction];
+          }
+          if (movingCircle < 0) {
+            camera.position.x = 0;
+            camera.position.z = 0;
+            camera.rotation.y = 0;
+            movingCircle = 0;
+            if (movingFlow > 40) {
+              movingFlow = movingFlow - movingFlow % 42 + 42 * (Math.round(Number(movingFlow % 42)) !== 0);
+            }
+          }
+    
+          // console.log(camera.position.x);
+          // console.log(camera.position.z);
+          // console.log(movingCircle);
+          // console.log(movingFlow);
+          renderer.render(scene, camera);
+        }else{
           movingCircle=0;
         }
-        // eslint-disable-next-line
-        movingFlow += delta;
-        const floor = Math.floor(movingCircle);
-        const next_floor = (floor+1)%data.length;
-        setXPoint(movingCircle/data.length*100);
-  
-        camera.position.x = move_cal(mapJson.defualt[floor].coordinates[0],mapJson.defualt[next_floor].coordinates[0],movingCircle-floor);
-        camera.position.y = move_cal(mapJson.defualt[floor].coordinates[1],mapJson.defualt[next_floor].coordinates[1],movingCircle-floor);
-        camera.position.z = move_cal(mapJson.defualt[floor].coordinates[2],mapJson.defualt[next_floor].coordinates[2],movingCircle-floor);
-        camera.rotation.y = camera.rotation.y-delta*Math.PI*directionValues[mapJson.defualt[floor].direction+mapJson.defualt[next_floor].direction];
-        if(directionValues[mapJson.defualt[floor].direction+mapJson.defualt[next_floor].direction] === 0){
-          camera.rotation.y = directionValues[mapJson.defualt[floor].direction];
-        }
-        if (movingCircle < 0) {
-          camera.position.x = 0;
-          camera.position.z = 0;
-          camera.rotation.y = 0;
-          movingCircle = 0;
-          if (movingFlow > 40) {
-            movingFlow = movingFlow - movingFlow % 42 + 42 * (Math.round(Number(movingFlow % 42)) !== 0);
-          }
-        }
-  
-        // console.log(camera.position.x);
-        // console.log(camera.position.z);
-        // console.log(movingCircle);
-        // console.log(movingFlow);
-        renderer.render(scene, camera);
     }
     // Animation 효과 
     const animate = () => {
@@ -504,7 +507,7 @@ const Studio = () => {
       }
     };
     const animateMovingCircle = () => {
-      cameramove(0.006);
+      cameramove(0.002*cope);
       // eslint-disable-next-line
       animationFrameId = requestAnimationFrame(animateMovingCircle);
     };
@@ -517,7 +520,7 @@ const Studio = () => {
 
     return () => {cleanup();cancelAnimationFrame(animationFrameId);}
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [mapJson, isCameraMoved, data]); // isCameraMoved를 의존성 배열에 추가
+  }, [mapJson, isCameraMoved, data,cope]); // isCameraMoved를 의존성 배열에 추가
 
   const circleStyle = {
     width: '40px',
@@ -530,9 +533,23 @@ const Studio = () => {
     transition: 'top 0.3s ease', // 부드럽게 이동
   };
 
+  const handleInputChange = (event) => {
+    setCope(event.target.value);
+  };
+
   return (
     <div ref={containerRef} style={{ width: '100%', height: '100%', overflow: 'hidden', position: 'fixed'}}>
-      {isCameraMoved? <button style={{position:'fixed'}}onClick={handleCameraPositionToggle}>멈춤</button>:<button style={{position:'fixed'}}onClick={handleCameraPositionToggle}>자동재생</button> }
+      {isCameraMoved? 
+      <div>
+        <button style={{position:'fixed',width:'100px'}}onClick={handleCameraPositionToggle}>멈춤</button>
+        <select style={{position:'fixed',left:'100px'}}  value={cope} onChange={handleInputChange}>
+          <option value="0.5">X 0.5</option>
+          <option value="1">X 1</option>
+          <option value="1.5">X 1.5</option>
+          <option value="2">X 2</option>
+        </select>
+      </div>:
+      <button style={{position:'fixed'}}onClick={handleCameraPositionToggle}>자동재생</button> }
       <div className='sidebar-studio'></div>
       <img src={'/images/fly.png'} style={circleStyle} alt=''/>
     </div>
