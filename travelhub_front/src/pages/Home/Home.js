@@ -95,7 +95,7 @@ function Home() {
   const handleSortChange = (option) => {
     // setSortOption(option);
     if(option==="최신순"){
-      setOriginalData(originalData.sort((a, b) => b.travelId - a.travelId));
+      setOriginalData(originalData.sort((a, b) => a.travelId - b.travelId));
     }else{
       setOriginalData(originalData.sort((a, b) => b.likeCount - a.likeCount));
     }
