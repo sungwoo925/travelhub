@@ -97,7 +97,7 @@ public class JournalController {
             String location = "us-central1";
             String modelName = "gemini-1.0-pro-vision";
 
-            String output =  " t e s t"; //quickstart(projectId, location, modelName, directoryPath);// 제미나이 비용 발생으로 막아둠
+            String output = quickstart(projectId, location, modelName, file);// 제미나이 비용 발생으로 막아둠
             return new ResponseEntity<>(savedJournal.getJournalId() + output, HttpStatus.OK);            
         } catch (Exception e) {
             // TODO Auto-generated catch block
@@ -151,7 +151,7 @@ public class JournalController {
         }
     }
 
-    public static String quickstart(String projectId, String location, String modelName, String imageUri)
+    public static String quickstart(String projectId, String location, String modelName, MultipartFile image)
         throws IOException {
         // Initialize client that will be used to send requests. This client only needs
         // to be created once, and can be reused for multiple requests.
@@ -160,8 +160,8 @@ public class JournalController {
         GenerativeModel model = new GenerativeModel(modelName, vertexAI);
 
         GenerateContentResponse response = model.generateContent(ContentMaker.fromMultiModalData(
-            PartMaker.fromMimeTypeAndData("image/png", readImageFile(imageUri)),
-            "해당하는 해시태그 5개"
+            PartMaker.fromMimeTypeAndData("image/png", image.getBytes()),
+            "해당하는 해시태그 2개 대답형식 ' #{해시태그1} #{해시태그2}'"
         ));
 
         return ResponseHandler.getText(response);
