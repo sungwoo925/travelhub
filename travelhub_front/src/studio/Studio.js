@@ -531,7 +531,6 @@ const Studio = () => {
     position: 'absolute',
     right: '30px', // 오른쪽으로부터 150px 떨어진 위치
     top: `${xPoint}vh`, // x_point에 따라 위아래 위치 설정
-    transition: 'top 0.3s ease', // 부드럽게 이동
   };
 
   const handleInputChange = (event) => {
