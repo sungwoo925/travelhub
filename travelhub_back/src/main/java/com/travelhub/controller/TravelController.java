@@ -1,8 +1,10 @@
 package com.travelhub.controller;
 
 import com.travelhub.dto.TravelDTO;
+import com.travelhub.dto.TravelView;
 import com.travelhub.entity.Travel;
 import com.travelhub.entity.User;
+import com.travelhub.repository.TravelViewRepository;
 import com.travelhub.service.TravelService;
 import com.travelhub.service.UserService;
 import com.travelhub.util.JwtUtil;
@@ -27,6 +29,8 @@ public class TravelController {
     private JwtUtil jwtUtil; // JwtUtil 주입 추가
     @Autowired
     private UserService userService;
+    @Autowired
+    private TravelViewRepository travelViewRepository;
 
     // 여행 검색 - 해시태그로 검색
     @GetMapping("/search/hashtag")
@@ -119,10 +123,9 @@ public class TravelController {
 
     // 모든 여행 정보 가져오기 (travelShareOption이 1인 경우만)
     @GetMapping 
-    public ResponseEntity<List<TravelDTO>> getAllTravels() {
-        List<TravelDTO> travels = travelService.getTravelWithShareOption();
-
-        return new ResponseEntity<>(travels, HttpStatus.OK);
+    public ResponseEntity<List<TravelView>> getAllTravels() {
+        List<TravelView> travels = travelViewRepository.findAll(); // 뷰에서 모든 데이터 가져오기
+        return ResponseEntity.ok(travels); // HTTP 200 OK와 함께 데이터 반환
     }
 
     @GetMapping("/noname")

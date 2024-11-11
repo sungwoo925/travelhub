@@ -73,7 +73,7 @@ function Home() {
     }
     setTimeout(() => {
       setRefe(refe+1);
-    }, 2000);
+    }, 500);
   };
 
   useEffect(() => {
@@ -248,7 +248,7 @@ function Home() {
           {currentItems.map((item, index) => (
             <div key={index} className="cube-container">
               <div className="card">
-                <h2 className="user-name">{item.username+"님의 여행" || "제목 없음"}</h2>
+                <h2 className="user-name">{item.userName+"님의 여행" || "제목 없음"}</h2>
                 <Cube travel={item} />
                 <h2 className="location-name">
                   {item.travelLocationName || "제목 없음"}
